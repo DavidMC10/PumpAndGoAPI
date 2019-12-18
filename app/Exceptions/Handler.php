@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
-    /**
+ /**
      * Convert an authentication exception into an unauthenticated response.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -76,6 +76,7 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
+
         return redirect()->guest(route('login'));
     }
 }

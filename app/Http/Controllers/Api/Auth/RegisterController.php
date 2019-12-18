@@ -22,15 +22,21 @@ class RegisterController extends Controller
     public function register(Request $request) {
 
     	$this->validate($request, [
-    		'name' => 'required',
+            'firstName' => 'required',
+            'lastName' => 'required',
     		'email' => 'required|email|unique:users,email',
-    		'password' => 'required|min:6|confirmed'
+            'password' => 'required|min:8|confirmed',
+            'maxFuelLimit' => 'required',
+            'maxDistanceLimit' => 'required'
     	]);
 
         $user = User::create([
-            'name' => request('name'),
+            'firstName' => request('firstName'),
+            'lastName' => request('lastName'),
             'email' => request('email'),
-            'password' => bcrypt('password')
+            'password' => bcrypt(request('password')),
+            'maxFuelLimit' => request('maxFuelLimit'),
+            'maxDistanceLimit' => request('maxDistanceLimit')
         ]);
 
         return $this->issueToken($request, 'password');

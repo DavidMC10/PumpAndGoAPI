@@ -19,5 +19,4 @@ trait IssueTokenTrait{
     	$proxy = Request::create('oauth/token', 'POST');
     	return Route::dispatch($proxy);
     }
-
 }

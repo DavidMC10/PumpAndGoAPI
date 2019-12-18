@@ -15,22 +15,15 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique()->nullable();
-            $table->string('password')->nullable();
-            $table->rememberToken();
+            $table->string('firstName');
+            $table->string('lastName');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->double('maxFuelLimit');
+            $table->double('maxDistanceLimit');
+            $table->integer('rewardCardId')->nullable();
+            $table->integer('fuelCardId')->nullable();
             $table->timestamps();
-            // $table->bigIncrements('id');
-            // $table->string('firstName');
-            // $table->string('lastName');
-            // $table->string('email')->unique()->nullable();
-            // $table->string('password')->nullable();
-            // $table->double('maxFuelLimit');
-            // $table->double('maxDistanceLimit');
-            // $table->integer('rewardCardID');
-            // $table->integer('fuelCardID');
-            // $table->rememberToken();
-            // $table->timestamps();
         });
     }
 

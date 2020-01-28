@@ -14,15 +14,17 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('userId');
             $table->string('firstName');
             $table->string('lastName');
             $table->string('email')->unique();
             $table->string('password');
             $table->double('maxFuelLimit');
             $table->double('maxDistanceLimit');
-            $table->integer('rewardCardId')->nullable();
-            $table->integer('fuelCardId')->nullable();
+            $table->integer('rewardCardId')->unsigned();
+            $table->foreign('rewardCardId')->references('rewardCardID')->on('rewards')->onDelete('cascade');
+            $table->integer('fuelCardId')->unsigned();
+            $table->foreign('fuelCardId')->references('fuelCardId')->on('fuelcards')->onDelete('cascade');
             $table->timestamps();
         });
     }

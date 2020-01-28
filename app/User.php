@@ -10,6 +10,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
+
+    /**
+     * The primary key of the table.
+     *
+     * @var
+     */
+    protected $primaryKey = 'userId';
+
     /**
      * The attributes that are mass assignable.
      *

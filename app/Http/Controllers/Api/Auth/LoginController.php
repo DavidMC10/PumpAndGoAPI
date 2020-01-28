@@ -40,15 +40,14 @@ class LoginController extends Controller
         $accessToken->revoke();
 
     	return response()->json([], 204);
-
     }
 
     public function refresh(Request $request) {
+
         $this->validate($request, [
     		'refresh_token' => 'required'
         ]);
 
     	return $this->issueToken($request, 'refresh_token');
-
     }
 }

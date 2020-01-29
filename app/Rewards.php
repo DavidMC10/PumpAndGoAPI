@@ -12,6 +12,6 @@ class Rewards extends Model
      * @var array
      */
     protected $fillable = [
-        'rewardCardNo', 'carWashDiscountPercentage', 'fuelDiscountPercentage', 'deliDiscountPercentage', 'coffeeDiscountPercentage'
+        'carWashDiscountPercentage', 'fuelDiscountPercentage', 'deliDiscountPercentage', 'coffeeDiscountPercentage'
     ];
 }

@@ -13,10 +13,10 @@ class CreateBusinesshoursTable extends Migration
      */
     public function up()
     {
-        Schema::create('businesshours', function (Blueprint $table) {
+        Schema::create('business_hours', function (Blueprint $table) {
             $table->increments('businessHoursID');
             $table->integer('fuelStationID')->unsigned();
-            $table->foreign('fuelStationID')->references('fuelStationID')->on('fuelstations');
+            $table->foreign('fuelStationID')->references('fuelStationID')->on('fuel_stations');
             $table->string('day');
             $table->string('openTime');
             $table->string('closeTime');
@@ -31,6 +31,6 @@ class CreateBusinesshoursTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('businesshours');
+        Schema::dropIfExists('business_hours');
     }
 }

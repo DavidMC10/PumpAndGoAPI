@@ -13,10 +13,10 @@ class CreateFuelcardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fuelcards', function (Blueprint $table) {
+        Schema::create('fuel_cards', function (Blueprint $table) {
             $table->increments('fuelCardId');
-            $table->string('fuelCardNo', 16);
-            $table->date('expiryDate');
+            $table->string('fuelCardNo', 16)->nullable();
+            $table->date('expiryDate')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateFuelcardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fuelcards');
+        Schema::dropIfExists('fuel_cards');
     }
 }

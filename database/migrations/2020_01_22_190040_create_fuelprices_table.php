@@ -13,16 +13,16 @@ class CreateFuelpricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('fuelprices', function (Blueprint $table) {
+        Schema::create('fuel_prices', function (Blueprint $table) {
             $table->integer('fuelTypeId')->unsigned();
             $table->integer('fuelStationId')->unsigned();
             $table->primary(array('fuelTypeId', 'fuelStationId'));
             $table->foreign('fuelTypeId')
             ->references('fuelTypeId')
-            ->on('fueltypes');
+            ->on('fuel_types');
             $table->foreign('fuelStationId')
             ->references('fuelStationId')
-            ->on('fuelstations');
+            ->on('fuel_stations');
             $table->dateTime('startDate');
             $table->dateTime('endDate');
             $table->decimal('pricePerLitre', 6, 2);
@@ -37,6 +37,6 @@ class CreateFuelpricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fuelprices');
+        Schema::dropIfExists('fuel_prices');
     }
 }

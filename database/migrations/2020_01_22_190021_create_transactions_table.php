@@ -28,10 +28,10 @@ class CreateTransactionsTable extends Migration
             ->on('users');
             $table->foreign('fuelTypeId')
             ->references('fuelTypeId')
-            ->on('fueltypes');
+            ->on('fuel_types');
             $table->foreign('fuelStationId')
             ->references('fuelStationId')
-            ->on('fuelstations');
+            ->on('fuel_stations');
             $table->timestamps();
         });
     }

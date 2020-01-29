@@ -13,7 +13,7 @@ class FuelPricesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "1",
             'startDate' => Carbon::now(),
@@ -23,7 +23,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "1",
             'startDate' => Carbon::now(),
@@ -33,7 +33,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "1",
             'startDate' => Carbon::now(),
@@ -43,7 +43,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "1",
             'startDate' => Carbon::now(),
@@ -53,7 +53,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "2",
             'startDate' => Carbon::now(),
@@ -63,7 +63,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "2",
             'startDate' => Carbon::now(),
@@ -73,7 +73,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "2",
             'startDate' => Carbon::now(),
@@ -83,7 +83,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "2",
             'startDate' => Carbon::now(),
@@ -93,7 +93,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "3",
             'startDate' => Carbon::now(),
@@ -103,7 +103,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "3",
             'startDate' => Carbon::now(),
@@ -113,7 +113,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "3",
             'startDate' => Carbon::now(),
@@ -123,7 +123,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "3",
             'startDate' => Carbon::now(),
@@ -133,7 +133,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "4",
             'startDate' => Carbon::now(),
@@ -143,7 +143,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "4",
             'startDate' => Carbon::now(),
@@ -153,7 +153,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "4",
             'startDate' => Carbon::now(),
@@ -163,7 +163,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "4",
             'startDate' => Carbon::now(),
@@ -173,7 +173,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "5",
             'startDate' => Carbon::now(),
@@ -183,7 +183,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "5",
             'startDate' => Carbon::now(),
@@ -193,7 +193,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "5",
             'startDate' => Carbon::now(),
@@ -203,7 +203,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "5",
             'startDate' => Carbon::now(),
@@ -213,7 +213,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "6",
             'startDate' => Carbon::now(),
@@ -223,7 +223,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "6",
             'startDate' => Carbon::now(),
@@ -233,7 +233,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "6",
             'startDate' => Carbon::now(),
@@ -243,7 +243,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "6",
             'startDate' => Carbon::now(),
@@ -253,7 +253,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "7",
             'startDate' => Carbon::now(),
@@ -263,7 +263,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "7",
             'startDate' => Carbon::now(),
@@ -273,7 +273,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "7",
             'startDate' => Carbon::now(),
@@ -283,7 +283,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "7",
             'startDate' => Carbon::now(),
@@ -293,7 +293,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "8",
             'startDate' => Carbon::now(),
@@ -303,7 +303,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "8",
             'startDate' => Carbon::now(),
@@ -313,7 +313,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "8",
             'startDate' => Carbon::now(),
@@ -323,7 +323,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "8",
             'startDate' => Carbon::now(),
@@ -333,7 +333,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "9",
             'startDate' => Carbon::now(),
@@ -343,7 +343,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "9",
             'startDate' => Carbon::now(),
@@ -353,7 +353,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "9",
             'startDate' => Carbon::now(),
@@ -363,7 +363,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "9",
             'startDate' => Carbon::now(),
@@ -373,7 +373,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "1",
             'fuelStationId' => "10",
             'startDate' => Carbon::now(),
@@ -383,7 +383,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "2",
             'fuelStationId' => "10",
             'startDate' => Carbon::now(),
@@ -393,7 +393,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "3",
             'fuelStationId' => "10",
             'startDate' => Carbon::now(),
@@ -403,7 +403,7 @@ class FuelPricesTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelprices')->insert([
+        DB::table('fuel_prices')->insert([
             'fuelTypeId' => "4",
             'fuelStationId' => "10",
             'startDate' => Carbon::now(),

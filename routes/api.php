@@ -14,10 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('register', 'Api\Auth\RegisterController@register');
-Route::post('login', 'Api\Auth\LoginController@login');
-Route::post('refresh', 'Api\Auth\LoginController@refresh');
+Route::post('login', 'Api\AuthController@login');
+Route::post('register', 'Api\AuthController@register');
+Route::post('refresh', 'Api\AuthController@refresh');
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('logout', 'Api\Auth\LoginController@logout');
+    Route::post('logout', 'Api\AuthController@logout');
+    Route::post('updatename', 'Api\ProfileController@updateUserFullName');
+    Route::post('updatepassword', 'Api\ProfileController@updatePassword');
+    Route::post('updatefuellimit', 'Api\ProfileController@updateMaxFuelLimit');
+    Route::post('updatedistancelimit', 'Api\ProfileController@updateMaxDistanceLimit');
 });

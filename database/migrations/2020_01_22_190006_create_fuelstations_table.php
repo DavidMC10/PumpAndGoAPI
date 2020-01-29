@@ -13,7 +13,7 @@ class CreateFuelstationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fuelstations', function (Blueprint $table) {
+        Schema::create('fuel_stations', function (Blueprint $table) {
             $table->increments('fuelStationId');
             $table->string('name');
             $table->string('address1');
@@ -36,6 +36,6 @@ class CreateFuelstationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fuelstations');
+        Schema::dropIfExists('fuel_stations');
     }
 }

@@ -29,7 +29,7 @@ class LoginController extends Controller
         return $this->issueToken($request, 'password');
     }
 
-    public function logout(Request $request) {
+    public function logout() {
 
         $accessToken = Auth::user()->token();
 

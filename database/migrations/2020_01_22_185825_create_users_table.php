@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->integer('rewardCardId')->unsigned();
             $table->foreign('rewardCardId')->references('rewardCardID')->on('rewards')->onDelete('cascade');
             $table->integer('fuelCardId')->unsigned();
-            $table->foreign('fuelCardId')->references('fuelCardId')->on('fuelcards')->onDelete('cascade');
+            $table->foreign('fuelCardId')->references('fuelCardId')->on('fuel_cards')->onDelete('cascade');
             $table->timestamps();
         });
     }

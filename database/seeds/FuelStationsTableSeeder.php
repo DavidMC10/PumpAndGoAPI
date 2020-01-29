@@ -13,7 +13,7 @@ class FuelStationsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle K Brady's",
             'address1' => "15 Navan Rd, Ashtown",
             'address2' => "Ashtown, Dublin 15",
@@ -27,7 +27,7 @@ class FuelStationsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle K Palmerstown",
             'address1' => "Lucan-By-Pass (Dublin Bound)",
             'address2' => "Palmerstown, Dublin 20",
@@ -41,7 +41,7 @@ class FuelStationsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle Dundrum",
             'address1' => "14 Dundrum Rd",
             'address2' => "Churchtown Lower",
@@ -55,7 +55,7 @@ class FuelStationsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle K Grosvenor (Rathmines)",
             'address1' => "Grosvenor Rd",
             'address2' => "Rathmines",
@@ -69,7 +69,7 @@ class FuelStationsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle K Nevin",
             'address1' => "Nevin",
             'address2' => "59-63 Ballymun Road",
@@ -83,7 +83,7 @@ class FuelStationsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle K Martello",
             'address1' => "143 Strand Road",
             'address2' => "Sandymount, Dublin 4",
@@ -97,7 +97,7 @@ class FuelStationsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle K Cabra",
             'address1' => "146 Cabra Rd",
             'address2' => "Northside, Dublin 7",
@@ -112,7 +112,7 @@ class FuelStationsTableSeeder extends Seeder
         ]);
 
 
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle K Richmond Rd",
             'address1' => "279 Richmond Rd",
             'address2' => "Drumcondra, Dublin",
@@ -126,7 +126,7 @@ class FuelStationsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle K Autobahn",
             'address1' => "89 Glasnevin Ave",
             'address2' => "Ballymun, Dublin 11",
@@ -140,7 +140,7 @@ class FuelStationsTableSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuelstations')->insert([
+        DB::table('fuel_stations')->insert([
             'name' => "Circle K Omni",
             'address1' => "Omni Park Shopping Centre, Swords Rd",
             'address2' => "Santry, Dublin",

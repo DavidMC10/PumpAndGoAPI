@@ -15,7 +15,6 @@ class CreateRewardsTable extends Migration
     {
         Schema::create('rewards', function (Blueprint $table) {
             $table->increments('rewardCardId');
-            $table->string('rewardCardNo', 16);
             $table->decimal('carWashDiscountPercentage', 5, 2);
             $table->decimal('fuelDiscountPercentage', 5, 2);
             $table->decimal('deliDiscountPercentage', 5, 2);

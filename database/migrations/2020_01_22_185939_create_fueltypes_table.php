@@ -13,7 +13,7 @@ class CreateFueltypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('fueltypes', function (Blueprint $table) {
+        Schema::create('fuel_types', function (Blueprint $table) {
             $table->increments('fuelTypeId');
             $table->string('fuelTypeName');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateFueltypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fueltypes');
+        Schema::dropIfExists('fuel_types');
     }
 }

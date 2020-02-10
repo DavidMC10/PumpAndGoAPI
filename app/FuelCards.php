@@ -14,4 +14,12 @@ class FuelCards extends Model
     protected $fillable = [
         'fuelCardNo', 'expiryDate'
     ];
+
+    /**
+     * Get the users who have fuel cards.
+     */
+    public function users()
+    {
+        return $this->hasMany('App\Users');
+    }
 }

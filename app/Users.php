@@ -44,4 +44,20 @@ class Users extends Authenticatable
     // protected $casts = [
     //     'email_verified_at' => 'datetime',
     // ];
+
+    /**
+     * Get the rewards that own the user.
+     */
+    public function rewards()
+    {
+        return $this->belongsTo('App\Rewards');
+    }
+
+    /**
+     * Get fuel cards that own the user.
+     */
+    public function fuelcards()
+    {
+        return $this->belongsTo('App\FuelCards');
+    }
 }

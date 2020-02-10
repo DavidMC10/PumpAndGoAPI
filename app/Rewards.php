@@ -14,4 +14,12 @@ class Rewards extends Model
     protected $fillable = [
         'carWashDiscountPercentage', 'fuelDiscountPercentage', 'deliDiscountPercentage', 'coffeeDiscountPercentage'
     ];
+
+    /**
+     * Get the users who have Rewards.
+     */
+    public function users()
+    {
+        return $this->hasMany('App\Users');
+    }
 }

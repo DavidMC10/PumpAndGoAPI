@@ -24,4 +24,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('updatepassword', 'Api\ProfileController@updatePassword');
     Route::post('updatefuellimit', 'Api\ProfileController@updateMaxFuelLimit');
     Route::post('updatedistancelimit', 'Api\ProfileController@updateMaxDistanceLimit');
+    Route::post('details', 'Api\AuthController@details');
 });

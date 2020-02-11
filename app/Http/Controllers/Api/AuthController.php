@@ -86,7 +86,7 @@ class AuthController extends Controller
             'fuelCardId' => $fuelCard['id']
         ]);
 
-        $accessToken =  $user->createToken('PumpAndGO')->accessToken;
+        $accessToken =  $user->createToken('PumpAndGo')->accessToken;
 
         return response()->json([
             'success' => true,

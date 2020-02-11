@@ -10,14 +10,14 @@ class FuelStationController extends Controller
 {
     //
 
-    public function getNearbyFuelStations(Request $request)
+    public function generateListOfNearbyFuelStations(Request $request)
     {
         $lat = request('latitude');
         $lng = request('longitude');
-        $distance = 3;
+        $maxDistanceLimit = request('maxDistanceLimit');
 
-        $articles = FuelStations::scopeGetByDistance($lat, $lng, $distance);
+        $fuelStations = FuelStations::getFuelStationsByDistance($lat, $lng, $maxDistanceLimit);
 
-        return $articles;
+        return $fuelStations;
     }
 }

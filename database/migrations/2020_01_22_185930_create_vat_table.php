@@ -14,9 +14,9 @@ class CreateVatTable extends Migration
     public function up()
     {
         Schema::create('vat', function (Blueprint $table) {
-            $table->increments('vatId');
-            $table->integer('vatNo');
-            $table->decimal('vatRate', 5, 2);
+            $table->increments('vat_id');
+            $table->integer('vat_no');
+            $table->decimal('vat_rate', 5, 2);
             $table->timestamps();
         });
     }

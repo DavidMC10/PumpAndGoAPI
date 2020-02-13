@@ -4,21 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BusinessHours extends Model {
+class FuelCard extends Model {
 
     /**
      * The table name.
      *
      * @var
      */
-    protected $table = 'business_hours';
+    protected $table = 'fuel_card';
 
     /**
      * The primary key of the table.
      *
      * @var
      */
-    protected $primaryKey = 'business_hours_id';
+    protected $primaryKey = 'fuel_card_id';
 
     /**
      * The attributes that are mass assignable.
@@ -26,13 +26,13 @@ class BusinessHours extends Model {
      * @var array
      */
     protected $fillable = [
-        'day', 'open_time', 'close_time'
+        'fuel_card_no', 'expiry_date'
     ];
 
     /**
-     * Get the fuel stations that own the business hours.
+     * Get the users who have fuel cards.
      */
-    public function fuelStation() {
-        return $this->belongsTo('App\FuelStation', 'fuel_station_id');
+    public function user() {
+        return $this->hasMany('App\User', 'fuel_card_id');
     }
 }

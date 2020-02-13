@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFueltypesTable extends Migration
+class CreateFuelcardTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateFueltypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('fuel_types', function (Blueprint $table) {
-            $table->increments('fuelTypeId');
-            $table->string('fuelTypeName');
+        Schema::create('fuel_card', function (Blueprint $table) {
+            $table->increments('fuel_card_id');
+            $table->string('fuel_card_no', 16)->nullable();
+            $table->date('expiry_date')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateFueltypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fuel_types');
+        Schema::dropIfExists('fuel_card');
     }
 }

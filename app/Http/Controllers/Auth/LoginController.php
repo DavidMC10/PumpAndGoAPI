@@ -19,6 +19,8 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+    // use Illuminate\Support\Facades\Mail;
+    // use App\Mail\SendMailable;
 
     /**
      * Where to redirect users after login.
@@ -36,4 +38,5 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
 }

@@ -24,7 +24,7 @@ class RegisterController extends Controller
     	$this->validate($request, [
             'firstName' => 'required',
             'lastName' => 'required',
-    		'email' => 'required|email|unique:users,email',
+    		'email' => 'required|email|unique:user,email',
             'password' => 'required|min:8|confirmed',
             'maxFuelLimit' => 'required',
             'maxDistanceLimit' => 'required'

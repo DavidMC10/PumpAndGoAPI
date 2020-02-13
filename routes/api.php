@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,5 +26,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('updatefuellimit', 'Api\ProfileController@updateMaxFuelLimit');
     Route::post('updatedistancelimit', 'Api\ProfileController@updateMaxDistanceLimit');
     Route::post('details', 'Api\AuthController@details');
-    Route::post('nearbystations', 'Api\FuelStationController@generateListOfNearbyFuelStations');
+    Route::post('getnearbystations', 'Api\FuelStationController@generateListOfNearbyFuelStations');
+    Route::post('getcurrentstation', 'Api\FuelStationController@getCurrentFuelStation');
 });

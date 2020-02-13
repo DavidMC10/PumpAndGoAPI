@@ -7,16 +7,24 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Users extends Authenticatable
+class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
+
+
+    /**
+     * The table name.
+     *
+     * @var
+     */
+    protected $table = 'user';
 
     /**
      * The primary key of the table.
      *
      * @var
      */
-    protected $primaryKey = 'userId';
+    protected $primaryKey = 'user_id';
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +32,7 @@ class Users extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstName', 'lastName', 'email', 'password', 'maxFuelLimit', 'maxDistanceLimit', 'rewardCardId', 'fuelCardId'
+        'first_name', 'last_name', 'email', 'password', 'max_fuel_limit', 'max_distance_limit', 'reward_card_id', 'fuel_card_id'
     ];
 
     /**
@@ -48,16 +56,16 @@ class Users extends Authenticatable
     /**
      * Get the rewards that own the user.
      */
-    public function rewards()
+    public function reward()
     {
-        return $this->belongsTo('App\Rewards');
+        return $this->belongsTo('App\Reward', 'reward_card_id');
     }
 
     /**
      * Get fuel cards that own the user.
      */
-    public function fuelcards()
+    public function fuelcard()
     {
-        return $this->belongsTo('App\FuelCards');
+        return $this->belongsTo('App\FuelCard', 'fuel_card_id');
     }
 }

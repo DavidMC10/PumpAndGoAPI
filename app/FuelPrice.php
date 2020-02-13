@@ -4,14 +4,22 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FuelPrices extends Model
+class FuelPrice extends Model
 {
+
+    /**
+     * The table name.
+     *
+     * @var
+     */
+    protected $table = 'fuel_price';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'startDate', 'endDate', 'pricePerLitre'
+        'start_date', 'end_date', 'price_per_litre'
     ];
 }

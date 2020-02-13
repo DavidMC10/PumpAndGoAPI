@@ -14,12 +14,12 @@ class CreateBusinesshoursTable extends Migration
     public function up()
     {
         Schema::create('business_hours', function (Blueprint $table) {
-            $table->increments('businessHoursID');
-            $table->integer('fuelStationID')->unsigned();
-            $table->foreign('fuelStationID')->references('fuelStationID')->on('fuel_stations');
+            $table->increments('business_hours_id');
+            $table->integer('fuel_station_id')->unsigned();
+            $table->foreign('fuel_station_id')->references('fuel_station_id')->on('fuel_station');
             $table->string('day');
-            $table->string('openTime');
-            $table->string('closeTime');
+            $table->string('open_time');
+            $table->string('close_time');
             $table->timestamps();
         });
     }

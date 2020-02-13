@@ -4,7 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class FuelTypesTableSeeder extends Seeder
+class FuelTypeTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,26 +13,26 @@ class FuelTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('fuel_types')->insert([
-            'fuelTypeName' => 'Unleaded',
+        DB::table('fuel_type')->insert([
+            'fuel_type_name' => 'Unleaded',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuel_types')->insert([
-            'fuelTypeName' => 'Diesel',
+        DB::table('fuel_type')->insert([
+            'fuel_type_name' => 'Diesel',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuel_types')->insert([
-            'fuelTypeName' => 'Super Unleaded',
+        DB::table('fuel_type')->insert([
+            'fuel_type_name' => 'Super Unleaded',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 
-        DB::table('fuel_types')->insert([
-            'fuelTypeName' => 'Super Diesel',
+        DB::table('fuel_type')->insert([
+            'fuel_type_name' => 'Super Diesel',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

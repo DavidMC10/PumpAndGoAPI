@@ -14,8 +14,8 @@ class VatTableSeeder extends Seeder
     public function run()
     {
         DB::table('vat')->insert([
-            'vatNo' => '904637702',
-            'vatRate' => '20.00',
+            'vat_no' => '904637702',
+            'vat_rate' => '20.00',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

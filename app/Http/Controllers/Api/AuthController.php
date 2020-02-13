@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\FuelCards;
+use App\FuelCard;
 use App\Http\Controllers\Controller;
-use App\Rewards;
-use App\Users;
-use Illuminate\Support\Facades\Route;
+use App\Reward;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
-use Laravel\Passport\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -20,7 +17,9 @@ class AuthController extends Controller
     /**
      * Logs the user in and provides an access token.
      *
-     * @param Request $request
+     * @param  [string] email
+     * @param  [string] password
+     *
      * @return \Illuminate\Http\Response
      */
     public function login(Request $request)
@@ -28,8 +27,8 @@ class AuthController extends Controller
         // If credentials correct log the user in, if not return false.
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
-            $success['token'] =  $user->createToken('PumpAndGO')->accessToken;
-            return response()->json(['success' => $success], Response::HTTP_CREATED);
+            $token =  $user->createToken('PumpAndGo')->accessToken;
+            return response()->json(['token' => $token], Response::HTTP_OK);
         } else {
             return response()->json(['success' => false, 'message' => "The user credentials were incorrect."], Response::HTTP_UNAUTHORIZED);
         }
@@ -38,17 +37,20 @@ class AuthController extends Controller
     /**
      * Create a new new user and provides the access and refresh tokens.
      *
-     * @param Request $request
+     * @param  [string] first_name
+     * @param  [string] last_name
+     * @param  [string] email
+     * @param  [string] password
+     *
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
     {
-
         // Ensures that the request contains the required fields.
         $validator = FacadesValidator::make($request->all(), [
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email|unique:user,email',
             'password' => 'required|min:8|confirmed'
         ]);
 
@@ -61,38 +63,35 @@ class AuthController extends Controller
         }
 
         // Create a reward record.
-        $reward = Rewards::create([
-            'carWashDiscountPercentage' => 10.0,
-            'fuelDiscountPercentage' => 15.0,
-            'deliDiscountPercentage' => 10.0,
-            'coffeeDiscountPercentage' => 10.0
+        $reward = Reward::create([
+            'car_wash_discount_percentage' => 10.0,
+            'fuel_discount_percentage' => 15.0,
+            'deli_discount_percentage' => 10.0,
+            'coffee_discount_percentage' => 10.0
         ]);
 
         // Create a fuel card record.
-        $fuelCard = FuelCards::create([
-            'fuelCardNo' => null,
-            'expiryDate' => null
+        $fuelCard = FuelCard::create([
+            'fuel_card_no' => null,
+            'expiry_date' => null
         ]);
 
         // Create a user record.
-        $user = Users::create([
-            'firstName' => request('firstName'),
-            'lastName' => request('lastName'),
+        $user = User::create([
+            'first_name' => request('first_name'),
+            'last_name' => request('last_name'),
             'email' => request('email'),
             'password' => bcrypt(request('password')),
-            'maxFuelLimit' => 20,
-            'maxDistanceLimit' => 20,
-            'rewardCardId' => $reward['id'],
-            'fuelCardId' => $fuelCard['id']
+            'max_fuel_limit' => 20,
+            'max_distance_limit' => 20,
+            'reward_card_id' => $reward['reward_card_id'],
+            'fuel_card_id' => $fuelCard['fuel_card_id']
         ]);
 
+        // Create the access token.
         $accessToken =  $user->createToken('PumpAndGo')->accessToken;
 
-        return response()->json([
-            'success' => true,
-            'message' => "The request was successful.",
-            'access_token' => $accessToken
-        ], Response::HTTP_CREATED);
+        return response()->json(['access_token' => $accessToken], Response::HTTP_CREATED);
     }
 
     /**
@@ -102,19 +101,12 @@ class AuthController extends Controller
      */
     public function logout()
     {
-
-        // Finds the user's access token.
-        $accessToken = Auth::user()->token();
-
-        // Revokes the user's access token.
-        DB::table('oauth_refresh_tokens')
-            ->where('access_token_id', $accessToken->id)
-            ->update(['revoked' => true]);
-
-        $accessToken->revoke();
-
-        // Returns success on completion.
-        return response()->json(['success' => true], Response::HTTP_CREATED);
+        if (Auth::check()) {
+            Auth::user()->token()->revoke();
+            return response()->json(['message' =>'You have succesfully logged out.'], Response::HTTP_OK);
+        } else {
+            return response()->json(['message' =>'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

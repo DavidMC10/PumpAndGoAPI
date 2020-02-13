@@ -12,14 +12,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            FuelCardsTableSeeder::class,
-            RewardsTableSeeder::class,
-            UsersTableSeeder::class,
+            FuelCardTableSeeder::class,
+            RewardTableSeeder::class,
+            UserTableSeeder::class,
             VatTableSeeder::class,
-            FuelTypesTableSeeder::class,
-            FuelStationsTableSeeder::class,
-            TransactionsTableSeeder::class,
-            FuelPricesTableSeeder::class,
+            FuelTypeTableSeeder::class,
+            FuelStationTableSeeder::class,
+            TransactionTableSeeder::class,
+            FuelPriceTableSeeder::class,
             BusinessHoursTableSeeder::class,
         ]);
     }

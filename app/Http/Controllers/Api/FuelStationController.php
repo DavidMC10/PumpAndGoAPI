@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class FuelStationController extends Controller
 {
-    //
 
     /**
      * Get a list of nearby fuel stations.
@@ -28,7 +27,7 @@ class FuelStationController extends Controller
         $maxDistanceLimit = request('max_distance_limit');
 
         // Query to obtain nearby fuel stations.
-        $fuelStations = FuelStation::select(DB::raw('fuel_station_id, name, address1, address2, city_town, telephone_no, number_of_pumps,
+        $fuelStations = FuelStation::select(DB::raw('fuel_station_id, name, address1, address2, city_town, telephone_no, number_of_pumps, longitude, latitude,
             ROUND( ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos(
             radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ), 2 ) AS distance'))
             ->having('distance', '<', $maxDistanceLimit)
@@ -44,7 +43,6 @@ class FuelStationController extends Controller
                 'message' => 'There are currently no fuel stations nearby.'
             ]);
         }
-
         return $fuelStations;
     }
 
@@ -66,7 +64,7 @@ class FuelStationController extends Controller
         $maxDistanceLimit = 0.025;
 
         // Query to obtain the nearest fuelstation.
-        $fuelStations = FuelStation::select(DB::raw('fuel_station_id, ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos(
+        $fuelStations = FuelStation::select(DB::raw('fuel_station_id, number_of_pumps ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos(
             radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')

@@ -14,9 +14,10 @@ class CreateFuelpriceTable extends Migration
     public function up()
     {
         Schema::create('fuel_price', function (Blueprint $table) {
+            $table->increments('fuel_price_id');
             $table->integer('fuel_type_id')->unsigned();
             $table->integer('fuel_station_id')->unsigned();
-            $table->primary(array('fuel_type_id', 'fuel_station_id'), 'fuel_price_primary_key');
+            $table->unique(array('fuel_type_id', 'fuel_station_id'), 'fuel_price_unique_key');
             $table->foreign('fuel_type_id')
             ->references('fuel_type_id')
             ->on('fuel_type');

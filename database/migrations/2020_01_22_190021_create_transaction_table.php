@@ -14,6 +14,7 @@ class CreateTransactionTable extends Migration
     public function up()
     {
         Schema::create('transaction', function (Blueprint $table) {
+            $table->increments('transaction_id');
             $table->integer('user_id')->unsigned();
             $table->integer('fuel_type_id')->unsigned();
             $table->integer('fuel_station_id')->unsigned();
@@ -22,7 +23,7 @@ class CreateTransactionTable extends Migration
             $table->integer('pump_number');
             $table->boolean('fuel_discount_entitlement');
             $table->string('payment_method');
-            $table->primary(array('user_id', 'fuel_type_id', 'fuel_station_id', 'transaction_date_time'), 'transaction_primary_key');
+            $table->unique(array('user_id', 'fuel_type_id', 'fuel_station_id', 'transaction_date_time'), 'transaction_unique_key');
             $table->foreign('user_id')
             ->references('user_id')
             ->on('user');

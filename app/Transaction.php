@@ -8,11 +8,18 @@ class Transaction extends Model
 {
 
     /**
+     * The primary key of the table.
+     *
+     * @var
+     */
+    protected $primaryKey = 'transaction_id';
+
+    /**
      * The table name.
      *
      * @var
      */
-    protected $table = 'fuel_card';
+    protected $table = 'transaction';
 
     /**
      * The attributes that are mass assignable.

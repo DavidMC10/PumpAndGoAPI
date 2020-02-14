@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
-Route::post('refresh', 'Api\AuthController@refresh');
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', 'Api\AuthController@logout');
@@ -28,4 +27,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('details', 'Api\AuthController@details');
     Route::post('getnearbystations', 'Api\FuelStationController@generateListOfNearbyFuelStations');
     Route::post('getcurrentstation', 'Api\FuelStationController@getCurrentFuelStation');
+    Route::post('visitcount', 'Api\RewardController@countNumberOfVisitsUntilFuelDiscount');
+    Route::post('transactionhistory', 'Api\TransactionController@generateTransactionHistory');
 });

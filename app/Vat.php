@@ -14,5 +14,4 @@ class Vat extends Model
     protected $fillable = [
         'vatNo', 'vatRate'
     ];
-
 }

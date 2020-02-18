@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BusinessHours extends Model {
+class BusinessHours extends Model
+{
 
     /**
      * The table name.
@@ -32,7 +33,8 @@ class BusinessHours extends Model {
     /**
      * Get the fuel stations that own the business hours.
      */
-    public function fuelStation() {
+    public function fuelStation()
+    {
         return $this->belongsTo('App\FuelStation', 'fuel_station_id');
     }
 }

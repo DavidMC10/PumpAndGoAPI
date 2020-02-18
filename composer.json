@@ -11,7 +11,7 @@
         "php": "^7.1.3",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.5",
-        "laravel/cashier": "^10.5",
+        "cartalyst/stripe-laravel": "11.0.*",
         "laravel/framework": "6.0.*",
         "laravel/passport": "^8.0",
         "laravel/tinker": "^1.0"

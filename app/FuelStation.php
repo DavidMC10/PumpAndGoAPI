@@ -34,7 +34,8 @@ class FuelStation extends Model
     /**
      * Get the business hours for each fuel station.
      */
-    public function businessHours() {
+    public function businessHours()
+    {
         return $this->hasMany('App\BusinessHours', 'fuel_station_id');
     }
 }

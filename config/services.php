@@ -34,4 +34,8 @@ return [
         'secret' => env('SPARKPOST_SECRET'),
     ],
 
+    'stripe' => [
+        'secret' => 'sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM',
+    ],
+
 ];

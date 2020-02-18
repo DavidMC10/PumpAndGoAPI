@@ -3,16 +3,27 @@
 namespace App\Http\Controllers\Api;
 
 use App\FuelCard;
+use App\Http\Controllers\Api\IssueTokenTrait;
 use App\Http\Controllers\Controller;
 use App\Reward;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
+use Laravel\Passport\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+
+    use IssueTokenTrait;
+
+    private $client;
+
+    public function __construct()
+    {
+        $this->client = Client::find(1);
+    }
 
     /**
      * Logs the user in and provides an access token.
@@ -20,18 +31,17 @@ class AuthController extends Controller
      * @param  [string] email
      * @param  [string] password
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function login(Request $request)
     {
-        // If credentials correct log the user in, if not return false.
-        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
-            $user = Auth::user();
-            $token =  $user->createToken('PumpAndGo')->accessToken;
-            return response()->json(['token' => $token], Response::HTTP_OK);
-        } else {
-            return response()->json(['success' => false, 'message' => "The user credentials were incorrect."], Response::HTTP_UNAUTHORIZED);
-        }
+        // Validation
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+
+        return $this->issueToken($request, 'password');
     }
 
     /**
@@ -42,7 +52,7 @@ class AuthController extends Controller
      * @param  [string] email
      * @param  [string] password
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function register(Request $request)
     {
@@ -88,10 +98,25 @@ class AuthController extends Controller
             'fuel_card_id' => $fuelCard['fuel_card_id']
         ]);
 
-        // Create the access token.
-        $accessToken =  $user->createToken('PumpAndGo')->accessToken;
+        // Create the access and refresh token.
+        return $this->issueToken($request, 'password');
+    }
 
-        return response()->json(['access_token' => $accessToken], Response::HTTP_CREATED);
+    /**
+     * Refreshes the access token.
+     *
+     * @param  [string] refresh_token
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function refresh(Request $request)
+    {
+        // Validation
+        $this->validate($request, [
+            'refresh_token' => 'required'
+        ]);
+
+        return $this->issueToken($request, 'refresh_token');
     }
 
     /**
@@ -101,11 +126,12 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        // If authenticated revoke the access token.
         if (Auth::check()) {
             Auth::user()->token()->revoke();
-            return response()->json(['message' =>'You have succesfully logged out.'], Response::HTTP_OK);
+            return response()->json(['message' => 'You have succesfully logged out.'], Response::HTTP_OK);
         } else {
-            return response()->json(['message' =>'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['message' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

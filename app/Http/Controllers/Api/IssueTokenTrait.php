@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +11,7 @@ trait IssueTokenTrait{
     		'grant_type' => $grantType,
     		'client_id' => $this->client->id,
     		'client_secret' => $this->client->secret,
-    		'scope' => $scope
+            'scope' => $scope
         ];
             $params['username'] = $request->username ?: $request->email;
 

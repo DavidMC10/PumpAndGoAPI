@@ -4,7 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FuelCard extends Model {
+class FuelCard extends Model
+{
 
     /**
      * The table name.
@@ -32,7 +33,8 @@ class FuelCard extends Model {
     /**
      * Get the users who have fuel cards.
      */
-    public function user() {
+    public function user()
+    {
         return $this->hasMany('App\User', 'fuel_card_id');
     }
 }

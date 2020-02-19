@@ -23,7 +23,7 @@ class RewardController extends Controller
         $id = Auth::id();
 
         // Obtain the user's first name.
-        $firstName = User::select('first_name')->where('id', $id)->get();
+        $firstName = User::select('first_name')->where('user_id', $id)->get();
 
         // Count the number of transactions for the user.
         $userTransactionCount = Transaction::where('user_id', $id)->count();

@@ -35,7 +35,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // Validation
+        // Validation.
         $this->validate($request, [
             'email' => 'required',
             'password' => 'required'
@@ -56,21 +56,13 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        // Ensures that the request contains the required fields.
-        $validator = FacadesValidator::make($request->all(), [
+        // Validation.
+        $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique:user,email',
-            'password' => 'required|min:8|confirmed'
+            'email' => 'required',
+            'password' => 'required|min:6'
         ]);
-
-        // If the validator fails then return false.
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => "Email already exists."
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
 
         // Create a reward record.
         $reward = Reward::create([

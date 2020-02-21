@@ -6,10 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator as FacadesValidator;
-use Cartalyst\Stripe\Laravel\Facades\Stripe;
-use Symfony\Component\HttpFoundation\Response;
-use Stripe\Error\Card;
 
 class TransactionController extends Controller
 {
@@ -36,46 +32,22 @@ class TransactionController extends Controller
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
-        $validator = FacadesValidator::make($request->all(), [
-            'card_no' => 'required',
-            'exp_month' => 'required',
-            'exp_year' => 'required',
-            'cvv' => 'required',
-            'amount' => 'required'
+        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+        // $intent = \Stripe\PaymentIntent::create([
+        //     'amount' => 1099,
+        //     'currency' => 'usd',
+        // ]);
+        // $client_secret = $intent->client_secret;
+
+        $token = request('token_id');
+        $charge = \Stripe\Charge::create([
+        'amount' => 999,
+        'currency' => 'gbp',
+        'description' => 'Example charge',
+        'source' => $token,
         ]);
-
-        // If the validator fails then return false.
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => "Email already exists."
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $stripe = Stripe::make('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
-        $token = $stripe->tokens()->create([
-            'card' => [
-                'number'    => request('card_no'),
-                'exp_month' => request('exp_month'),
-                'exp_year'  => request('exp_year'),
-                'cvc'       => request('cvv'),
-            ],
-        ]);
-
-        $charge = $stripe->charges()->create([
-            'card' => $token['id'],
-            'currency' => 'GBP',
-            'amount'   => $request->get('amount'),
-            'description' => 'Add in wallet',
-        ]);
-
-        if($charge['status'] == 'succeeded') {
-            /**
-            * Write Here Your Database insert logic.
-            */
-            return response()->json("succeeded");
-        }
-        return response()->json("false");
+        $firstName = "test";
+        return response()->json(['token_id' => $firstName]);
     }
 }

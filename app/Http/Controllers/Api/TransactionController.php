@@ -47,7 +47,7 @@ class TransactionController extends Controller
         'description' => 'Example charge',
         'source' => $token,
         ]);
-        $firstName = "test";
-        return response()->json(['token_id' => $firstName]);
+
+        return response()->json(['token_id' => $charge]);
     }
 }

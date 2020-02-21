@@ -48,6 +48,6 @@ class TransactionController extends Controller
         'source' => $token,
         ]);
 
-        return response()->json(['token_id' => $charge]);
+        return response()->json(['success' => 'true']);
     }
 }

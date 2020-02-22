@@ -103,4 +103,21 @@ class ProfileController extends Controller
         // Return true upon success.
         return response()->json(['message' => 'Max Distance Limit has been updated.'], Response::HTTP_OK);
     }
+
+    /**
+     * Gets the user's profile details.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getUserProfileDetails()
+    {
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Query to obtain nearby fuel stations.
+        $userDetails = User::select('first_name', 'last_name', 'email', 'max_fuel_limit', 'max_distance_limit' )->where('user_id', $id)->get();
+
+        // Return the selected details.
+        return response()->json($userDetails);
+    }
 }

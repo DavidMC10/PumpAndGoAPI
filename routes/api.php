@@ -31,4 +31,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('visitcount', 'Api\RewardController@countNumberOfVisitsUntilFuelDiscount');
     Route::post('transactionhistory', 'Api\TransactionController@generateTransactionHistory');
     Route::post('testing', 'Api\TransactionController@transactionTest');
+    Route::post('getuserprofiledetails', 'Api\ProfileController@getUserProfileDetails');
 });

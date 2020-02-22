@@ -54,7 +54,7 @@ class TransactionController extends Controller
 
           $key = \Stripe\EphemeralKey::create(
             ['customer' => '{{$customer->id}}'],
-            ['stripe_version' => '{{2019-12-03}}']
+            ['stripe_version' => '{{API_VERSION}}']
           );
 
         return response()->json($key);

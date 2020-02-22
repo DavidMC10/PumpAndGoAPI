@@ -118,6 +118,6 @@ class ProfileController extends Controller
         $userDetails = User::select('first_name', 'last_name', 'email', 'max_fuel_limit', 'max_distance_limit' )->where('user_id', $id)->get();
 
         // Return the selected details.
-        return response()->json($userDetails);
+        return $userDetails;
     }
 }

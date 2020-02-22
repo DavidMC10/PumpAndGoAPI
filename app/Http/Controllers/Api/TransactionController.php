@@ -49,9 +49,9 @@ class TransactionController extends Controller
         // ]);
        $customer = \Stripe\Customer::create([
             'description' => 'My First Test Customer (created for API docs)',
-            'email' => 'testcustomer@noreply.com'
+            'email' => 'testcustomer2@noreply.com'
           ]);
 
-        return response()->json($customer);
+        return response()->json($customer->id);
     }
 }

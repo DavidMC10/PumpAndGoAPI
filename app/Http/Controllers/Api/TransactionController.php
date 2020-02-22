@@ -49,12 +49,12 @@ class TransactionController extends Controller
         // ]);
        $customer = \Stripe\Customer::create([
             'description' => 'My First Test Customer (created for API docs)',
-            'email' => 'testcustomer3@noreply.com'
+            'email' => 'testcustomer5@noreply.com'
           ]);
 
           $key = \Stripe\EphemeralKey::create(
-            ['customer' => '{{$customer->id}}'],
-            ['stripe_version' => '{{API_VERSION}}']
+            ['customer' => $customer->id],
+            ['stripe_version' => '2019-12-03']
           );
 
         return response()->json($key);

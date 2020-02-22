@@ -78,6 +78,15 @@ class AuthController extends Controller
             'expiry_date' => null
         ]);
 
+        // Set Stripe Api key.
+        // \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+        // // Create a Stripe customer.
+        // $customer = \Stripe\Customer::create([
+        //     'description' => 'Pump And Go Customer',
+        //     'email' => request('email')
+        //   ]);
+
         // Create a user record.
         $user = User::create([
             'first_name' => request('first_name'),

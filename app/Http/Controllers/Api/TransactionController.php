@@ -32,7 +32,18 @@ class TransactionController extends Controller
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+      $card =  \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+            \Stripe\Token::create([
+            'card' => [
+                'number' => '4242424242424242',
+                'exp_month' => 2,
+                'exp_year' => 2021,
+                'cvc' => '314',
+            ],
+            ]);
+
+        // \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
         // $intent = \Stripe\PaymentIntent::create([
         //     'amount' => 1099,
@@ -47,16 +58,16 @@ class TransactionController extends Controller
         // 'description' => 'Example charge',
         // 'source' => $token,
         // ]);
-       $customer = \Stripe\Customer::create([
-            'description' => 'My First Test Customer (created for API docs)',
-            'email' => 'testcustomer5@noreply.com'
-          ]);
+    //    $customer = \Stripe\Customer::create([
+    //         'description' => 'My First Test Customer (created for API docs)',
+    //         'email' => 'testcustomer5@noreply.com'
+    //       ]);
 
-          $key = \Stripe\EphemeralKey::create(
-            ['customer' => $customer->id],
-            ['stripe_version' => '2019-12-03']
-          );
+    //       $key = \Stripe\EphemeralKey::create(
+    //         ['customer' => $customer->id],
+    //         ['stripe_version' => '2019-12-03']
+    //       );
 
-        return response()->json($key);
+        return response()->json($card);
     }
 }

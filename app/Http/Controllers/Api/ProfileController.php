@@ -120,6 +120,6 @@ class ProfileController extends Controller
         json_decode($userDetails);
 
         // Return the selected details.
-        return response()->json($userDetails);
+        return collect([$userDetails]);
     }
 }

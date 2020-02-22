@@ -115,11 +115,9 @@ class ProfileController extends Controller
         $id = Auth::id();
 
         // Query to obtain nearby fuel stations.
-        $userDetails = User::select('first_name', 'last_name', 'email', 'max_fuel_limit', 'max_distance_limit' )->where('user_id', $id)->get();
-
-        json_decode($userDetails);
+        $userDetails = User::select('first_name', 'last_name', 'email', 'max_fuel_limit', 'max_distance_limit' )->where('user_id', $id)->first();
 
         // Return the selected details.
-        return (object) $userDetails;
+        return $userDetails;
     }
 }

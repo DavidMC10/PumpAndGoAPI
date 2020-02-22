@@ -40,14 +40,18 @@ class TransactionController extends Controller
         // ]);
         // $client_secret = $intent->client_secret;
 
-        $token = request('token_id');
-        $charge = \Stripe\Charge::create([
-        'amount' => 999,
-        'currency' => 'gbp',
-        'description' => 'Example charge',
-        'source' => $token,
-        ]);
+        // $token = request('token_id');
+        // $charge = \Stripe\Charge::create([
+        // 'amount' => 999,
+        // 'currency' => 'gbp',
+        // 'description' => 'Example charge',
+        // 'source' => $token,
+        // ]);
+       $customer = \Stripe\Customer::create([
+            'description' => 'My First Test Customer (created for API docs)',
+            'email' => 'testcustomer@noreply.com'
+          ]);
 
-        return response()->json(['success' => 'true']);
+        return response()->json($customer);
     }
 }

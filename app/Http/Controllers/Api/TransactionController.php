@@ -32,9 +32,9 @@ class TransactionController extends Controller
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
-      $card =  \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+       \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
-            \Stripe\Token::create([
+       $card =  \Stripe\Token::create([
             'card' => [
                 'number' => '4242424242424242',
                 'exp_month' => 2,

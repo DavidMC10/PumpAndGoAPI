@@ -114,7 +114,7 @@ class ProfileController extends Controller
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
-        // Query to obtain nearby fuel stations.
+        // Query to obtain the user's profile details.
         $userDetails = User::select('first_name', 'last_name', 'email', 'max_fuel_limit', 'max_distance_limit' )->where('user_id', $id)->first();
 
         // Return the selected details.

@@ -43,7 +43,8 @@ class FuelStationController extends Controller
                 'message' => 'There are currently no fuel stations nearby.'
             ]);
         }
-        return $fuelStations;
+        // return $fuelStations;
+        return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**

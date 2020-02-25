@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
@@ -50,7 +51,33 @@ class PaymentController extends Controller
         ]);
 
         // Return result.
-        return response()->json($paymentMethod);
+        return response()->json(Response::HTTP_OK);
+    }
+
+    /**
+     * Retrieve Stripe Payment Methods.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function retrievePaymentMethods(Request $request)
+    {
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user.
+        $user = User::find($id);
+
+        // Set the Stripe secret key.
+        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+        // Create the payment method from the request.
+        $paymentMethods = \Stripe\PaymentMethod::all([
+            'customer' => $user->stripe_customer_id,
+            'type' => 'card',
+          ]);
+
+        // Return result.
+        return response()->json($paymentMethods);
     }
 
     /**

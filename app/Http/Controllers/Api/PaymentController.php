@@ -76,7 +76,7 @@ class PaymentController extends Controller
             'type' => 'card',
           ]);
 
-        // Return result.
+        // Return data.
         return response()->json($paymentMethods->data->id);
     }
 

@@ -14,24 +14,42 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function addStripePaymentMethod()
+    public function addStripePaymentMethod(Request $request)
     {
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
+        // Find the user.
+        $user = User::find($id);
+
+        // Set the Stripe secret key.
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
-        $paymentMethod = \Stripe\PaymentMethod::create([
+        // Create the payment method from the request.
+        $card = \Stripe\PaymentMethod::create([
           'type' => 'card',
           'card' => [
-            'number' => '4242424242424242',
-            'exp_month' => 2,
-            'exp_year' => 2021,
-            'cvc' => '314',
+            'number' => request('card_number'),
+            'exp_month' => request('exp_month'),
+            'exp_year' => request('exp_year'),
+            'cvc' => request('cvc'),
           ],
         ]);
 
-        // Return the count.
+        // Get the card id from the card object.
+        $cardId = $card->id;
+
+        // Retrieve the payment method from the card id.
+        $paymentMethod = \Stripe\PaymentMethod::retrieve(
+            $cardId
+        );
+
+        // Attach the payment method to the customer.
+        $paymentMethod->attach([
+            'customer' => $user->stripe_customer_id,
+        ]);
+
+        // Return result.
         return response()->json($paymentMethod);
     }
 

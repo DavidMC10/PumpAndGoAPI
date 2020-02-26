@@ -77,9 +77,10 @@ class PaymentController extends Controller
           ]);
 
 
+          $myArray = [];
           foreach ($paymentMethods as $paymentMethod) {
 
-            $myArray = array($paymentMethod->card->brand);
+            array_push($myArray, $paymentMethod->card->brand);
           }
 
           // $paymentMethods->data[0]->card->last4

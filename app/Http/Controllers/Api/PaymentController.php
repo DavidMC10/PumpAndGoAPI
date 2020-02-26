@@ -79,7 +79,7 @@ class PaymentController extends Controller
           $paymentMethods2 = $paymentMethods->data;
 
         // Return data.
-        return response()->json((object) $paymentMethods);
+        return response()->json((object) $paymentMethods2);
     }
 
     /**

@@ -65,7 +65,7 @@ class FuelStationController extends Controller
         $maxDistanceLimit = 0.025;
 
         // Query to obtain the nearest fuelstation.
-        $fuelStations = FuelStation::select(DB::raw('fuel_station_id, fuel_station_name, number_of_pumps, ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos(
+        $fuelStations = FuelStation::select(DB::raw('fuel_station_id, number_of_pumps, ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos(
             radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')

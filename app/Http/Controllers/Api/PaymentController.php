@@ -91,7 +91,7 @@ class PaymentController extends Controller
           // $paymentMethods->data[0]->card->last4
 
         // Return data.
-        return response()->json($$paymentMethods->data[1]->card->last4);
+        return response()->json($paymentMethods->data[1]->card->last4);
     }
 
     /**

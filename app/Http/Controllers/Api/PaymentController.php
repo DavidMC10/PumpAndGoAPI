@@ -77,12 +77,12 @@ class PaymentController extends Controller
           ]);
 
           // $paymentMethods2 = $paymentMethods->data;
-          $paymentMethods2 = (object) $paymentMethods->data;
+          $paymentMethods2 = (object) $paymentMethods->data[0]->card;
 
           // $paymentMethods->data[0]->card->last4
 
         // Return data.
-        return response()->json($paymentMethods2[0]);
+        return response()->json($paymentMethods2);
     }
 
     /**

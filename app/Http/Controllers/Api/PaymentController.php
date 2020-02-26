@@ -76,17 +76,16 @@ class PaymentController extends Controller
             'type' => 'card',
           ]);
 
+
           foreach ($paymentMethods as $paymentMethod) {
 
-            $testing = $paymentMethod->card->brand;
-
-            $newCollection = collect([$paymentMethod->card->brand]);
+            $myArray = array($paymentMethod->card->brand);
           }
 
           // $paymentMethods->data[0]->card->last4
 
         // Return data.
-        return response()->json($newCollection);
+        return response()->json($myArray);
     }
 
     /**

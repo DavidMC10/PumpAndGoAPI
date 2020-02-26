@@ -81,7 +81,7 @@ class PaymentController extends Controller
 
           foreach ($paymentMethods as $paymentMethod) {
 
-            $testing = $paymentMethod;
+            $testing = $paymentMethod->card->brand;
             // $data['results'][] = array(
             //   'brand' => $paymentMethod->brand,
             //   'last4' => $paymentMethod->last4

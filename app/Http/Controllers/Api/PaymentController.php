@@ -59,7 +59,7 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function retrievePaymentMethods(Request $request)
+    public function retrievePaymentMethods()
     {
         // Obtain the authenticated user's id.
         $id = Auth::id();
@@ -79,14 +79,13 @@ class PaymentController extends Controller
 
           $myArray = [];
           foreach ($paymentMethods as $paymentMethod) {
-
             array_push($myArray, $paymentMethod->card->brand);
           }
 
           // $paymentMethods->data[0]->card->last4
 
         // Return data.
-        return response()->json((object) $myArray);
+        return response()->json($paymentMethods);
     }
 
     /**

@@ -90,7 +90,7 @@ class PaymentController extends Controller
         // Set the Stripe secret key.
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
-        // Delete card from the customer.
+        // Delete the card from the user.
         \Stripe\Customer::deleteSource(
             $user->stripe_customer_id,
             request('card_id')
@@ -133,7 +133,7 @@ class PaymentController extends Controller
         $user->push();
 
         // Return result.
-        return response()->json([],200);
+        return response()->json([], 200);
     }
 
     public function deleteFuelCard()
@@ -153,7 +153,29 @@ class PaymentController extends Controller
         $user->push();
 
         // Return result.
-        return response()->json([],200);
+        return response()->json([], 200);
+    }
+
+    /**
+     * Set default payment method.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function setDefaultPaymentMethod(Request $request)
+    {
+        // Validation.
+        $this->validate($request, [
+            'default_payment_method' => 'required',
+        ]);
+
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user.
+        $user = User::find($id);
+
+        // Update the user's default payment method.
+        $user->default_payment_method = request('default_payment_method');
     }
 
     /**
@@ -178,6 +200,10 @@ class PaymentController extends Controller
             'type' => 'card',
         ]);
 
+        if ($user->default_payment_method != null) {
+
+        }
+
 
         $myArray = [];
         foreach ($paymentMethods as $paymentMethod) {
@@ -189,23 +215,4 @@ class PaymentController extends Controller
         // Return data.
         return response()->json($paymentMethods);
     }
-
-    /**
-     * Adds a fuel card for the customer.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function addFuelCard()
-    // {
-    //     // Obtain the authenticated user's id.
-    //     $id = Auth::id();
-
-    //     User::where
-
-    //     // Count the number of transactions for the user.
-    //     $userTransactionHistory = Transaction::where('user_id', $id)->get();
-
-    //     // Return the count.
-    //     return response()->json($userTransactionHistory);
-    // }
 }

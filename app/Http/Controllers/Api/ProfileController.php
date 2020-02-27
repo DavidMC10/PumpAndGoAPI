@@ -21,6 +21,12 @@ class ProfileController extends Controller
      */
     public function updateUserFullName(Request $request)
     {
+        // Validation.
+        $this->validate($request, [
+            'first_name' => 'required',
+            'last_name' => 'required',
+        ]);
+
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
@@ -44,6 +50,11 @@ class ProfileController extends Controller
      */
     public function updatePassword(Request $request)
     {
+        // Validation.
+        $this->validate($request, [
+            'password' => 'required',
+        ]);
+
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
@@ -67,6 +78,11 @@ class ProfileController extends Controller
      */
     public function updateMaxFuelLimit(Request $request)
     {
+        // Validation.
+        $this->validate($request, [
+            'max_fuel_limit' => 'required',
+        ]);
+
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
@@ -90,6 +106,11 @@ class ProfileController extends Controller
      */
     public function updateMaxDistanceLimit(request $request)
     {
+        // Validation.
+        $this->validate($request, [
+            'max_distance_limit' => 'required',
+        ]);
+
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
@@ -115,7 +136,7 @@ class ProfileController extends Controller
         $id = Auth::id();
 
         // Query to obtain the user's profile details.
-        $userDetails = User::select('first_name', 'last_name', 'email', 'max_fuel_limit', 'max_distance_limit' )->where('user_id', $id)->first();
+        $userDetails = User::select('first_name', 'last_name', 'email', 'max_fuel_limit', 'max_distance_limit')->where('user_id', $id)->first();
 
         // Return the selected details.
         return $userDetails;

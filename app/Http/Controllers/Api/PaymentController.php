@@ -200,10 +200,9 @@ class PaymentController extends Controller
             'type' => 'card',
         ]);
 
-        if ($user->default_payment_method != null) {
-
+        if ($user->default_payment_method == null) {
+            $user->default_payment_method = request('default_payment_method');
         }
-
 
         $myArray = [];
         foreach ($paymentMethods as $paymentMethod) {

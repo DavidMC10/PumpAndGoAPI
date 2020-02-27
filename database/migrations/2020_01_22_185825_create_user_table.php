@@ -22,6 +22,7 @@ class CreateUserTable extends Migration
             $table->string('password');
             $table->double('max_fuel_limit');
             $table->double('max_distance_limit');
+            $table->string('default_payment_method')->nullable();
             $table->integer('reward_card_id')->unsigned();
             $table->foreign('reward_card_id')->references('reward_card_id')->on('reward')->onDelete('cascade');
             $table->integer('fuel_card_id')->unsigned();

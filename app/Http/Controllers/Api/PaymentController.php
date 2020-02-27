@@ -109,7 +109,7 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function addFuelCard(Request $request)
+    public function updateFuelCard(Request $request)
     {
         // Validation.
         $this->validate($request, [
@@ -128,6 +128,26 @@ class PaymentController extends Controller
         $user->fuelCard->fuel_card_no = request('fuel_card_no');
         $user->fuelCard->expiry_month = request('exp_month');
         $user->fuelCard->expiry_year = request('exp_month');
+
+        // Save changes.
+        $user->push();
+
+        // Return result.
+        return response()->json([],200);
+    }
+
+    public function deleteFuelCard()
+    {
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user.
+        $user = User::find($id);
+
+        // Delete fuel card for the user.
+        $user->fuelCard->fuel_card_no = null;
+        $user->fuelCard->expiry_month = null;
+        $user->fuelCard->expiry_year = null;
 
         // Save changes.
         $user->push();

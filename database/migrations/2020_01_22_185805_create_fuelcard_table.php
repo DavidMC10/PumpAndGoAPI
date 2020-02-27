@@ -16,7 +16,8 @@ class CreateFuelcardTable extends Migration
         Schema::create('fuel_card', function (Blueprint $table) {
             $table->increments('fuel_card_id');
             $table->string('fuel_card_no', 16)->nullable();
-            $table->date('expiry_date')->nullable();
+            $table->string('expiry_month', 2)->nullable();
+            $table->string('expiry_year', 2)->nullable();
             $table->timestamps();
         });
     }

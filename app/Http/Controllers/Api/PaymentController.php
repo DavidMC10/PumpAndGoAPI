@@ -103,17 +103,20 @@ class PaymentController extends Controller
     /**
      * Add a fuel card.
      *
-     * @param  [string] card_id
+     * @param  [string] fuel_card_no
+     * @param  [string] exp_month
+     * @param  [string] exp_year
      *
      * @return \Illuminate\Http\Response
      */
-    public function addFuelCard()
+    public function addFuelCard(Request $request)
     {
-        // // Validation.
-        // $this->validate($request, [
-        //     'fuel_card_no' => 'required',
-        //     'expiry_date' => 'required',
-        // ]);
+        // Validation.
+        $this->validate($request, [
+            'fuel_card_no' => 'required',
+            'exp_month' => 'required',
+            'exp_year' => 'required',
+        ]);
 
         // Obtain the authenticated user's id.
         $id = Auth::id();
@@ -121,8 +124,16 @@ class PaymentController extends Controller
         // Find the user.
         $user = User::find($id);
 
+        // Add a fuel card for the user.
+        $user->fuelCard->fuel_card_id = request('fuel_card_no');
+        $user->fuelCard->expiry_month = request('expiry_month');
+        $user->fuelCard->expiry_year = request('expiry_year');
+
+        // Save changes.
+        $user->push();
+
         // Return result.
-        return response()->json($user->fuelCard->fuel_card_id);
+        return response()->json([],200);
     }
 
     /**

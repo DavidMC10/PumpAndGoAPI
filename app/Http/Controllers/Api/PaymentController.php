@@ -179,6 +179,31 @@ class PaymentController extends Controller
     }
 
     /**
+     * Get default payment method.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getDefaultPaymentMethod(Request $request)
+    {
+        // Validation.
+        $this->validate($request, [
+            'default_payment_method' => 'required',
+        ]);
+
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user.
+        $user = User::find($id);
+
+        // Update the user's default payment method.
+        $user->default_payment_method = request('default_payment_method');
+
+        // Return payment method.
+        return response()->json($user->default_payment_method);
+    }
+
+    /**
      * Retrieve Stripe Payment Methods.
      *
      * @return \Illuminate\Http\Response

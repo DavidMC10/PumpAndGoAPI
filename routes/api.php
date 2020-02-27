@@ -34,4 +34,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('getuserprofiledetails', 'Api\ProfileController@getUserProfileDetails');
     Route::post('addpaymentmethod', 'Api\PaymentController@addStripePaymentMethod');
     Route::post('retrievepaymentmethods', 'Api\PaymentController@retrievePaymentMethods');
+    Route::post('addfuelcard', 'Api\PaymentController@addFuelCard');
 });

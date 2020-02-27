@@ -64,7 +64,7 @@ class User extends Authenticatable
     /**
      * Get fuel cards that own the user.
      */
-    public function fuelcard()
+    public function fuelCard()
     {
         return $this->belongsTo('App\FuelCard', 'fuel_card_id');
     }

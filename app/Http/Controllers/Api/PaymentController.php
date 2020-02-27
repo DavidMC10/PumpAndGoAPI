@@ -13,6 +13,11 @@ class PaymentController extends Controller
     /**
      * Adds a Stripe Payment Method.
      *
+     * @param  [string] card_number
+     * @param  [string] exp_month
+     * @param  [string] exp_year
+     * @param  [string] cvc
+     *
      * @return \Illuminate\Http\Response
      */
     public function addStripePaymentMethod(Request $request)
@@ -23,18 +28,26 @@ class PaymentController extends Controller
         // Find the user.
         $user = User::find($id);
 
+        // Validation.
+        $this->validate($request, [
+            'card_number' => 'required',
+            'exp_month' => 'required',
+            'exp_year' => 'required',
+            'cvc' => 'required|min:6'
+        ]);
+
         // Set the Stripe secret key.
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
         // Create the payment method from the request.
         $card = \Stripe\PaymentMethod::create([
-          'type' => 'card',
-          'card' => [
-            'number' => request('card_number'),
-            'exp_month' => request('exp_month'),
-            'exp_year' => request('exp_year'),
-            'cvc' => request('cvc'),
-          ],
+            'type' => 'card',
+            'card' => [
+                'number' => request('card_number'),
+                'exp_month' => request('exp_month'),
+                'exp_year' => request('exp_year'),
+                'cvc' => request('cvc'),
+            ],
         ]);
 
         // Get the card id from the card object.
@@ -52,6 +65,64 @@ class PaymentController extends Controller
 
         // Return result.
         return response()->json(Response::HTTP_OK);
+    }
+
+    /**
+     * Delete a Stripe payment method.
+     *
+     * @param  [string] card_id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteStripePaymentMethod(Request $request)
+    {
+        // Validation.
+        $this->validate($request, [
+            'card_id' => 'required',
+        ]);
+
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user.
+        $user = User::find($id);
+
+        // Set the Stripe secret key.
+        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+        // Delete card from the customer.
+        \Stripe\Customer::deleteSource(
+            $user->stripe_customer_id,
+            request('card_id')
+        );
+
+        // Return result.
+        return response()->json(Response::HTTP_OK);
+    }
+
+    /**
+     * Add a fuel card.
+     *
+     * @param  [string] card_id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function addFuelCard()
+    {
+        // // Validation.
+        // $this->validate($request, [
+        //     'fuel_card_no' => 'required',
+        //     'expiry_date' => 'required',
+        // ]);
+
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user.
+        $user = User::find($id);
+
+        // Return result.
+        return response()->json($user->fuelCard->fuel_card_id);
     }
 
     /**
@@ -74,15 +145,15 @@ class PaymentController extends Controller
         $paymentMethods = \Stripe\PaymentMethod::all([
             'customer' => $user->stripe_customer_id,
             'type' => 'card',
-          ]);
+        ]);
 
 
-          $myArray = [];
-          foreach ($paymentMethods as $paymentMethod) {
+        $myArray = [];
+        foreach ($paymentMethods as $paymentMethod) {
             array_push($myArray, $paymentMethod->card->brand);
-          }
+        }
 
-          // $paymentMethods->data[0]->card->last4
+        // $paymentMethods->data[0]->card->last4
 
         // Return data.
         return response()->json($paymentMethods);

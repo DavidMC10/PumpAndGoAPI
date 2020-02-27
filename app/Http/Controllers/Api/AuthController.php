@@ -75,7 +75,8 @@ class AuthController extends Controller
         // Create a fuel card record.
         $fuelCard = FuelCard::create([
             'fuel_card_no' => null,
-            'expiry_date' => null
+            'expiry_month' => null,
+            'expiry_year' => null
         ]);
 
         // Set Stripe Api key.

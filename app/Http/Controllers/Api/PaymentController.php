@@ -126,8 +126,8 @@ class PaymentController extends Controller
 
         // Add a fuel card for the user.
         $user->fuelCard->fuel_card_id = request('fuel_card_no');
-        $user->fuelCard->expiry_month = request('expiry_month');
-        $user->fuelCard->expiry_year = request('expiry_year');
+        $user->fuelCard->expiry_month = request('exp_month');
+        $user->fuelCard->expiry_year = request('exp_month');
 
         // Save changes.
         $user->push();

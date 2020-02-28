@@ -87,6 +87,13 @@ class PaymentController extends Controller
         // Find the user.
         $user = User::find($id);
 
+        // If deleting the default payment method then set it to null.
+        if ($user->default_payment_method == request('card_id')) {
+            $user->default_payment_method = null;
+            // Save changes.
+            $user->save();
+        }
+
         // Set the Stripe secret key.
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
@@ -144,6 +151,13 @@ class PaymentController extends Controller
         // Find the user.
         $user = User::find($id);
 
+        // If deleting the default payment method then set it to null.
+        if ($user->default_payment_method == $user->fuelCard->fuel_card_id) {
+            $user->default_payment_method = null;
+            // Save changes.
+            $user->save();
+        }
+
         // Delete fuel card for the user.
         $user->fuelCard->fuel_card_no = null;
         $user->fuelCard->expiry_month = null;
@@ -195,7 +209,10 @@ class PaymentController extends Controller
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
 
-        if($user->default_payment_method == null) {
+        // If the default payment is null then set one.
+        if ($user->default_payment_method == null) {
+
+            // Get all Stripe payment methods for the user.
             $stripePaymentMethods = \Stripe\PaymentMethod::all([
                 'customer' => $user->stripe_customer_id,
                 'type' => 'card',
@@ -223,10 +240,10 @@ class PaymentController extends Controller
                 $user->save();
             }
 
-        // Return payment method.
-        return response()->json($user->default_payment_method);
+            // Return payment method.
+            return response()->json($user->default_payment_method);
+        }
     }
-}
 
     /**
      * Retrieve Stripe Payment Methods.

@@ -191,7 +191,9 @@ class PaymentController extends Controller
         // Find the user.
         $user = User::find($id);
 
-        //
+        // Set the Stripe secret key.
+        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
         $stripePaymentMethods = \Stripe\PaymentMethod::all([
             'customer' => $user->stripe_customer_id,
             'type' => 'card',
@@ -202,8 +204,6 @@ class PaymentController extends Controller
         foreach ($stripePaymentMethods as $paymentMethod) {
             $paymentMethods['data'][] = array(
                 'id' => $paymentMethod->id,
-                'brand' => ucfirst($paymentMethod->card->brand),
-                'last4' =>  "Ending in " . $paymentMethod->card->last4
             );
         }
 
@@ -211,8 +211,6 @@ class PaymentController extends Controller
         // if ($user->fuelCard->fuel_card_no != null) {
         //     $paymentMethods['data'][] = array(
         //         'id' => strval($user->fuelCard->fuel_card_id),
-        //         'brand' => "Fuelcard",
-        //         'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
         //     );
         // }
 

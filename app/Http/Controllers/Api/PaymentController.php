@@ -220,7 +220,7 @@ class PaymentController extends Controller
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
         // Create the payment method from the request.
-        $paymentMethods = \Stripe\PaymentMethod::all([
+        $stripePaymentMethods = \Stripe\PaymentMethod::all([
             'customer' => $user->stripe_customer_id,
             'type' => 'card',
         ]);
@@ -229,18 +229,22 @@ class PaymentController extends Controller
             $user->default_payment_method = request('default_payment_method');
         }
 
-        $myArray = [];
-        foreach ($paymentMethods as $paymentMethod) {
-            $myArray['results'] [] = array(
+        $paymentMethods = [];
+        foreach ($stripePaymentMethods as $paymentMethod) {
+            $paymentMethods['data'] [] = array(
                 'id' => $paymentMethod->id,
                 'brand' => $paymentMethod->card->brand,
-                'last4' => $paymentMethod->card->last4
+                'last4' =>  "Ending in " + $paymentMethod->card->last4
             );
+        }
+
+        if($user->fuelCard->fuel_card_no != null) {
+
         }
 
         // $paymentMethods->data[0]->card->last4
 
         // Return data.
-        return response()->json($myArray);
+        return response()->json($paymentMethods);
     }
 }

@@ -218,14 +218,13 @@ class PaymentController extends Controller
 
             // If not empty set the default payment method as the first payment method in the array.
             if (!empty($paymentMethods)) {
-                // $user->default_payment_method = ;
+                $user->default_payment_method = $paymentMethods['data'][0];
                 // Save changes.
-                // $user->save();
-
+                $user->save();
             }
 
         // Return payment method.
-        return response()->json($paymentMethods['data'][0]);
+        return response()->json($user->default_payment_method);
     }
 }
 

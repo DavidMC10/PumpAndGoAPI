@@ -234,7 +234,7 @@ class PaymentController extends Controller
             $paymentMethods['data'] [] = array(
                 'id' => $paymentMethod->id,
                 'brand' => $paymentMethod->card->brand,
-                'last4' =>  "Ending in " + $paymentMethod->card->last4
+                'last4' =>  "Ending in " + strval($paymentMethod->card->last4)
             );
         }
 

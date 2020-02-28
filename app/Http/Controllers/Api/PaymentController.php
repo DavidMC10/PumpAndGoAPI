@@ -240,7 +240,7 @@ class PaymentController extends Controller
 
         if($user->fuelCard->fuel_card_no != null) {
             $paymentMethods['data'] [] = array(
-                'id' => $user->fuelCard->fuel_card_id,
+                'id' => strval($user->fuelCard->fuel_card_id),
                 'brand' => "FuelCard",
                 'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
             );

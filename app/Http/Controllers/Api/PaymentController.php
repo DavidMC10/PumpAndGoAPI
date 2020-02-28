@@ -241,26 +241,26 @@ class PaymentController extends Controller
 
         // Loop through the Stripe payment methods and extract the necessary information to an array.
         $paymentMethods = [];
-        // foreach ($stripePaymentMethods as $paymentMethod) {
-        //     $paymentMethods['data'][] = array(
-        //         'id' => $paymentMethod->id,
-        //         'brand' => ucfirst($paymentMethod->card->brand),
-        //         'last4' =>  "Ending in " . $paymentMethod->card->last4
-        //     );
-        // }
+        foreach ($stripePaymentMethods as $paymentMethod) {
+            $paymentMethods['data'][] = array(
+                'id' => $paymentMethod->id,
+                'brand' => ucfirst($paymentMethod->card->brand),
+                'last4' =>  "Ending in " . $paymentMethod->card->last4
+            );
+        }
 
-        // // If the user has a fuel card add it to the array.
-        // if ($user->fuelCard->fuel_card_no != null) {
-        //     $paymentMethods['data'][] = array(
-        //         'id' => strval($user->fuelCard->fuel_card_id),
-        //         'brand' => "Fuelcard",
-        //         'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
-        //     );
-        // }
+        // If the user has a fuel card add it to the array.
+        if ($user->fuelCard->fuel_card_no != null) {
+            $paymentMethods['data'][] = array(
+                'id' => strval($user->fuelCard->fuel_card_id),
+                'brand' => "Fuelcard",
+                'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
+            );
+        }
 
 
 
         // Return data.
-        return response()->json($stripePaymentMethods);
+        return response()->json($paymentMethods);
     }
 }

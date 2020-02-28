@@ -242,7 +242,7 @@ class PaymentController extends Controller
             $paymentMethods['data'] [] = array(
                 'id' => $user->fuelCard->fuel_card_id,
                 'brand' => "FuelCard",
-                'last4' =>  "Ending in " . $user->fuelCard->fuel_card_no
+                'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
             );
         }
 

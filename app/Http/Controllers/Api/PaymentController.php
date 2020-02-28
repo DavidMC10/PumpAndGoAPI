@@ -196,8 +196,19 @@ class PaymentController extends Controller
         // Find the user.
         $user = User::find($id);
 
+        //
+        $stripePaymentMethods = \Stripe\PaymentMethod::all([
+            'customer' => $user->stripe_customer_id,
+            'type' => 'card',
+        ]);
+
         // Update the user's default payment method.
         $user->default_payment_method = request('default_payment_method');
+
+        // If the user has a fuel card add it to the array.
+        if ($user->fuelCard->fuel_card_no != null) {
+
+        }
 
         // Return payment method.
         return response()->json($user->default_payment_method);
@@ -229,26 +240,28 @@ class PaymentController extends Controller
             $user->default_payment_method = request('default_payment_method');
         }
 
+        // Loop through the Stripe payment methods and extract the necessary information to an array.
         $paymentMethods = [];
-        foreach ($stripePaymentMethods as $paymentMethod) {
-            $paymentMethods['data'] [] = array(
-                'id' => $paymentMethod->id,
-                'brand' => $paymentMethod->card->brand,
-                'last4' =>  "Ending in " . $paymentMethod->card->last4
-            );
-        }
+        // foreach ($stripePaymentMethods as $paymentMethod) {
+        //     $paymentMethods['data'][] = array(
+        //         'id' => $paymentMethod->id,
+        //         'brand' => ucfirst($paymentMethod->card->brand),
+        //         'last4' =>  "Ending in " . $paymentMethod->card->last4
+        //     );
+        // }
 
-        if($user->fuelCard->fuel_card_no != null) {
-            $paymentMethods['data'] [] = array(
-                'id' => strval($user->fuelCard->fuel_card_id),
-                'brand' => "FuelCard",
-                'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
-            );
-        }
+        // // If the user has a fuel card add it to the array.
+        // if ($user->fuelCard->fuel_card_no != null) {
+        //     $paymentMethods['data'][] = array(
+        //         'id' => strval($user->fuelCard->fuel_card_id),
+        //         'brand' => "Fuelcard",
+        //         'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
+        //     );
+        // }
 
-        // $paymentMethods->data[0]->card->last4
+
 
         // Return data.
-        return response()->json($paymentMethods);
+        return response()->json($stripePaymentMethods->data->id);
     }
 }

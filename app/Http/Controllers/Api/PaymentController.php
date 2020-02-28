@@ -33,7 +33,7 @@ class PaymentController extends Controller
             'card_number' => 'required',
             'exp_month' => 'required',
             'exp_year' => 'required',
-            'cvc' => 'required|min:6'
+            'cvc' => 'required'
         ]);
 
         // Set the Stripe secret key.

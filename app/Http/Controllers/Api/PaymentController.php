@@ -231,12 +231,13 @@ class PaymentController extends Controller
 
         $myArray = [];
         foreach ($paymentMethods as $paymentMethod) {
-            array_push($myArray, $paymentMethod->card->brand);
+            $myArray['brand'] = $paymentMethod->card->brand;
+            $myArray['last4'] = $paymentMethod->card->last4;
         }
 
         // $paymentMethods->data[0]->card->last4
 
         // Return data.
-        return response()->json($paymentMethods);
+        return response()->json((object) $myArray);
     }
 }

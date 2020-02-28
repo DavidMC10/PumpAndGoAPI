@@ -109,7 +109,7 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function updateFuelCard(Request $request)
+    public function addFuelCard(Request $request)
     {
         // Validation.
         $this->validate($request, [

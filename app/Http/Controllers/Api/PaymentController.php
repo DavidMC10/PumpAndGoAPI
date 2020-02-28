@@ -194,42 +194,40 @@ class PaymentController extends Controller
         // Set the Stripe secret key.
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
-        $stripePaymentMethods = \Stripe\PaymentMethod::all([
-            'customer' => $user->stripe_customer_id,
-            'type' => 'card',
-        ]);
 
-        // Loop through the Stripe payment methods and extract the necessary information to an array.
-        $paymentMethods = [];
-        foreach ($stripePaymentMethods as $paymentMethod) {
-            $paymentMethods['data'][] = array(
-                'id' => $paymentMethod->id,
-            );
-        }
+        if($user->default_payment_method == null) {
+            $stripePaymentMethods = \Stripe\PaymentMethod::all([
+                'customer' => $user->stripe_customer_id,
+                'type' => 'card',
+            ]);
 
-        // If the user has a fuel card add it to the array.
-        // if ($user->fuelCard->fuel_card_no != null) {
-        //     $paymentMethods['data'][] = array(
-        //         'id' => strval($user->fuelCard->fuel_card_id),
-        //     );
-        // }
+            // Loop through the Stripe payment methods and add the id to the array.
+            $paymentMethods = [];
+            foreach ($stripePaymentMethods as $paymentMethod) {
+                $paymentMethods['data'][] = array(
+                    'id' => $paymentMethod->id,
+                );
+            }
 
-        $bad = "Yes";
+            // Add the fuel card ID to the array.
+            if ($user->fuelCard->fuel_card_no != null) {
+                $paymentMethods['data'][] = array(
+                    'id' => strval($user->fuelCard->fuel_card_id),
+                );
+            }
 
-        if (empty($paymentMethods)) {
-            $bad = "no";
-        }
+            // If not empty set the default payment method as the first payment method in the array.
+            if (!empty($paymentMethods)) {
+                // $user->default_payment_method = ;
+                // Save changes.
+                // $user->save();
 
-        // Update the user's default payment method.
-        $user->default_payment_method = request('default_payment_method');
-
-        // If the user has a fuel card add it to the array.
-        if ($user->fuelCard->fuel_card_no != null) {
-        }
+            }
 
         // Return payment method.
-        return response()->json($paymentMethods);
+        return response()->json($paymentMethods[0]);
     }
+}
 
     /**
      * Retrieve Stripe Payment Methods.

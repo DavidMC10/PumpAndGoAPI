@@ -91,10 +91,10 @@ class PaymentController extends Controller
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
         // Delete the card from the user.
-        \Stripe\Customer::deleteSource(
-            $user->stripe_customer_id,
+        $paymentMethod = \Stripe\PaymentMethod::retrieve(
             request('card_id')
         );
+        $paymentMethod->detach();
 
         // Return result.
         return response()->json(Response::HTTP_OK);
@@ -207,7 +207,6 @@ class PaymentController extends Controller
 
         // If the user has a fuel card add it to the array.
         if ($user->fuelCard->fuel_card_no != null) {
-
         }
 
         // Return payment method.

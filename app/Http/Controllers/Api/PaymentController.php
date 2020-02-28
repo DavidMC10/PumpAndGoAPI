@@ -202,6 +202,31 @@ class PaymentController extends Controller
             'type' => 'card',
         ]);
 
+        // Loop through the Stripe payment methods and extract the necessary information to an array.
+        $paymentMethods = [];
+        foreach ($stripePaymentMethods as $paymentMethod) {
+            $paymentMethods['data'][] = array(
+                'id' => $paymentMethod->id,
+                'brand' => ucfirst($paymentMethod->card->brand),
+                'last4' =>  "Ending in " . $paymentMethod->card->last4
+            );
+        }
+
+        // If the user has a fuel card add it to the array.
+        // if ($user->fuelCard->fuel_card_no != null) {
+        //     $paymentMethods['data'][] = array(
+        //         'id' => strval($user->fuelCard->fuel_card_id),
+        //         'brand' => "Fuelcard",
+        //         'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
+        //     );
+        // }
+
+        $bad = "Yes";
+
+        if (empty($paymentMethods)) {
+            $bad = "no";
+        }
+
         // Update the user's default payment method.
         $user->default_payment_method = request('default_payment_method');
 
@@ -210,7 +235,7 @@ class PaymentController extends Controller
         }
 
         // Return payment method.
-        return response()->json($user->default_payment_method);
+        return response()->json($bad);
     }
 
     /**
@@ -257,8 +282,6 @@ class PaymentController extends Controller
                 'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
             );
         }
-
-
 
         // Return data.
         return response()->json($paymentMethods);

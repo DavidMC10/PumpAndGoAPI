@@ -183,13 +183,8 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getDefaultPaymentMethod(Request $request)
+    public function getDefaultPaymentMethod()
     {
-        // Validation.
-        $this->validate($request, [
-            'default_payment_method' => 'required',
-        ]);
-
         // Obtain the authenticated user's id.
         $id = Auth::id();
 

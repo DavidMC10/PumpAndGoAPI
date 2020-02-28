@@ -262,6 +262,6 @@ class PaymentController extends Controller
 
 
         // Return data.
-        return response()->json($stripePaymentMethods->data[0]->id);
+        return response()->json($stripePaymentMethods->data[6]->id);
     }
 }

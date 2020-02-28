@@ -232,7 +232,7 @@ class PaymentController extends Controller
         $myArray = [];
         foreach ($paymentMethods as $paymentMethod) {
             $myArray['results'] [] = array(
-                'id' => $paymentMethod->card->brand,
+                'id' => $paymentMethod->card->id,
                 'brand' => $paymentMethod->card->brand,
                 'last4' => $paymentMethod->card->last4
             );

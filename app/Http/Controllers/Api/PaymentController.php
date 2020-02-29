@@ -222,14 +222,14 @@ class PaymentController extends Controller
             $paymentMethods = [];
             foreach ($stripePaymentMethods as $paymentMethod) {
                 $paymentMethods['data'][] = array(
-                    'id' => $paymentMethod->id,
+                    'payment_method_id' => $paymentMethod->id,
                 );
             }
 
             // Add the fuel card ID to the array.
             if ($user->fuelCard->fuel_card_no != null) {
                 $paymentMethods['data'][] = array(
-                    'id' => strval($user->fuelCard->fuel_card_id),
+                    'payment_method_id' => strval($user->fuelCard->fuel_card_id),
                 );
             }
 
@@ -275,7 +275,7 @@ class PaymentController extends Controller
         $paymentMethods = [];
         foreach ($stripePaymentMethods as $paymentMethod) {
             $paymentMethods['data'][] = array(
-                'id' => $paymentMethod->id,
+                'payment_method_id' => $paymentMethod->id,
                 'brand' => ucfirst($paymentMethod->card->brand),
                 'last4' =>  "Ending in " . $paymentMethod->card->last4
             );
@@ -284,7 +284,7 @@ class PaymentController extends Controller
         // If the user has a fuel card add it to the array.
         if ($user->fuelCard->fuel_card_no != null) {
             $paymentMethods['data'][] = array(
-                'id' => strval($user->fuelCard->fuel_card_id),
+                'payment_method_id' => strval($user->fuelCard->fuel_card_id),
                 'brand' => "Fuelcard",
                 'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
             );

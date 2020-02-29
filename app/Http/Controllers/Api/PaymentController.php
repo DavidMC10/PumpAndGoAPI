@@ -277,7 +277,7 @@ class PaymentController extends Controller
             $paymentMethods['data'][] = array(
                 'payment_method_id' => $paymentMethod->id,
                 'brand' => ucfirst($paymentMethod->card->brand),
-                'last4' =>  "Ending in " . $paymentMethod->card->last4
+                'last4' =>  "ending in " . $paymentMethod->card->last4
             );
         }
 
@@ -286,7 +286,7 @@ class PaymentController extends Controller
             $paymentMethods['data'][] = array(
                 'payment_method_id' => strval($user->fuelCard->fuel_card_id),
                 'brand' => "Fuelcard",
-                'last4' =>  "Ending in " . substr($user->fuelCard->fuel_card_no, -4)
+                'last4' =>  "ending in " . substr($user->fuelCard->fuel_card_no, -4)
             );
         }
 

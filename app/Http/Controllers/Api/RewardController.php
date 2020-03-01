@@ -31,13 +31,16 @@ class RewardController extends Controller
 
         // // If a multiple of 10 then return 0 to indicate there's a fuel discount.
         // // Else return the number until of visits until a discount is applied.
-        if (($userTransactionCount % 10) == 0) {
-            $userTransactionCount = 0;
+        $visits = 0;
+        if ($userTransactionCount == 0) {
+            $visits = 10;
+        } elseif (($userTransactionCount % 10) == 0){
+            $visits = 0;
         } else {
-            $userTransactionCount = 10 - ($userTransactionCount % 10);
+            $visits = 10 - ($userTransactionCount % 10);
         }
 
         // Return the user's first name and visit count.
-        return response()->json(['first_name' => $firstName, 'visit_count' => $userTransactionCount]);
+        return response()->json(['first_name' => $firstName, 'visit_count' => $visits]);
     }
 }

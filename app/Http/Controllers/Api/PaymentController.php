@@ -167,7 +167,7 @@ class PaymentController extends Controller
         $user->push();
 
         // Return result.
-        return response()->json([], 200);
+        return response()->json(['response_code' => Response::HTTP_OK]);
     }
 
     /**

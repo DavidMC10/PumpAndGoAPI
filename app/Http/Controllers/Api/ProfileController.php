@@ -39,7 +39,7 @@ class ProfileController extends Controller
         $user->save();
 
         // Return true upon success.
-        return response()->json(['message' => 'Name has successfully been updated.'], Response::HTTP_OK);
+        return response()->json([], Response::HTTP_OK);
     }
 
     /**
@@ -66,7 +66,7 @@ class ProfileController extends Controller
         $user->save();
 
         // Return true upon success.
-        return response()->json(['message' => 'Password has been updated.'], Response::HTTP_OK);
+        return response()->json([], Response::HTTP_OK);
     }
 
     /**
@@ -94,7 +94,7 @@ class ProfileController extends Controller
         $user->save();
 
         // Return true upon success.
-        return response()->json(['message' => 'Max Fuel Limit has been updated.'], Response::HTTP_OK);
+        return response()->json([], Response::HTTP_OK);
     }
 
     /**
@@ -122,7 +122,7 @@ class ProfileController extends Controller
         $user->save();
 
         // Return true upon success.
-        return response()->json(['message' => 'Max Distance Limit has been updated.'], Response::HTTP_OK);
+        return response()->json([], Response::HTTP_OK);
     }
 
     /**

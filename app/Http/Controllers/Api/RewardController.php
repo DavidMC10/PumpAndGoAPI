@@ -29,8 +29,8 @@ class RewardController extends Controller
         // Count the number of transactions for the user.
         $userTransactionCount = Transaction::where('user_id', $id)->count();
 
-        // // If a multiple of 10 then return 0 to indicate there's a fuel discount.
-        // // Else return the number until of visits until a discount is applied.
+        // If a multiple of 10 then return 0 to indicate there's a fuel discount.
+        // Else return the number until of visits until a discount is applied.
         $visits = 0;
         if ($userTransactionCount == 0) {
             $visits = 10;

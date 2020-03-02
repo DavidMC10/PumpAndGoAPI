@@ -21,7 +21,8 @@ Route::post('refresh', 'Api\AuthController@refresh');
 
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', 'Api\AuthController@logout');
-    Route::post('updatename', 'Api\ProfileController@updateUserFullName');
+    Route::post('updatename', 'Api\ProfileController@updateFullName');
+    Route::post('updateemail', 'Api\ProfileController@updateEmail');
     Route::post('updatepassword', 'Api\ProfileController@updatePassword');
     Route::post('updatefuellimit', 'Api\ProfileController@updateMaxFuelLimit');
     Route::post('updatedistancelimit', 'Api\ProfileController@updateMaxDistanceLimit');

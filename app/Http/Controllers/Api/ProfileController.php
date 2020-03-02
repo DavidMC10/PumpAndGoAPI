@@ -19,7 +19,7 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function updateUserFullName(Request $request)
+    public function updateFullName(Request $request)
     {
         // Validation.
         $this->validate($request, [
@@ -41,6 +41,35 @@ class ProfileController extends Controller
         // Return true upon success.
         return response()->json([], Response::HTTP_OK);
     }
+
+    /**
+     * Updates the user's email address.
+     *
+     * @param  [string] email
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateEmail(Request $request)
+    {
+        // Validation.
+        $this->validate($request, [
+            'email' => 'required|email|unique:user,email',
+        ]);
+
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user and update the name from the request.
+        $user = User::find($id);
+        $user->email = request('email');
+
+        // Save the changes.
+        $user->save();
+
+        // Return true upon success.
+        return response()->json([], Response::HTTP_OK);
+    }
+
 
     /**
      * Updates the user's password.

@@ -95,16 +95,14 @@ class PaymentController extends Controller
         // Set the Stripe secret key.
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
-        // Retrieve the card id.
-        $paymentMethod = \Stripe\PaymentMethod::retrieve(
-            request('card_id')
+        // Update the payment method.
+        $paymentMethod = \Stripe\PaymentMethod::update(
+            request('card_id'),
+            ['card' => [
+                'exp_month' => request('exp_month'),
+                'exp_year' => request('exp_year'),
+            ]]
         );
-
-        // \Stripe\PaymentMethod::update(
-        //     $paymentMethod,
-        //     ['metadata' => ['order_id' => '6735']]
-        //   );
-
 
         // Return result.
         return response()->json($paymentMethod);

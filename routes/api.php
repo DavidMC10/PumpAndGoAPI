@@ -35,8 +35,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('getuserprofiledetails', 'Api\ProfileController@getUserProfileDetails');
 
     // Payment Controller Methods.
-    Route::post('addstripepaymentmethod', 'Api\PaymentController@addStripePaymentMethod');
-    Route::post('deletestripepaymentmethod', 'Api\PaymentController@deleteStripePaymentMethod');
+    Route::post('addstripecard', 'Api\PaymentController@addStripePaymentMethod');
+    Route::post('deletestripecard', 'Api\PaymentController@deleteStripePaymentMethod');
     Route::post('addfuelcard', 'Api\PaymentController@addFuelCard');
     Route::post('deletefuelcard', 'Api\PaymentController@deleteFuelCard');
     Route::post('getdefaultpaymentmethod', 'Api\PaymentController@getDefaultPaymentMethod');

@@ -331,7 +331,7 @@ class PaymentController extends Controller
         }
 
         // Get all Stripe payment methods for the user.
-        $stripePaymentMethods = \Stripe\PaymentMethod::all([
+        $stripePaymentMethods2 = \Stripe\PaymentMethod::all([
             'customer' => $user->stripe_customer_id,
             'type' => 'card',
         ]);
@@ -339,7 +339,7 @@ class PaymentController extends Controller
 
         // Loop through the Stripe payment methods and add the id to the array.
         $paymentMethods2 = [];
-        foreach ($stripePaymentMethods as $paymentMethods2) {
+        foreach ($stripePaymentMethods2 as $paymentMethods2) {
             $paymentMethods2['data'][] = array(
                 'payment_method_id' => $paymentMethods2->id,
             );

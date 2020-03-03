@@ -99,7 +99,6 @@ class PaymentController extends Controller
         $paymentMethod = \Stripe\PaymentMethod::update(
             request('card_id'),
             ['card' => [
-                'number' => '5555555555554444',
                 'exp_month' => request('exp_month'),
                 'exp_year' => request('exp_year'),
             ]]

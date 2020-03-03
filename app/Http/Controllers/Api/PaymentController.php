@@ -327,7 +327,7 @@ class PaymentController extends Controller
             }
 
             // Return payment method.
-            return response()->json(['default_payment_method' => $user->default_payment_method]);
+            return response()->json($paymentMethods['data'][0]->payment_method_id);
         }
 
         // Get all Stripe payment methods for the user.

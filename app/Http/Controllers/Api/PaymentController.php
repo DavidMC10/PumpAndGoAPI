@@ -330,8 +330,23 @@ class PaymentController extends Controller
             return response()->json(['default_payment_method' => $user->default_payment_method]);
         }
 
+           // Loop through the Stripe payment methods and add the id to the array.
+           $paymentMethods2 = [];
+           foreach ($stripePaymentMethods as $paymentMethods2) {
+               $paymentMethods2['data'][] = array(
+                   'payment_method_id' => $paymentMethods2->id,
+               );
+           }
+
+           // Add the fuel card ID to the array.
+           if ($user->fuelCard->fuel_card_no != null) {
+               $paymentMethods2['data'][] = array(
+                   'payment_method_id' => strval($user->fuelCard->fuel_card_id),
+               );
+           }
+
          // Return payment method.
-         return response()->json(['default_payment_method' => $user->default_payment_method]);
+         return response()->json( $paymentMethods2['data'][0]);
     }
 
     /**

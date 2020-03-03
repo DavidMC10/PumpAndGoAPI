@@ -240,6 +240,11 @@ class PaymentController extends Controller
                 $user->save();
             }
 
+            // If empty return not found.
+            if (empty($paymentMethods)) {
+                return response()->json([], Response::HTTP_NOT_FOUND);
+            }
+
             // Return payment method.
             return response()->json($user->default_payment_method);
         }
@@ -288,6 +293,11 @@ class PaymentController extends Controller
                 'brand' => "Fuelcard",
                 'last4' =>  "ending in " . substr($user->fuelCard->fuel_card_no, -4)
             );
+        }
+
+        // If empty return not found.
+        if (empty($paymentMethods)) {
+            return response()->json([], Response::HTTP_NOT_FOUND);
         }
 
         // Return data.

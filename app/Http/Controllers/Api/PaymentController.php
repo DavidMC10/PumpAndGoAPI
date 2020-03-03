@@ -316,7 +316,7 @@ class PaymentController extends Controller
 
             // If not empty set the default payment method as the first payment method in the array.
             if (!empty($paymentMethods)) {
-                $user->default_payment_method = $paymentMethods['data'][0];
+                $user->default_payment_method = $paymentMethods['data'][0]['payment_method_id'];
                 // Save changes.
                 $user->save();
             }
@@ -327,33 +327,11 @@ class PaymentController extends Controller
             }
 
             // Return payment method.
-            return response()->json($paymentMethods['data'][0]['payment_method_id']);
-        }
-
-        // Get all Stripe payment methods for the user.
-        $stripePaymentMethods2 = \Stripe\PaymentMethod::all([
-            'customer' => $user->stripe_customer_id,
-            'type' => 'card',
-        ]);
-
-
-        // Loop through the Stripe payment methods and add the id to the array.
-        $paymentMethods2 = [];
-        foreach ($stripePaymentMethods2 as $paymentMethods2) {
-            $paymentMethods2['data'][] = array(
-                'payment_method_id' => $paymentMethods2->id,
-            );
-        }
-
-        // Add the fuel card ID to the array.
-        if ($user->fuelCard->fuel_card_no != null) {
-            $paymentMethods2['data'][] = array(
-                'payment_method_id' => strval($user->fuelCard->fuel_card_id),
-            );
+            return response()->json(['card_id' => $paymentMethods['data'][0]['payment_method_id']]);
         }
 
         // Return payment method.
-        return response()->json($paymentMethods2['data'][0]);
+        return response()->json(['card_id' => $user->default_payment_method]);
     }
 
     /**

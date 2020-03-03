@@ -64,7 +64,50 @@ class PaymentController extends Controller
         ]);
 
         // Return result.
-        return response()->json(Response::HTTP_OK);
+        return response()->json([]);
+    }
+
+    /**
+     * Adds a Stripe Payment Method.
+     *
+     * @param  [string] card_number
+     * @param  [string] exp_month
+     * @param  [string] exp_year
+     * @param  [string] cvc
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStripeCard(Request $request)
+    {
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user.
+        $user = User::find($id);
+
+        // Validation.
+        $this->validate($request, [
+            'card_id' => 'required',
+            'exp_month' => 'required',
+            'exp_year' => 'required',
+        ]);
+
+        // Set the Stripe secret key.
+        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+        // Retrieve the card id.
+        $paymentMethod = \Stripe\PaymentMethod::retrieve(
+            request('card_id')
+        );
+
+        // \Stripe\PaymentMethod::update(
+        //     $paymentMethod,
+        //     ['metadata' => ['order_id' => '6735']]
+        //   );
+
+
+        // Return result.
+        return response()->json($paymentMethod);
     }
 
     /**
@@ -104,7 +147,7 @@ class PaymentController extends Controller
         $paymentMethod->detach();
 
         // Return result.
-        return response()->json(Response::HTTP_OK);
+        return response()->json([]);
     }
 
     /**
@@ -140,7 +183,7 @@ class PaymentController extends Controller
         $user->push();
 
         // Return result.
-        return response()->json([], 200);
+        return response()->json([]);
     }
 
     public function deleteFuelCard()
@@ -167,7 +210,7 @@ class PaymentController extends Controller
         $user->push();
 
         // Return result.
-        return response()->json(['response_code' => Response::HTTP_OK]);
+        return response()->json([]);
     }
 
     /**
@@ -190,6 +233,9 @@ class PaymentController extends Controller
 
         // Update the user's default payment method.
         $user->default_payment_method = request('default_payment_method');
+
+        // Return result.
+        return response()->json([]);
     }
 
     /**
@@ -280,7 +326,7 @@ class PaymentController extends Controller
         $paymentMethods = [];
         foreach ($stripePaymentMethods as $paymentMethod) {
             $paymentMethods['data'][] = array(
-                'payment_method_id' => $paymentMethod->id,
+                'card_id' => $paymentMethod->id,
                 'brand' => ucfirst($paymentMethod->card->brand),
                 'last4' =>  "ending in " . $paymentMethod->card->last4
             );
@@ -289,7 +335,7 @@ class PaymentController extends Controller
         // If the user has a fuel card add it to the array.
         if ($user->fuelCard->fuel_card_no != null) {
             $paymentMethods['data'][] = array(
-                'payment_method_id' => strval($user->fuelCard->fuel_card_id),
+                'card_id' => strval($user->fuelCard->fuel_card_id),
                 'brand' => "Fuelcard",
                 'last4' =>  "ending in " . substr($user->fuelCard->fuel_card_no, -4)
             );

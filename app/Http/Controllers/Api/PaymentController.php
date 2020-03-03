@@ -20,7 +20,7 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function addStripePaymentMethod(Request $request)
+    public function addStripeCard(Request $request)
     {
         // Obtain the authenticated user's id.
         $id = Auth::id();
@@ -70,10 +70,9 @@ class PaymentController extends Controller
     /**
      * Adds a Stripe Payment Method.
      *
-     * @param  [string] card_number
+     * @param  [string] card_id
      * @param  [string] exp_month
      * @param  [string] exp_year
-     * @param  [string] cvc
      *
      * @return \Illuminate\Http\Response
      */
@@ -96,7 +95,7 @@ class PaymentController extends Controller
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
         // Update the payment method.
-        $paymentMethod = \Stripe\PaymentMethod::update(
+        \Stripe\PaymentMethod::update(
             request('card_id'),
             ['card' => [
                 'exp_month' => request('exp_month'),
@@ -105,7 +104,7 @@ class PaymentController extends Controller
         );
 
         // Return result.
-        return response()->json($paymentMethod);
+        return response()->json([]);
     }
 
     /**
@@ -115,7 +114,7 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function deleteStripePaymentMethod(Request $request)
+    public function deleteStripeCard(Request $request)
     {
         // Validation.
         $this->validate($request, [
@@ -149,7 +148,7 @@ class PaymentController extends Controller
     }
 
     /**
-     * Add a fuel card.
+     * Add and update Fuelcard.
      *
      * @param  [string] fuel_card_no
      * @param  [string] exp_month
@@ -184,6 +183,44 @@ class PaymentController extends Controller
         return response()->json([]);
     }
 
+    /**
+     * Add and update Fuelcard.
+     *
+     * @param  [string] exp_month
+     * @param  [string] exp_year
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function updateFuelCard(Request $request)
+    {
+        // Validation.
+        $this->validate($request, [
+            'exp_month' => 'required',
+            'exp_year' => 'required',
+        ]);
+
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user.
+        $user = User::find($id);
+
+        // Update a fuel card for the user.
+        $user->fuelCard->expiry_month = request('exp_month');
+        $user->fuelCard->expiry_year = request('exp_month');
+
+        // Save changes.
+        $user->push();
+
+        // Return result.
+        return response()->json([]);
+    }
+
+    /**
+     * Delete Fuelcard.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function deleteFuelCard()
     {
         // Obtain the authenticated user's id.
@@ -315,10 +352,6 @@ class PaymentController extends Controller
             'customer' => $user->stripe_customer_id,
             'type' => 'card',
         ]);
-
-        if ($user->default_payment_method == null) {
-            $user->default_payment_method = request('default_payment_method');
-        }
 
         // Loop through the Stripe payment methods and extract the necessary information to an array.
         $paymentMethods = [];

@@ -334,7 +334,7 @@ class PaymentController extends Controller
         }
 
         // Return payment method.
-        return response()->json(['card_id' => $paymentMethods['data'][0]['payment_method_id']]);
+        return response()->json(['card_id' => $user->default_payment_method]);
     }
 
     /**

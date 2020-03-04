@@ -32,8 +32,8 @@ class ProfileController extends Controller
 
         // Find the user and update the name from the request.
         $user = User::find($id);
-        $user->first_name = request('first_name');
-        $user->last_name = request('last_name');
+        $user->first_name = ucfirst(request('first_name'));
+        $user->last_name = ucfirst(request('last_name'));
 
         // Save the changes.
         $user->save();
@@ -61,7 +61,7 @@ class ProfileController extends Controller
 
         // Find the user and update the name from the request.
         $user = User::find($id);
-        $user->email = request('email');
+        $user->email = strtolower(request('email'));
 
         // Save the changes.
         $user->save();

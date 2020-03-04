@@ -89,11 +89,11 @@ class AuthController extends Controller
           ]);
 
         // Create a user record.
-        $user = User::create([
+        User::create([
             'stripe_customer_id' => $customer->id,
-            'first_name' => request('first_name'),
-            'last_name' => request('last_name'),
-            'email' => request('email'),
+            'first_name' => ucfirst(request('first_name')),
+            'last_name' => ucfirst(request('last_name')),
+            'email' => strtolower(request('email')),
             'password' => bcrypt(request('password')),
             'max_fuel_limit' => 20,
             'max_distance_limit' => 20,
@@ -132,9 +132,9 @@ class AuthController extends Controller
         // If authenticated revoke the access token.
         if (Auth::check()) {
             Auth::user()->token()->revoke();
-            return response()->json(['message' => 'You have succesfully logged out.'], Response::HTTP_OK);
+            return response()->json([], Response::HTTP_OK);
         } else {
-            return response()->json(['message' => 'Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json([], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

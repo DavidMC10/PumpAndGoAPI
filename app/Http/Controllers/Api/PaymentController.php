@@ -269,6 +269,9 @@ class PaymentController extends Controller
         // Update the user's default payment method.
         $user->default_payment_method = request('default_payment_method');
 
+        // Save changes.
+        $user->save();
+
         // Return result.
         return response()->json([]);
     }
@@ -331,7 +334,7 @@ class PaymentController extends Controller
         }
 
         // Return payment method.
-        return response()->json(['card_id' => $user->default_payment_method]);
+        return response()->json(['card_id' => $paymentMethods['data'][0]['payment_method_id']]);
     }
 
     /**

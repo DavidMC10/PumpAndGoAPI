@@ -52,7 +52,7 @@ class FuelStationController extends Controller
             ->orderBy('distance')
             ->with(['businessHours' => function ($query) use ($weekday) {
                 $query->where('day', $weekday);
-            }])->get();
+            }])->get()->toJson();
 
         // If empty return not found.
         if (empty($fuelStations)) {
@@ -60,7 +60,8 @@ class FuelStationController extends Controller
         }
 
         // Return the data.
-        return response()->json(['data' => $fuelStations], Response::HTTP_OK, [], JSON_FORCE_OBJECT);
+        return response()->json($fuelStations);
+        // return response()->json(['data' => $fuelStations], Response::HTTP_OK, [], JSON_FORCE_OBJECT);
     }
 
     /**
@@ -91,11 +92,10 @@ class FuelStationController extends Controller
             // Removes the distance column.
             $fuelStations->makeHidden(['distance']);
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'You are not at a fuel station.'
-            ]);
+            return response()->json([], Response::HTTP_NOT_FOUND);
         }
+
+        // Return the data.
         return $fuelStations;
     }
 }

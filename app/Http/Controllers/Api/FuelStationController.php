@@ -29,7 +29,7 @@ class FuelStationController extends Controller
 
         // Get todays date.
         $date = Carbon::now();
-        $day = $date->toArray();
+        // $day = $date->toArray();
 
         // Query to obtain nearby fuel stations.
         $fuelStations = FuelStation::select(DB::raw('fuel_station_id, name, address1, address2, city_town, telephone_no, number_of_pumps, longitude, latitude,
@@ -50,7 +50,7 @@ class FuelStationController extends Controller
         }
         // return $fuelStations;
         // return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
-        return response()->json($day);
+        return response()->json($date->toDateTimeString());
     }
 
     /**

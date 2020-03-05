@@ -48,8 +48,8 @@ class FuelStationController extends Controller
             radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ), 2 ) AS distance'))
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')
-            ->whereHas('businessHours', function (Builder $query) {
-                $query->where('day', '=', 'Friday');
+            ->whereHas('businessHours', function($q){
+                $q->where('day', '=', 'Friday');
             })->get();
 
         // If empty return not found.

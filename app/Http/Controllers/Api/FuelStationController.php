@@ -38,7 +38,7 @@ class FuelStationController extends Controller
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')
             ->with('businessHours:fuel_station_id,business_hours_id,day,open_time,close_time')
-            ->where('day', $day->day)
+            // ->where('day', $day->day)
             ->get();
 
         // If no nearby fuel stations return false.
@@ -49,7 +49,8 @@ class FuelStationController extends Controller
             ]);
         }
         // return $fuelStations;
-        return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
+        // return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
+        return response()->json($day->day);
     }
 
     /**

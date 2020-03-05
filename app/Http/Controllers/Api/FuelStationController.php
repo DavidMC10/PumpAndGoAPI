@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\FuelStation;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,9 +48,9 @@ class FuelStationController extends Controller
             radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ), 2 ) AS distance'))
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')
-            ->businessHours()
-            ->where('fuel_station_id', '=', '1')
-            ->get();
+            ->whereHas('businessHours', function (Builder $query) {
+                $query->where('business_hours_id', 1);
+            })->get();
 
         // If empty return not found.
         if (empty($fuelStations)) {

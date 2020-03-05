@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class FuelStationController extends Controller
 {
@@ -47,22 +48,17 @@ class FuelStationController extends Controller
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')
             ->with('businessHours:fuel_station_id,business_hours_id,day,open_time,close_time')
-            // ->where('day', $day->day)
+            ->where('day', $weekday)
             ->get();
 
-        // If no nearby fuel stations return false.
+        // If empty return not found.
         if (empty($fuelStations)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'There are currently no fuel stations nearby.'
-            ]);
+            return response()->json([], Response::HTTP_NOT_FOUND);
         }
-
-
 
         // return $fuelStations;
         // return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
-        return response()->json($weekday);
+        return response()->json($fuelStations);
     }
 
     /**

@@ -29,6 +29,7 @@ class FuelStationController extends Controller
         $lng = request('longitude');
         $maxDistanceLimit = request('max_distance_limit');
 
+        // List of all days of the week.
         $weekMap = [
             0 => 'Sunday',
             1 => 'Monday',
@@ -38,6 +39,8 @@ class FuelStationController extends Controller
             5 => 'Friday',
             6 => 'Saturday',
         ];
+
+        // Gets current day of the week.
         $dayOfTheWeek = Carbon::now()->dayOfWeek;
         $weekday = $weekMap[$dayOfTheWeek];
 
@@ -58,7 +61,7 @@ class FuelStationController extends Controller
 
         // return $fuelStations;
         // return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
-        return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
+        return response()->json(['data' => $fuelStations]);
     }
 
     /**

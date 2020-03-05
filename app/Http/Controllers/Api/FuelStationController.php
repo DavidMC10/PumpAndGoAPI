@@ -27,9 +27,18 @@ class FuelStationController extends Controller
         $lng = request('longitude');
         $maxDistanceLimit = request('max_distance_limit');
 
-        // Get todays date.
-        $date = Carbon::getDay();
-        // $day = $date->toArray();
+        $weekMap = [
+            0 => 'Sunday',
+            1 => 'Monday',
+            2 => 'Tuesday',
+            3 => 'Wednesday',
+            4 => 'Thursday',
+            5 => 'Friday',
+            6 => 'Saturday',
+        ];
+
+        $dayOfTheWeek = Carbon::now()->dayOfWeek;
+        $weekday = $weekMap[$dayOfTheWeek];
 
         // Query to obtain nearby fuel stations.
         $fuelStations = FuelStation::select(DB::raw('fuel_station_id, name, address1, address2, city_town, telephone_no, number_of_pumps, longitude, latitude,
@@ -53,7 +62,7 @@ class FuelStationController extends Controller
 
         // return $fuelStations;
         // return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
-        return response()->json($date);
+        return response()->json($weekday);
     }
 
     /**

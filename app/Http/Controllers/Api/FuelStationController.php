@@ -29,7 +29,7 @@ class FuelStationController extends Controller
 
         // Get todays date.
         $date = Carbon::now();
-        $day =  $date->toArray();
+        $day = $date->toArray();
 
         // Query to obtain nearby fuel stations.
         $fuelStations = FuelStation::select(DB::raw('fuel_station_id, name, address1, address2, city_town, telephone_no, number_of_pumps, longitude, latitude,
@@ -38,7 +38,7 @@ class FuelStationController extends Controller
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')
             ->with('businessHours:fuel_station_id,business_hours_id,day,open_time,close_time')
-            ->where('day', $day)
+            ->where('day', $day->day)
             ->get();
 
         // If no nearby fuel stations return false.

@@ -45,7 +45,7 @@ class FuelStationController extends Controller
         $weekday = $weekMap[$dayOfTheWeek];
 
         // Query to obtain nearby fuel stations.
-        $fuelStations = FuelStation::select(DB::raw('fuel_station_id, name, address1, address2, city_town, telephone_no, number_of_pumps, longitude, latitude,
+        $fuelStations = FuelStation::select(DB::raw('fuel_station_id, name, address1, address2, city_town, longitude, latitude,
             ROUND( ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos(
             radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ), 2 ) AS distance'))
             ->having('distance', '<', $maxDistanceLimit)
@@ -59,8 +59,7 @@ class FuelStationController extends Controller
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
 
-        // return $fuelStations;
-        // return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
+        // Return data.
         return response()->json(['data' => (object) $fuelStations]);
     }
 

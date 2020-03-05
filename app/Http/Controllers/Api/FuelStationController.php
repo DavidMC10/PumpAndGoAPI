@@ -28,7 +28,7 @@ class FuelStationController extends Controller
         $maxDistanceLimit = request('max_distance_limit');
 
         // Get todays date.
-        $date = Carbon::now();
+        $date = Carbon::now()->format('D');
         // $day = $date->toArray();
 
         // Query to obtain nearby fuel stations.
@@ -48,6 +48,9 @@ class FuelStationController extends Controller
                 'message' => 'There are currently no fuel stations nearby.'
             ]);
         }
+
+
+
         // return $fuelStations;
         // return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
         return response()->json($date->toDateTimeString());

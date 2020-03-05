@@ -38,7 +38,6 @@ class FuelStationController extends Controller
             5 => 'Friday',
             6 => 'Saturday',
         ];
-
         $dayOfTheWeek = Carbon::now()->dayOfWeek;
         $weekday = $weekMap[$dayOfTheWeek];
 
@@ -48,8 +47,8 @@ class FuelStationController extends Controller
             radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ), 2 ) AS distance'))
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')
-            ->with(['businessHours' => function ($query) {
-                $query->where('day', 'weekday');
+            ->with(['businessHours' => function ($query) use ($weekday) {
+                $query->where('day', $weekday);
             }])->get();
 
         // If empty return not found.

@@ -53,7 +53,7 @@ class FuelStationController extends Controller
 
         // return $fuelStations;
         // return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
-        return response()->json($date->toDateTimeString());
+        return response()->json($date);
     }
 
     /**

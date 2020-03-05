@@ -48,8 +48,8 @@ class FuelStationController extends Controller
             radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ), 2 ) AS distance'))
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')
-            ->with(['businessHours' => function ($query) {
-                $query->where('day', 'Friday');
+            ->with(['businessHours:open_time' => function ($query) {
+                $query->where('day', 'weekday');
             }])->get();
 
         // If empty return not found.
@@ -59,7 +59,7 @@ class FuelStationController extends Controller
 
         // return $fuelStations;
         // return response()->json(['data' => $fuelStations], 200, [], JSON_NUMERIC_CHECK);
-        return response()->json($fuelStations);
+        return response()->json(['data' => (object) $fuelStations]);
     }
 
     /**

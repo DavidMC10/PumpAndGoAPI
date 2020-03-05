@@ -48,7 +48,7 @@ class FuelStationController extends Controller
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')
             ->whereHas('businessHours', function($q){
-                $q->where('day', $weekday);
+                $q->where('day', 'Friday');
             })->get();
 
         // If empty return not found.

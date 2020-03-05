@@ -59,8 +59,7 @@ class FuelStationController extends Controller
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
 
-        // Return data.
-        return response()->json(['data' => (object) $fuelStations]);
+        return response()->json(['data' => $fuelStations]);
     }
 
     /**

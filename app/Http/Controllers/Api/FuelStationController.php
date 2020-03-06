@@ -62,7 +62,7 @@ class FuelStationController extends Controller
         // Return the data.
         // return response()->json($fuelStations);
         // return $fuelStations;
-        return response()->json(['data' => $fuelStations], Response::HTTP_OK, [], JSON_NUMERIC_CHECK);
+        return response()->json(['data' => $fuelStations]);
     }
 
     /**

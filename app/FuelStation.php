@@ -38,4 +38,28 @@ class FuelStation extends Model
     {
         return $this->hasMany('App\BusinessHours', 'fuel_station_id');
     }
+
+    /**
+     * Get the fuel prices that have fuel stations.
+     */
+    public function fuelPrice()
+    {
+        return $this->hasMany('App\FuelPrice', 'fuel_station_id');
+    }
+
+    /**
+     * Get the fuel stations who have transactions.
+     */
+    public function transaction()
+    {
+        return $this->hasMany('App\Transaction', 'fuel_station_id');
+    }
+
+    /**
+     * Get fuel stations that own the vat.
+     */
+    public function vat()
+    {
+        return $this->belongsTo('App\Vat', 'vat_id');
+    }
 }

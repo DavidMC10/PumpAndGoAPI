@@ -19,7 +19,7 @@ class FuelType extends Model
      *
      * @var
      */
-    protected $primaryKey = 'fuel_type';
+    protected $primaryKey = 'fuel_type_id';
 
     /**
      * The attributes that are mass assignable.
@@ -29,4 +29,20 @@ class FuelType extends Model
     protected $fillable = [
         'fuel_type_name'
     ];
+
+    /**
+     * Get the fuel prices that have fuel types.
+     */
+    public function fuelPrice()
+    {
+        return $this->hasMany('App\FuelPrice', 'fuel_type_id');
+    }
+
+    /**
+     * Get the fuel types who have transactions.
+     */
+    public function transaction()
+    {
+        return $this->hasMany('App\Transaction', 'fuel_type_id');
+    }
 }

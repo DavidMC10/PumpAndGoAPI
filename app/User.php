@@ -68,4 +68,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\FuelCard', 'fuel_card_id');
     }
+
+    /**
+     * Get the users who have transactions.
+     */
+    public function transaction()
+    {
+        return $this->hasMany('App\Transaction', 'user_id');
+    }
 }

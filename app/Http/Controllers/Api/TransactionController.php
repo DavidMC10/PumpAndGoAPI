@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Transaction;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,16 +15,34 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function generateTransactionHistory()
+    // {
+    //     // Obtain the authenticated user's id.
+    //     $id = Auth::id();
+
+    //     // Count the number of transactions for the user.
+    //     $userTransactionHistory = Transaction::where('user_id', $id)->get();
+
+    //     // Return the count.
+    //     return response()->json($userTransactionHistory);
+    // }
+
+    /**
+     * Generate t
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function generateTransactionHistory()
     {
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
-        // Count the number of transactions for the user.
-        $userTransactionHistory = Transaction::where('user_id', $id)->get();
+        $transactions = User::select('first_name', 'last_name')
+        ->where('user_id', $id)
+        ->with('transactions')->get();
 
         // Return the count.
-        return response()->json($userTransactionHistory);
+        return response()->json($transactions);
     }
 
 
@@ -32,16 +51,16 @@ class TransactionController extends Controller
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
-       \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
-       $card =  \Stripe\Token::create([
+        $card =  \Stripe\Token::create([
             'card' => [
                 'number' => '4242424242424242',
                 'exp_month' => 2,
                 'exp_year' => 2021,
                 'cvc' => '314',
             ],
-            ]);
+        ]);
         // \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
         // $intent = \Stripe\PaymentIntent::create([
@@ -57,15 +76,15 @@ class TransactionController extends Controller
         // 'description' => 'Example charge',
         // 'source' => $token,
         // ]);
-    //    $customer = \Stripe\Customer::create([
-    //         'description' => 'My First Test Customer (created for API docs)',
-    //         'email' => 'testcustomer5@noreply.com'
-    //       ]);
+        //    $customer = \Stripe\Customer::create([
+        //         'description' => 'My First Test Customer (created for API docs)',
+        //         'email' => 'testcustomer5@noreply.com'
+        //       ]);
 
-    //       $key = \Stripe\EphemeralKey::create(
-    //         ['customer' => $customer->id],
-    //         ['stripe_version' => '2019-12-03']
-    //       );
+        //       $key = \Stripe\EphemeralKey::create(
+        //         ['customer' => $customer->id],
+        //         ['stripe_version' => '2019-12-03']
+        //       );
 
         return response()->json($card);
     }

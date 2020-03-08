@@ -18,12 +18,19 @@ class FuelStationController extends Controller
      *
      * @param  [double] latitude
      * @param  [double] longitude
-     * @param  [int] maxDistanceLimit
+     * @param  [int] max_distance_limit
      *
      * @return mixed
      */
     public function generateListOfNearbyFuelStations(Request $request)
     {
+        // Validation.
+        $this->validate($request, [
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'max_distance_limit' => 'required',
+        ]);
+
         // Request variables.
         $lat = request('latitude');
         $lng = request('longitude');
@@ -73,6 +80,12 @@ class FuelStationController extends Controller
      */
     public function getCurrentFuelStation(Request $request)
     {
+        // Validation.
+        $this->validate($request, [
+            'latitude' => 'required',
+            'longitude' => 'required',
+        ]);
+
         // Request variables.
         $lat = request('latitude');
         $lng = request('longitude');

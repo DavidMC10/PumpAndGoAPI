@@ -9,7 +9,6 @@ use App\Reward;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator as FacadesValidator;
 use Laravel\Passport\Client;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -108,7 +108,7 @@ class TransactionController extends Controller
         }
 
         // Return the transaction history.
-        return response()->json($transactions);
+        return response()->json($transactionHistory, Response::HTTP_NOT_FOUND);
     }
 
     /**

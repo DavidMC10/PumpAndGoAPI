@@ -185,6 +185,7 @@ class TransactionController extends Controller
             'transaction_date' => Carbon::parse($transaction->transaction_date_time)->format('d/m/y h:m'),
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
+            'payment_method' => $transaction->payment_method,
             'pump_number' => strval($transaction->pump_number),
             'fuel_type' => $fuelType->fuel_type_name,
             'number_of_litres' => $transaction->number_of_litres,

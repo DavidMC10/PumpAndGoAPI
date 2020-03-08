@@ -69,8 +69,8 @@ class TransactionController extends Controller
                 $fuelPrice = FuelPrice::select('price_per_litre')
                     ->where('fuel_station_id', $transactions[$i]->fuel_station_id)
                     ->where('fuel_type_id', $transactions[$i]->fuel_type_id)
-                    ->whereDate('start_date', '<=', $transactions[$i]->fuel_type_id)
-                    ->whereDate('end_date', '>=', $transactions[$i]->fuel_type_id)
+                    ->whereDate('start_date', '<=', $transactions[$i]->transaction_date_time)
+                    ->whereDate('end_date', '>=', $transactions[$i]->transaction_date_time)
                     ->get();
 
                 // Get the Vat Rate on fuel.
@@ -108,7 +108,7 @@ class TransactionController extends Controller
         }
 
         // Return the transaction history.
-        return response()->json();
+        return response()->json($transactionHistory);
     }
 
     /**

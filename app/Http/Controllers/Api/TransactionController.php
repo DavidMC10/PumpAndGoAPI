@@ -185,15 +185,15 @@ class TransactionController extends Controller
             'transaction_date' => Carbon::parse($transaction->transaction_date_time)->format('d/m/y h:m'),
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
-            'pump_number' => $transaction->pump_number,
+            'pump_number' => strval($transaction->pump_number),
             'fuel_type' => $fuelType->fuel_type_name,
             'number_of_litres' => $transaction->number_of_litres,
             'price_per_litre' => $fuelPrice[0]->price_per_litre,
-            'discount' => $discountRate,
+            'discount' => strval($discountRate),
             'vat_rate' => $vat->vat_rate,
-            'price_excluding_vat' => $priceExcVat,
-            'vat' => $vatTotal,
-            'total_price' => $totalPrice
+            'price_excluding_vat' => strval($priceExcVat),
+            'vat' => strval($vatTotal),
+            'total_price' => strval($totalPrice)
         ];
 
         // Return the receipt.

@@ -86,7 +86,7 @@ class TransactionController extends Controller
                 }
 
                 // Calculate fuel price with vat.
-                $totalPrice = round($priceExcVat + (($priceExcVat / 100) * $vat->vat_rate), 2);
+                $totalPrice = strval(round($priceExcVat + (($priceExcVat / 100) * $vat->vat_rate), 2));
 
                 // Get the date of the transaction.
                 $transactionDate = Carbon::parse($transactions[$i]->transaction_date_time)->format('d/m/y');

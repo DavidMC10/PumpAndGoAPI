@@ -89,7 +89,7 @@ class TransactionController extends Controller
                 $totalPrice = strval(round($priceExcVat + (($priceExcVat / 100) * $vat->vat_rate), 2));
 
                 // Get the date of the transaction.
-                $transactionDate = Carbon::parse($transactions[$i]->transaction_date_time)->format('d/m/y');
+                $transactionDate = Carbon::parse($transactions[$i]->transaction_date_time)->format('d/m/Y');
 
                 // Get the number of litres.
                 $numOfLitres = $transactions[$i]->number_of_litres;

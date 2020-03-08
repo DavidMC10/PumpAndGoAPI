@@ -46,7 +46,7 @@ class TransactionController extends Controller
         // Get user transactions.
         $transactions = User::find($id)->transaction;
 
-        return $transactions;
+
 
         // Get user rewards.
         $rewards = User::find($id)->reward;
@@ -56,6 +56,8 @@ class TransactionController extends Controller
 
         // If not empty calculate transaction cost, else return not found.
         if (!empty($transactions)) {
+
+            return "yes";
             for ($i = 0; $i < count($transactions); $i++) {
 
                 // Get the transaction id.

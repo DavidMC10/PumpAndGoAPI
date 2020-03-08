@@ -191,7 +191,7 @@ class TransactionController extends Controller
             'number_of_litres' => $transaction->number_of_litres,
             'price_per_litre' => $fuelPrice[0]->price_per_litre,
             'discount' => strval($discountRate),
-            'vat_rate' => $vat->vat_rate,
+            'vat_rate' => round($vat->vat_rate),
             'price_excluding_vat' => strval($priceExcVat),
             'vat' => strval($vatTotal),
             'total_price' => strval($totalPrice)

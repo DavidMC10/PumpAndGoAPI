@@ -46,6 +46,8 @@ class TransactionController extends Controller
         // Get user transactions.
         $transactions = User::find($id)->transaction;
 
+        return $transactions;
+
         // Get user rewards.
         $rewards = User::find($id)->reward;
 

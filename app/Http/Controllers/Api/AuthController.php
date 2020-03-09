@@ -131,7 +131,7 @@ class AuthController extends Controller
      */
    public function barcodeNumberExists($number) {
         // Query the database and return a boolean
-        return User::where('barcode_number', $number)->exists();
+        return Reward::where('barcode_number', $number)->exists();
     }
 
     /**

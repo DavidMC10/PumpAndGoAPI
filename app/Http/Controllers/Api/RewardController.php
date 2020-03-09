@@ -17,6 +17,26 @@ class RewardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getUserRewards()
+    {
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Get user transactions.
+        $transactions = User::find($id)->transaction;
+
+        // Get user rewards.
+        $rewards = User::find($id)->reward;
+
+        // Return the user's first name and visit count.
+        return response()->json($rewards);
+    }
+
+    /**
+     * Count number of visits required until fuel discount.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function countNumberOfVisitsUntilFuelDiscount()
     {
         // Obtain the authenticated user's id.
@@ -34,7 +54,7 @@ class RewardController extends Controller
         $visits = 0;
         if ($userTransactionCount == 0) {
             $visits = 10;
-        } elseif (($userTransactionCount % 10) == 0){
+        } elseif (($userTransactionCount % 10) == 0) {
             $visits = 0;
         } else {
             $visits = 10 - ($userTransactionCount % 10);

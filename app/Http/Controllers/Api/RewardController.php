@@ -30,7 +30,7 @@ class RewardController extends Controller
 
         // Add data to the receipt object.
         $rewardValues = (object) [
-            'barcode_number' => $rewards->barcode_number,
+            'barcode_number' => strval($rewards->barcode_number),
             'car_wash_discount_percentage' => $rewards->car_wash_discount_percentage,
             'fuel_discount_percentage' => $rewards->fuel_discount_percentage,
             'deli_discount_percentage' => $rewards->deli_discount_percentage,

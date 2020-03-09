@@ -62,7 +62,7 @@ class FuelStationController extends Controller
             }])->get();
 
         // If empty return not found.
-        if (empty($fuelStations)) {
+        if (sizeof($fuelStations) <= 0) {
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
 
@@ -94,20 +94,21 @@ class FuelStationController extends Controller
         $maxDistanceLimit = 0.025;
 
         // Query to obtain the nearest fuelstation.
-        $fuelStations = FuelStation::select(DB::raw('fuel_station_id, number_of_pumps, ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos(
+        $fuelStation = FuelStation::select(DB::raw('fuel_station_id, number_of_pumps, ( 3959 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) * cos(
             radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
             ->having('distance', '<', $maxDistanceLimit)
             ->orderBy('distance')
             ->first();
 
-        if (!empty($fuelStations)) {
-            // Removes the distance column.
-            $fuelStations->makeHidden(['distance']);
-        } else {
+        // If empty return not found.
+        if (sizeof($fuelStation) <= 0) {
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
 
+        // Removes the distance column.
+        $fuelStation->makeHidden(['distance']);
+
         // Return the data.
-        return $fuelStations;
+        return $fuelStation;
     }
 }

@@ -27,7 +27,7 @@ class Reward extends Model
      * @var array
      */
     protected $fillable = [
-        'car_wash_discount_percentage', 'fuel_discount_percentage', 'deli_discount_percentage', 'coffee_discount_percentage'
+        'barcode_number', 'car_wash_discount_percentage', 'fuel_discount_percentage', 'deli_discount_percentage', 'coffee_discount_percentage'
     ];
 
     /**

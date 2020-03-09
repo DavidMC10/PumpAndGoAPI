@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
+use Symfony\Component\Console\Input\Input;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -65,6 +66,7 @@ class AuthController extends Controller
 
         // Create a reward record.
         $reward = Reward::create([
+            'barcode_number' => $this->generateBarcodeNumber(),
             'car_wash_discount_percentage' => 10.0,
             'fuel_discount_percentage' => 15.0,
             'deli_discount_percentage' => 10.0,
@@ -102,6 +104,34 @@ class AuthController extends Controller
 
         // Create the access and refresh token.
         return $this->issueToken($request, 'password');
+    }
+
+    /**
+     * Generate Barcode Number.
+     *
+     * @return integer
+     */
+    public function generateBarcodeNumber() {
+        // Generate random number.
+        $number = mt_rand(1000000000, 9999999999);
+
+        // Calls the same function if the barcode exists already.
+        if ($this->barcodeNumberExists($number)) {
+            return $this->generateBarcodeNumber();
+        }
+
+        // Valid number return.
+        return $number;
+    }
+
+    /**
+     * Check if barcode number exists.
+     *
+     * @return boolean
+     */
+   public function barcodeNumberExists($number) {
+        // Query the database and return a boolean
+        return User::where('barcode_number', $number)->exists();
     }
 
     /**

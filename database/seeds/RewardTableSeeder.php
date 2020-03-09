@@ -14,6 +14,7 @@ class RewardTableSeeder extends Seeder
     public function run()
     {
         DB::table('reward')->insert([
+            'barcode_number' => 288979,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,
@@ -23,6 +24,7 @@ class RewardTableSeeder extends Seeder
         ]);
 
         DB::table('reward')->insert([
+            'barcode_number' => 478404,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,
@@ -32,6 +34,7 @@ class RewardTableSeeder extends Seeder
         ]);
 
         DB::table('reward')->insert([
+            'barcode_number' => 934269,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,
@@ -41,6 +44,7 @@ class RewardTableSeeder extends Seeder
         ]);
 
         DB::table('reward')->insert([
+            'barcode_number' => 941056,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,
@@ -50,6 +54,7 @@ class RewardTableSeeder extends Seeder
         ]);
 
         DB::table('reward')->insert([
+            'barcode_number' => 697156,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,
@@ -59,6 +64,7 @@ class RewardTableSeeder extends Seeder
         ]);
 
         DB::table('reward')->insert([
+            'barcode_number' => 432289,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,
@@ -68,6 +74,7 @@ class RewardTableSeeder extends Seeder
         ]);
 
         DB::table('reward')->insert([
+            'barcode_number' => 179435,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,
@@ -77,6 +84,7 @@ class RewardTableSeeder extends Seeder
         ]);
 
         DB::table('reward')->insert([
+            'barcode_number' => 623591,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,
@@ -86,6 +94,7 @@ class RewardTableSeeder extends Seeder
         ]);
 
         DB::table('reward')->insert([
+            'barcode_number' => 223736,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,
@@ -95,6 +104,7 @@ class RewardTableSeeder extends Seeder
         ]);
 
         DB::table('reward')->insert([
+            'barcode_number' => 745902,
             'car_wash_discount_percentage' => 10.00,
             'fuel_discount_percentage' => 15.00,
             'deli_discount_percentage' => 10.00,

@@ -28,8 +28,17 @@ class RewardController extends Controller
         // Get user rewards.
         $rewards = User::find($id)->reward;
 
+        // Add data to the receipt object.
+        $rewardValues = (object) [
+            'barcode_number' => $rewards->barcode_number,
+            'car_wash_discount_percentage' => $rewards->car_wash_discount_percentage,
+            'fuel_discount_percentage' => $rewards->fuel_discount_percentage,
+            'deli_discount_percentage' => $rewards->deli_discount_percentage,
+            'coffee_discount_percentage' => $rewards->coffee_discount_percentage
+        ];
+
         // Return the user's first name and visit count.
-        return response()->json($rewards);
+        return response()->json($rewardValues);
     }
 
     /**

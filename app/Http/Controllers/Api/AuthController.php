@@ -113,7 +113,7 @@ class AuthController extends Controller
      */
     public function generateBarcodeNumber() {
         // Generate random number.
-        $number = mt_rand(1000000000, 9999999999);
+        $number = mt_rand(100000, 999999);
 
         // Calls the same function if the barcode exists already.
         if ($this->barcodeNumberExists($number)) {

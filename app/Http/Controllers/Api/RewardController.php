@@ -31,10 +31,10 @@ class RewardController extends Controller
         // Add data to the receipt object.
         $rewardValues = (object) [
             'barcode_number' => strval($rewards->barcode_number),
-            'car_wash_discount_percentage' => $rewards->car_wash_discount_percentage,
-            'fuel_discount_percentage' => $rewards->fuel_discount_percentage,
-            'deli_discount_percentage' => $rewards->deli_discount_percentage,
-            'coffee_discount_percentage' => $rewards->coffee_discount_percentage
+            'car_wash_discount_percentage' => round($rewards->car_wash_discount_percentage),
+            'fuel_discount_percentage' => round($rewards->fuel_discount_percentage),
+            'deli_discount_percentage' => round($rewards->deli_discount_percentage),
+            'coffee_discount_percentage' => round($rewards->coffee_discount_percentage)
         ];
 
         // Return the user's first name and visit count.

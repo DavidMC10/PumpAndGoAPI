@@ -101,7 +101,7 @@ class FuelStationController extends Controller
             ->first();
 
         // If empty return not found.
-        if (sizeof($fuelStation) <= 0) {
+        if (empty($fuelStation)) {
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
 

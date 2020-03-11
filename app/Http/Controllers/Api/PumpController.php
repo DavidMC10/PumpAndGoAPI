@@ -18,7 +18,7 @@ class PumpController extends Controller
     {
 
         for ($i = 0; $i < 10; $i++) {
-            event(new MyEvent('hello world' + $i));
+            event(new MyEvent('hello world' . $i));
             sleep(2);
         }
     }

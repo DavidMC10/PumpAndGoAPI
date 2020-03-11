@@ -21,9 +21,8 @@ Route::post('register', 'Api\AuthController@register');
 Route::post('refresh', 'Api\AuthController@refresh');
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('post', function () {
-        event(new MyEvent('hello world'));
-    });
+
+    Route::post('post', 'Api\PumpController@turnPumpOnTest');
     Route::post('logout', 'Api\AuthController@logout');
     Route::post('updatename', 'Api\ProfileController@updateFullName');
     Route::post('updateemail', 'Api\ProfileController@updateEmail');

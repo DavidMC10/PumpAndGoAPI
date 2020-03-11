@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MyEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,7 @@ Route::post('refresh', 'Api\AuthController@refresh');
 
 Route::middleware('auth:api')->group(function () {
     Route::post('post', function () {
-        event(new App\Events\MyEvent('Hello Dave'));
+        event(new MyEvent('hello world'));
     });
     Route::post('logout', 'Api\AuthController@logout');
     Route::post('updatename', 'Api\ProfileController@updateFullName');

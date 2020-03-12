@@ -22,8 +22,13 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function captureCharge(Request $request)
+    public function createCharge(Request $request)
     {
+        // Validation.
+        $this->validate($request, [
+            'fuel_amount' => 'required',
+        ]);
+
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
@@ -35,7 +40,7 @@ class TransactionController extends Controller
 
         // Create a charge.
         $charge = \Stripe\PaymentIntent::create([
-            'amount' => 999.21 * 100,
+            'amount' => request('fuel_amount'),
             'currency' => 'eur',
             'customer' => $user->stripe_customer_id,
             'description' => 'Fuel Charge',

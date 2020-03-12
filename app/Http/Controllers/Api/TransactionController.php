@@ -46,8 +46,11 @@ class TransactionController extends Controller
         // Save the payment intent id.
         $user->payment_intent = $charge->id;
 
+        // Save changes.
+        $user->save();
+
         // Return success.
-        return response()->json($charge);
+        return response()->json([]);
     }
 
     /**

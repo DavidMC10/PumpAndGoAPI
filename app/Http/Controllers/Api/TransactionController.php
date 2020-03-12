@@ -34,13 +34,13 @@ class TransactionController extends Controller
         \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
         // Create a charge.
-        $charge = \Stripe\Charge::create([
+        $charge = \Stripe\PaymentIntent::create([
             'amount' => 999.21,
             'currency' => 'eur',
             'customer' => $user->stripe_customer_id,
             'description' => 'Fuel Charge',
-            'source' => $user->default_payment_method,
-            'capture' => false,
+            'payment_method' => $user->default_payment_method,
+            'capture_method' => 'manual',
         ]);
 
         // Return success.

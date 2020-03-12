@@ -35,7 +35,7 @@ class TransactionController extends Controller
 
         // Create a charge.
         $charge = \Stripe\PaymentIntent::create([
-            'amount' => round(999.21, 2),
+            'amount' => 999.21 * 100,
             'currency' => 'eur',
             'customer' => $user->stripe_customer_id,
             'description' => 'Fuel Charge',

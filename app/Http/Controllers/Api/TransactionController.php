@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\MyEvent;
 use App\FuelPrice;
 use App\FuelStation;
 use App\FuelType;
@@ -56,6 +57,21 @@ class TransactionController extends Controller
 
         // Return success.
         return response()->json([]);
+    }
+
+    public function createTransaction(Request $request)
+    {
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Find the user.
+        $user = User::find($id);
+
+        for ($i = 0; $i < 10; $i++) {
+            event(new MyEvent('hello world' . $i));
+            sleep(2);
+        }
+
     }
 
     /**

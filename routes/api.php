@@ -34,6 +34,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('getcurrentstation', 'Api\FuelStationController@getCurrentFuelStation');
     Route::post('visitcount', 'Api\RewardController@countNumberOfVisitsUntilFuelDiscount');
     Route::post('getrewards', 'Api\RewardController@getUserRewards');
+    Route::post('createcharge', 'Api\TransactionController@captureCharge');
     Route::post('gettransactionhistory', 'Api\TransactionController@generateTransactionHistory');
     Route::post('getreceipt', 'Api\TransactionController@generateReceipt');
     Route::post('testing', 'Api\TransactionController@transactionTest');

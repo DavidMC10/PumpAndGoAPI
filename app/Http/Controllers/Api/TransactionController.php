@@ -16,22 +16,36 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
 {
+
     /**
-     * Count number of visits required until fuel discount.
+     * Capture a charge for the user.
      *
      * @return \Illuminate\Http\Response
      */
-    // public function generateTransactionHistory()
-    // {
-    //     // Obtain the authenticated user's id.
-    //     $id = Auth::id();
+    public function captureCharge(Request $request)
+    {
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
 
-    //     // Count the number of transactions for the user.
-    //     $userTransactionHistory = Transaction::where('user_id', $id)->get();
+        // Find the user.
+        $user = User::find($id);
 
-    //     // Return the count.
-    //     return response()->json($userTransactionHistory);
-    // }
+        // Set Stripe Api key.
+        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+        // Create a charge.
+        $charge = \Stripe\Charge::create([
+            'amount' => 999.21,
+            'currency' => 'eur',
+            'customer' => $user->stripe_customer_id,
+            'description' => 'Fuel Charge',
+            'source' => $user->default_payment_method,
+            'capture' => false,
+        ]);
+
+        // Return success.
+        return response()->json([]);
+    }
 
     /**
      * Generate a list of user transactions.
@@ -199,49 +213,5 @@ class TransactionController extends Controller
 
         // Return the receipt.
         return response()->json($receipt);
-    }
-
-
-    public function transactionTest(Request $request)
-    {
-        // Obtain the authenticated user's id.
-        $id = Auth::id();
-
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
-        $card =  \Stripe\Token::create([
-            'card' => [
-                'number' => '4242424242424242',
-                'exp_month' => 2,
-                'exp_year' => 2021,
-                'cvc' => '314',
-            ],
-        ]);
-        // \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
-        // $intent = \Stripe\PaymentIntent::create([
-        //     'amount' => 1099,
-        //     'currency' => 'usd',
-        // ]);
-        // $client_secret = $intent->client_secret;
-
-        // $token = request('token_id');
-        // $charge = \Stripe\Charge::create([
-        // 'amount' => 999,
-        // 'currency' => 'gbp',
-        // 'description' => 'Example charge',
-        // 'source' => $token,
-        // ]);
-        //    $customer = \Stripe\Customer::create([
-        //         'description' => 'My First Test Customer (created for API docs)',
-        //         'email' => 'testcustomer5@noreply.com'
-        //       ]);
-
-        //       $key = \Stripe\EphemeralKey::create(
-        //         ['customer' => $customer->id],
-        //         ['stripe_version' => '2019-12-03']
-        //       );
-
-        return response()->json($card);
     }
 }

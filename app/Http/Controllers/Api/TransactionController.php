@@ -43,6 +43,9 @@ class TransactionController extends Controller
             'capture_method' => 'manual',
         ]);
 
+        // Save the payment intent id.
+        $user->payment_intent = $charge->id;
+
         // Return success.
         return response()->json([]);
     }

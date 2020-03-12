@@ -37,7 +37,7 @@ class TransactionController extends Controller
         $charge = \Stripe\PaymentIntent::create([
             'amount' => 999.21 * 100,
             'currency' => 'eur',
-            'customer' => $user->stripe_customer_id,
+            'customer' => $user->   ,
             'description' => 'Fuel Charge',
             'payment_method' => $user->default_payment_method,
             'capture_method' => 'manual',
@@ -47,7 +47,7 @@ class TransactionController extends Controller
         $user->payment_intent = $charge->id;
 
         // Return success.
-        return response()->json([]);
+        return response()->json($charge);
     }
 
     /**

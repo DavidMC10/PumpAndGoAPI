@@ -81,13 +81,13 @@ class TransactionController extends Controller
         $user = User::find($id);
 
         // Get the price per litre for today.
-        $fuelTypeId = rand(1,4);
+        $fuelTypeId = rand(1, 4);
         $fuelPrice = FuelPrice::select('price_per_litre')
-        ->where('fuel_station_id', request('fuel_station_id'))
-        ->where('fuel_type_id', $fuelTypeId)
-        ->whereDate('start_date', '<=', Carbon::now())
-        ->whereDate('end_date', '>=', Carbon::now())
-        ->get();
+            ->where('fuel_station_id', request('fuel_station_id'))
+            ->where('fuel_type_id', $fuelTypeId)
+            ->whereDate('start_date', '<=', Carbon::now())
+            ->whereDate('end_date', '>=', Carbon::now())
+            ->get();
 
         // Check if the user is entitled to a fuel discount.
         $userTransactionCount = Transaction::where('user_id', $id)->count();
@@ -99,14 +99,10 @@ class TransactionController extends Controller
             $discountEntitlement = false;
         }
 
-        // Get user rewards.
-        $rewards = User::find($id)->reward;
-
+                     // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
         $numberOfLitres = $fuelAmount / $pricePerLitre;
-
-        // return $fuelAmountIncVat;
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -188,23 +184,19 @@ class TransactionController extends Controller
                 // Get the Vat Rate on fuel.
                 $vat = Vat::select('vat_rate')->first();
 
-                // Round prices to two decimals.
-                $pricePerLitre = round($fuelPrice[0]->price_per_litre, 2);
-                $fuelDiscountPercentage = round($rewards->fuel_discount_percentage, 2);
-                $numberOfLitres = round($transactions[$i]->number_of_litres, 2);
-                $vatRate = round($vat->vat_rate, 2);
+                // Assign values to variables.
+                $pricePerLitre = $fuelPrice[0]->price_per_litre;
+                $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
+                $numberOfLitres = $transactions[$i]->number_of_litres;
 
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
-                    // Calculate fuel price without vat and including discount.
-                    $priceExcVat = round($pricePerLitre * $numberOfLitres - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage), 2);
+                    // Calculate fuel price total.
+                    $totalPrice = ($pricePerLitre * $numberOfLitres) - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage);
                 } else {
-                    // Calculate fuel price without vat.
-                    $priceExcVat = round($pricePerLitre * $numberOfLitres, 2);
+                    // Calculate fuel price total.
+                    $totalPrice = $pricePerLitre * $numberOfLitres;
                 }
-
-                // Calculate fuel price with vat.
-                $totalPrice = strval(round($priceExcVat + (($priceExcVat / 100) * $vatRate), 2));
 
                 // Get the date of the transaction.
                 $transactionDate = Carbon::parse($transactions[$i]->transaction_date_time)->format('d/m/Y');
@@ -216,9 +208,9 @@ class TransactionController extends Controller
                 $transactionHistory['data'][] = array(
                     'transaction_id' => $transactionId,
                     'fuel_station_name' => $fuelStationName,
-                    'total_price' => $totalPrice,
+                    'total_price' => number_format($totalPrice, 2, '.', ''),
                     'transaction_date' => $transactionDate,
-                    'number_of_litres' =>  $numOfLitres
+                    'number_of_litres' =>  number_format($numOfLitres, 2, '.', '')
                 );
             }
         } else {
@@ -275,7 +267,7 @@ class TransactionController extends Controller
             ->whereDate('end_date', '>=', $transaction->transaction_date_time)
             ->get();
 
-        // Round prices to two decimals.
+        // Assign values to variables.
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
         $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
         $numberOfLitres = $transaction->number_of_litres;
@@ -285,9 +277,15 @@ class TransactionController extends Controller
         if ($transaction->fuel_discount_entitlement == true) {
             // Set discount percentage to the db value.
             $discountRate = $rewards->fuel_discount_percentage;
-            $priceExVat = 0;
-            // Calculate fuel price total including discount.
-            $totalPrice = round($pricePerLitre * $numberOfLitres - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage), 2);
+
+            // Calculate fuel price total.
+            $totalPrice = ($pricePerLitre * $numberOfLitres) - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage);
+
+            // Calculate fuel price total including discount without Vat.
+            $priceExVat = $totalPrice - (($totalPrice / 100) * $vatRate);
+
+            // Calculate total Vat.
+            $vatTotal = ($priceExVat / 100) * $vat->vat_rate;
         } else {
             // Set discount percentage to 0.
             $discountRate = 0;
@@ -295,14 +293,13 @@ class TransactionController extends Controller
             // Calculate fuel price total.
             $totalPrice = $pricePerLitre * $numberOfLitres;
 
+            // Calculate fuel price total excluding Vat.
             $priceExVat = $totalPrice - (($totalPrice / 100) * $vatRate);
-            // return $priceExcVat;
+
+            // Calculate total Vat.
+            $vatTotal = ($priceExVat / 100) * $vat->vat_rate;
         }
 
-        // Calculate vat.
-        $vatTotal = round(($priceExVat / 100) * $vat->vat_rate, 2);
-
-        return number_format($priceExVat, 2, '.', '');
 
         // Add data to the receipt object.
         $receipt = (object) [
@@ -316,13 +313,13 @@ class TransactionController extends Controller
             'payment_method' => $transaction->payment_method,
             'pump_number' => strval($transaction->pump_number),
             'fuel_type' => $fuelType->fuel_type_name,
-            'number_of_litres' => $transaction->number_of_litres,
-            'price_per_litre' => $fuelPrice[0]->price_per_litre,
-            'discount' => strval($discountRate),
-            'vat_rate' => round($vat->vat_rate),
+            'number_of_litres' => number_format($transaction->number_of_litres, 2, '.', ''),
+            'price_per_litre' => number_format($fuelPrice[0]->price_per_litre, 2, '.', ''),
+            'discount' => number_format($discountRate, 2, '.', ''),
+            'vat_rate' => number_format($vat->vat_rate, 2, '.', ''),
             'price_excluding_vat' => strval($priceExVat),
-            'vat' => strval($vatTotal),
-            'total_price' => strval($totalPrice)
+            'vat' => number_format($vatTotal, 2, '.', ''),
+            'total_price' => number_format($totalPrice, 2, '.', '')
         ];
 
         // Return the receipt.

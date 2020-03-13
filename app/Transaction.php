@@ -27,7 +27,7 @@ class Transaction extends Model
      * @var array
      */
     protected $fillable = [
-        'transaction_date_time', 'number_of_litres', 'pump_number', 'fuel_discount_entitlement', 'payment_method'
+       'user_id', 'fuel_station_id', 'fuel_type_id', 'transaction_date_time', 'number_of_litres', 'pump_number', 'fuel_discount_entitlement', 'payment_method'
     ];
 
     /**

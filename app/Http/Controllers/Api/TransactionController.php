@@ -101,14 +101,10 @@ class TransactionController extends Controller
 
         // Get user rewards.
         $rewards = User::find($id)->reward;
-        // Get the Vat Rate on fuel.
-        $vat = Vat::select('vat_rate')->first();
 
-        $fuelAmount = round(request('fuel_amount'), 2);
-        $pricePerLitre = round($fuelPrice[0]->price_per_litre, 2);
-        $vatRate = round($vat->vat_rate, 2);
-        $fuelAmountIncVat = round($fuelAmount - (($fuelAmount / 100) * $vatRate), 2);
-        $numberOfLitres = round($fuelAmount / $pricePerLitre, 2);
+        $fuelAmount = request('fuel_amount');
+        $pricePerLitre = $fuelPrice[0]->price_per_litre;
+        $numberOfLitres = $fuelAmount / $pricePerLitre;
 
         // return $fuelAmountIncVat;
 
@@ -280,10 +276,10 @@ class TransactionController extends Controller
             ->get();
 
         // Round prices to two decimals.
-        $pricePerLitre = round($fuelPrice[0]->price_per_litre, 2);
-        $fuelDiscountPercentage = round($rewards->fuel_discount_percentage, 2);
-        $numberOfLitres = round($transaction->number_of_litres, 2);
-        $vatRate = round($vat->vat_rate, 2);
+        $pricePerLitre = $fuelPrice[0]->price_per_litre;
+        $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
+        $numberOfLitres = $transaction->number_of_litres;
+        $vatRate = $vat->vat_rate;
 
         // If the user is entitled to a discount apply it.
         if ($transaction->fuel_discount_entitlement == true) {
@@ -297,9 +293,9 @@ class TransactionController extends Controller
             $discountRate = 0;
 
             // Calculate fuel price total.
-            $totalPrice = round($pricePerLitre * $numberOfLitres, 2);
+            $totalPrice = $pricePerLitre * $numberOfLitres;
 
-            $priceExVat = round($totalPrice - (($totalPrice / 100) * $vatRate), 2);
+            $priceExVat = $totalPrice - (($totalPrice / 100) * $vatRate);
             // return $priceExcVat;
         }
 

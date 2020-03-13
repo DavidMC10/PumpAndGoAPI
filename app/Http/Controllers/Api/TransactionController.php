@@ -302,7 +302,7 @@ class TransactionController extends Controller
         // Calculate vat.
         $vatTotal = round(($priceExVat / 100) * $vat->vat_rate, 2);
 
-        return $priceExVat;
+        return round($priceExVat, 2);
 
         // Add data to the receipt object.
         $receipt = (object) [

@@ -108,6 +108,8 @@ class TransactionController extends Controller
         // Calculate the number of litres for the transaction.
         $numberOfLitres = round((double) request('fuel_amount') - (((double) request('fuel_amount') / 100) * (double) 20), 2);
 
+        return $numberOfLitres;
+
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
             // Set the Stripe secret key.

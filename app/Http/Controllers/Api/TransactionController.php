@@ -100,9 +100,9 @@ class TransactionController extends Controller
         }
 
         // Assign values to variables.
-        $fuelAmount = (double) request('fuel_amount');
-        $pricePerLitre = (double) $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = (double) $fuelAmount / (double) $pricePerLitre;
+        $fuelAmount = (float) request('fuel_amount');
+        $pricePerLitre = (float) $fuelPrice[0]->price_per_litre;
+        $numberOfLitres = (float) $fuelAmount / (float) $pricePerLitre;
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -182,14 +182,14 @@ class TransactionController extends Controller
                     ->get();
 
                 // Assign values to variables.
-                $pricePerLitre = (double) $fuelPrice[0]->price_per_litre;
-                $fuelDiscountPercentage = (double) $rewards->fuel_discount_percentage;
-                $numberOfLitres = (double) $transactions[$i]->number_of_litres;
+                $pricePerLitre = (float) $fuelPrice[0]->price_per_litre;
+                $fuelDiscountPercentage = (float) $rewards->fuel_discount_percentage;
+                $numberOfLitres = (float) $transactions[$i]->number_of_litres;
 
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
                     // Calculate fuel price total.
-                    $totalPrice = ($pricePerLitre * $numberOfLitres) - ((($pricePerLitre * $numberOfLitres) / (double) 100) * $fuelDiscountPercentage);
+                    $totalPrice = ($pricePerLitre * $numberOfLitres) - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage);
                 } else {
                     // Calculate fuel price total.
                     $totalPrice = $pricePerLitre * $numberOfLitres;

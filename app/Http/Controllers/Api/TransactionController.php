@@ -127,7 +127,7 @@ class TransactionController extends Controller
             'fuel_type_id' => $fuelTypeId,
             'fuel_station_id' => request('fuel_station_id'),
             'transaction_date_time' => Carbon::now(),
-            'number_of_litres' => $numberOfLitres,
+            'number_of_litres' => (float) $numberOfLitres,
             'pump_number' => request('pump_number'),
             'fuel_discount_entitlement' => $discountEntitlement,
             'payment_method' => $paymentMethod,

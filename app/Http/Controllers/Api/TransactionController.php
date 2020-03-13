@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Events\MyEvent;
+use App\FuelCard;
 use App\FuelPrice;
 use App\FuelStation;
 use App\FuelType;
@@ -59,11 +60,17 @@ class TransactionController extends Controller
         return response()->json([]);
     }
 
+    /**
+     * Create a transaction for the user and turn on the pump.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function createTransaction(Request $request)
     {
         // Validation.
         $this->validate($request, [
             'fuel_station_id' => 'required',
+            'fuel_amount' => 'required',
             'pump_number' => 'required',
         ]);
 
@@ -73,28 +80,53 @@ class TransactionController extends Controller
         // Find the user.
         $user = User::find($id);
 
-        // User default payment mett
-        if (substr($user->default_payment_method, 0, 1) == 'p') {
+        // Get the price per litre for today.
+        $fuelTypeId = rand(1,4);
+        $fuelPrice = FuelPrice::select('price_per_litre')
+        ->where('fuel_station_id', request('fuel_station_id'))
+        ->where('fuel_type_id', $fuelTypeId)
+        ->whereDate('start_date', '<=', Carbon::now())
+        ->whereDate('end_date', '>=', Carbon::now())
+        ->get();
 
-            // Set the Stripe secret key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+        // Calculate the number of litres for the transaction.
+        $numberOfLitres = round((double) request('fuel_amount') / (double) $fuelPrice[0]->price_per_litre, 2);
 
-        $paymentMethod = \Stripe\PaymentMethod::retrieve(
-            $user->default_payment_method
-        );
-            // Return success.
-            return response()->json($paymentMethod->card->brand . "ending in " . $paymentMethod->card->last4);
+        // Check if the user is entitled to a fuel discount.
+        $userTransactionCount = Transaction::where('user_id', $id)->count();
+        if ($userTransactionCount == 0) {
+            $discountEntitlement = false;
+        } elseif (($userTransactionCount % 10) == 0) {
+            $discountEntitlement = true;
         }
 
+        // Retrieve details of the user's default payment method.
+        if (substr($user->default_payment_method, 0, 1) == 'p') {
+            // Set the Stripe secret key.
+            \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+            // Retrieve the default payment method.
+            $defaultPaymentMethod = \Stripe\PaymentMethod::retrieve(
+                $user->default_payment_method
+            );
+
+            // Set the default payment method details.
+            $paymentMethod = $defaultPaymentMethod->card->brand . " ending in " . $defaultPaymentMethod->card->last4;
+        } else {
+            // Set the default payment method details.
+            $paymentMethod = "Fuelcard ending in " . substr($user->fuelCard->fuel_card_no, -4);
+        }
+
+        // Create the user transaction record.
         Transaction::create([
             'user_id' => $id,
-            'fuel_type_id' => 1,
-            'fuel_station_id' => 1,
+            'fuel_type_id' => rand(1, 4),
+            'fuel_station_id' => request('fuel_station_id'),
             'transaction_date_time' => Carbon::now(),
-            'number_of_litres' => 23.56,
-            'pump_number' => 3,
-            'fuel_discount_entitlement' => false,
-            'payment_method' => 'Debit/Credit',
+            'number_of_litres' => $numberOfLitres,
+            'pump_number' => request('pump_number'),
+            'fuel_discount_entitlement' => $discountEntitlement,
+            'payment_method' => $paymentMethod,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

@@ -103,7 +103,8 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = Decimal::create(request('fuel_amount'), 2);
         $pricePerLitre = Decimal::create($fuelPrice[0]->price_per_litre, 2);
-        $numberOfLitres = Decimal::create($fuelAmount / $pricePerLitre, 2);
+        $calculation =  $fuelAmount / $pricePerLitre;
+        $numberOfLitres = Decimal::create($calculation, 2);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {

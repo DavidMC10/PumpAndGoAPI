@@ -296,7 +296,7 @@ class TransactionController extends Controller
             $discountRate = 0;
             // Calculate fuel price without vat.
             $priceExcVat = round($pricePerLitre * $numberOfLitres, 2);
-            return $priceExcVat;
+            // return $priceExcVat;
         }
 
         // Calculate vat.
@@ -304,6 +304,7 @@ class TransactionController extends Controller
 
         // Calculate fuel price with vat.
         $totalPrice = round($priceExcVat + (($priceExcVat / 100) * $vatRate), 2);
+        return $totalPrice;
 
         // Add data to the receipt object.
         $receipt = (object) [

@@ -113,6 +113,8 @@ class TransactionController extends Controller
         $fuelAmountIncVat = round($fuelAmount - (($fuelAmount / 100) * $vatRate), 2);
         $numberOfLitres = round($fuelAmountIncVat / $pricePerLitre, 2);
 
+        return $fuelAmountIncVat;
+
 
         // Calculate the number of litres for the transaction.
         // $fuelExVat = round($fuelAmount - (($fuelAmount / 100) * $vatRate), 2);

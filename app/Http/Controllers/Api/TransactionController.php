@@ -112,7 +112,7 @@ class TransactionController extends Controller
 
         $numberOfLitres2 = round($numberOfLitres, 2) * round($fuelPrice[0]->price_per_litre, 2);
 
-        return $numberOfLitres2;
+        return round($numberOfLitres2, 2);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {

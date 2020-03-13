@@ -99,7 +99,7 @@ class TransactionController extends Controller
             $discountEntitlement = false;
         }
 
-                     // Assign values to variables.
+        // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
         $numberOfLitres = $fuelAmount / $pricePerLitre;
@@ -315,9 +315,9 @@ class TransactionController extends Controller
             'fuel_type' => $fuelType->fuel_type_name,
             'number_of_litres' => number_format($transaction->number_of_litres, 2, '.', ''),
             'price_per_litre' => number_format($fuelPrice[0]->price_per_litre, 2, '.', ''),
-            'discount' => number_format($discountRate, 2, '.', ''),
-            'vat_rate' => number_format($vat->vat_rate, 2, '.', ''),
-            'price_excluding_vat' => strval($priceExVat),
+            'discount' => strval($discountRate),
+            'vat_rate' => strval($vat->vat_rate),
+            'price_excluding_vat' => number_format($priceExVat, 2, '.', ''),
             'vat' => number_format($vatTotal, 2, '.', ''),
             'total_price' => number_format($totalPrice, 2, '.', '')
         ];

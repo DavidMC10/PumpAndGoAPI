@@ -106,9 +106,9 @@ class TransactionController extends Controller
         $rewards = User::find($id)->reward;
 
         // Calculate the number of litres for the transaction.
-        $numberOfLitres = round((double) request('fuel_amount') - (((double) request('fuel_amount') / 100) * (double) 20), 2);
+        $fuelExVat = round((double) request('fuel_amount') - (((double) request('fuel_amount') / 100) * (double) 20), 2);
 
-        return $numberOfLitres;
+        $numberOfLitres = $fuelExVat / $fuelPrice[0]->price_per_litre;
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {

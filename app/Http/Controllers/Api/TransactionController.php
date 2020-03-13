@@ -115,7 +115,7 @@ class TransactionController extends Controller
             );
 
             // Set the default payment method details.
-            $paymentMethod = $defaultPaymentMethod->card->brand . " ending in " . $defaultPaymentMethod->card->last4;
+            $paymentMethod = ucfirst($defaultPaymentMethod->card->brand) . " ending in " . $defaultPaymentMethod->card->last4;
         } else {
             // Set the default payment method details.
             $paymentMethod = "Fuelcard ending in " . substr($user->fuelCard->fuel_card_no, -4);
@@ -285,7 +285,7 @@ class TransactionController extends Controller
             $priceExVat = $totalPrice - (($totalPrice / 100) * $vatRate);
 
             // Calculate total Vat.
-            $vatTotal = ($priceExVat / 100) * $vat->vat_rate;
+            $vatTotal = ($totalPrice / 100) * $vat->vat_rate;
         } else {
             // Set discount percentage to 0.
             $discountRate = 0;
@@ -297,9 +297,8 @@ class TransactionController extends Controller
             $priceExVat = $totalPrice - (($totalPrice / 100) * $vatRate);
 
             // Calculate total Vat.
-            $vatTotal = ($priceExVat / 100) * $vat->vat_rate;
+            $vatTotal = ($totalPrice / 100) * $vat->vat_rate;
         }
-
 
         // Add data to the receipt object.
         $receipt = (object) [

@@ -183,9 +183,9 @@ class TransactionController extends Controller
                     ->get();
 
                 // Assign values to variables.
-                $pricePerLitre = Decimal::create($fuelPrice[0]->price_per_litre, 2);
-                $fuelDiscountPercentage = Decimal::create($rewards->fuel_discount_percentage, 2);
-                $numberOfLitres = Decimal::create($transactions[$i]->number_of_litres, 2);
+                $pricePerLitre = $fuelPrice[0]->price_per_litre;
+                $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
+                $numberOfLitres = $transactions[$i]->number_of_litres;
 
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
@@ -266,10 +266,10 @@ class TransactionController extends Controller
             ->get();
 
         // Assign values to variables.
-        $pricePerLitre = Decimal::create($fuelPrice[0]->price_per_litre, 2);
-        $fuelDiscountPercentage =  Decimal::create($rewards->fuel_discount_percentage, 2);
-        $numberOfLitres = Decimal::create($transaction->number_of_litres, 2);
-        $vatRate = Decimal::create($vat->vat_rate, 2);
+        $pricePerLitre = $fuelPrice[0]->price_per_litre;
+        $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
+        $numberOfLitres = $transaction->number_of_litres;
+        $vatRate = $vat->vat_rate;
 
         // If the user is entitled to a discount apply it.
         if ($transaction->fuel_discount_entitlement == true) {

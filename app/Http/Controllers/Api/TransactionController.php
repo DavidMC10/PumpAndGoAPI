@@ -103,7 +103,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = Decimal::create(request('fuel_amount'), 2);
         $pricePerLitre = Decimal::create($fuelPrice[0]->price_per_litre, 2);
-        $numberOfLitres = $fuelAmount / $pricePerLitre;
+        $numberOfLitres = Decimal::create($fuelAmount / $pricePerLitre, 2);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -190,10 +190,10 @@ class TransactionController extends Controller
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
                     // Calculate fuel price total.
-                    $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
+                    $totalPrice = Decimal::create(($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100)), 2);
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = $pricePerLitre * $numberOfLitres;
+                    $totalPrice = Decimal::create($pricePerLitre * $numberOfLitres, 2);
                 }
 
                 // Get the date of the transaction.

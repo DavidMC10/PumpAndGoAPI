@@ -31,6 +31,9 @@ class TransactionController extends Controller
             'fuel_amount' => 'required',
         ]);
 
+           // Get the Vat Rate on fuel.
+           $vat = Vat::select('vat_rate')->first();
+
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
@@ -89,9 +92,6 @@ class TransactionController extends Controller
         ->whereDate('end_date', '>=', Carbon::now())
         ->get();
 
-        // Calculate the number of litres for the transaction.
-        $numberOfLitres = round((double) request('fuel_amount') / (double) $fuelPrice[0]->price_per_litre, 2);
-
         // Check if the user is entitled to a fuel discount.
         $userTransactionCount = Transaction::where('user_id', $id)->count();
         if ($userTransactionCount == 0) {
@@ -99,6 +99,12 @@ class TransactionController extends Controller
         } elseif (($userTransactionCount % 10) == 0) {
             $discountEntitlement = true;
         }
+
+        // Get user rewards.
+        $rewards = User::find($id)->reward;
+
+        // Calculate the number of litres for the transaction.
+        $numberOfLitres = round((double) request('fuel_amount') - (((double) request('fuel_amount') / 100) * (double) 20), 2);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {

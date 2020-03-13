@@ -14,7 +14,6 @@ use App\Vat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use NumberFormatter;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
@@ -100,12 +99,10 @@ class TransactionController extends Controller
             $discountEntitlement = false;
         }
 
-        $fmt = new NumberFormatter( 'de_DE', NumberFormatter::CURRENCY);
-
         // Assign values to variables.
-        $fuelAmount = $fmt->formatCurrency((float) request('fuel_amount'), "EUR");
-        $pricePerLitre = $fmt->formatCurrency((float) $fuelPrice[0]->price_per_litre, "EUR");
-        $numberOfLitres = $fmt->formatCurrency((float) $fuelAmount / (float) $pricePerLitre, "EUR");
+        $fuelAmount = (float) request('fuel_amount');
+        $pricePerLitre = (float) $fuelPrice[0]->price_per_litre;
+        $numberOfLitres = $fuelAmount / $pricePerLitre;
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -192,7 +189,7 @@ class TransactionController extends Controller
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
                     // Calculate fuel price total.
-                    $totalPrice = ($pricePerLitre * $numberOfLitres) - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage);
+                    $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
                     $totalPrice = $pricePerLitre * $numberOfLitres;
@@ -279,7 +276,7 @@ class TransactionController extends Controller
             $discountRate = $rewards->fuel_discount_percentage;
 
             // Calculate fuel price total.
-            $totalPrice = ($pricePerLitre * $numberOfLitres) - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage);
+            $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
 
             // Calculate fuel price total including discount without Vat.
             $priceExVat = $totalPrice - (($totalPrice / 100) * $vatRate);

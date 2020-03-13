@@ -110,6 +110,10 @@ class TransactionController extends Controller
 
         $numberOfLitres = (double) $fuelExVat / (double) $fuelPrice[0]->price_per_litre;
 
+        $numberOfLitres2 = $numberOfLitres * $fuelPrice[0]->price_per_litre;
+
+        return $numberOfLitres2;
+
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
             // Set the Stripe secret key.
@@ -193,7 +197,7 @@ class TransactionController extends Controller
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
                     // Calculate fuel price without vat and including discount.
-                    $priceExcVat = round( (double) $fuelPrice[0]->price_per_litre * (double) $transactions[$i]->number_of_litres - ((( (double) $fuelPrice[0]->price_per_litre * (double) $transactions[$i]->number_of_litres) / (double) 100) * $rewards->fuel_discount_percentage), 2);
+                    $priceExcVat = round((double) $fuelPrice[0]->price_per_litre * (double) $transactions[$i]->number_of_litres - ((( (double) $fuelPrice[0]->price_per_litre * (double) $transactions[$i]->number_of_litres) / (double) 100) * $rewards->fuel_discount_percentage), 2);
                 } else {
                     // Calculate fuel price without vat.
                     $priceExcVat = round((double) $fuelPrice[0]->price_per_litre * (double) $transactions[$i]->number_of_litres, 2);

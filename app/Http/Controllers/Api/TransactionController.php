@@ -14,6 +14,7 @@ use App\Vat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use NumberFormatter;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
@@ -99,10 +100,12 @@ class TransactionController extends Controller
             $discountEntitlement = false;
         }
 
+        $fmt = new NumberFormatter( 'de_DE', NumberFormatter::CURRENCY);
+
         // Assign values to variables.
-        $fuelAmount = (float) request('fuel_amount');
-        $pricePerLitre = (float) $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = (float) $fuelAmount / (float) $pricePerLitre;
+        $fuelAmount = $fmt->formatCurrency((float) request('fuel_amount'), "EUR");
+        $pricePerLitre = $fmt->formatCurrency((float) $fuelPrice[0]->price_per_litre, "EUR");
+        $numberOfLitres = $fmt->formatCurrency((float) $fuelAmount / (float) $pricePerLitre, "EUR");
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -303,7 +306,7 @@ class TransactionController extends Controller
             'fuel_station_address_1' => $fuelStation->address1,
             'fuel_station_address_2' => $fuelStation->address2,
             'fuel_station_address_city_town' => $fuelStation->city_town,
-            'transaction_date' => Carbon::parse($transaction->transaction_date_time)->format('d/m/Y H:i:s'),
+            'transaction_date' => Carbon::parse($transaction->transaction_date_time)->format('d/m/Y H:i'),
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'payment_method' => $transaction->payment_method,

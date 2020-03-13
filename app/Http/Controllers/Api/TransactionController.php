@@ -185,14 +185,14 @@ class TransactionController extends Controller
                 $vat = Vat::select('vat_rate')->first();
 
                 // Assign values to variables.
-                $pricePerLitre = $fuelPrice[0]->price_per_litre;
-                $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
-                $numberOfLitres = $transactions[$i]->number_of_litres;
+                $pricePerLitre = (double) $fuelPrice[0]->price_per_litre;
+                $fuelDiscountPercentage = (double) $rewards->fuel_discount_percentage;
+                $numberOfLitres = (double) $transactions[$i]->number_of_litres;
 
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
                     // Calculate fuel price total.
-                    $totalPrice = ($pricePerLitre * $numberOfLitres) - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage);
+                    $totalPrice = ($pricePerLitre * $numberOfLitres) - ((($pricePerLitre * $numberOfLitres) / (double) 100) * $fuelDiscountPercentage);
                 } else {
                     // Calculate fuel price total.
                     $totalPrice = $pricePerLitre * $numberOfLitres;

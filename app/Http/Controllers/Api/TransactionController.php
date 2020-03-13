@@ -110,6 +110,7 @@ class TransactionController extends Controller
         $fuelAmount = round(request('fuel_amount'), 2);
         $pricePerLitre = round($fuelPrice[0]->price_per_litre, 2);
         $vatRate = round($vat->vat_rate, 2);
+        $numberOfLitres =  round($fuelAmount / $pricePerLitre, 2);
 
 
         // Calculate the number of litres for the transaction.
@@ -142,7 +143,7 @@ class TransactionController extends Controller
             'fuel_type_id' => rand(1, 4),
             'fuel_station_id' => request('fuel_station_id'),
             'transaction_date_time' => Carbon::now(),
-            'number_of_litres' => $fuelAmount,
+            'number_of_litres' => $numberOfLitres,
             'pump_number' => request('pump_number'),
             'fuel_discount_entitlement' => $discountEntitlement,
             'payment_method' => $paymentMethod,

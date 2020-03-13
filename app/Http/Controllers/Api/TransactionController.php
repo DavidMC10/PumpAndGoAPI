@@ -98,6 +98,8 @@ class TransactionController extends Controller
             $discountEntitlement = false;
         } elseif (($userTransactionCount % 10) == 0) {
             $discountEntitlement = true;
+        } else {
+            $discountEntitlement = false;
         }
 
         // Get user rewards.

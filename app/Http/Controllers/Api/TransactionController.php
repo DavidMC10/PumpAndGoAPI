@@ -74,7 +74,7 @@ class TransactionController extends Controller
         $user = User::find($id);
 
          // Return success.
-         return response()->json(['success' => substr($user->default_payment_method, 1, 1)]);
+         return response()->json(['success' => substr($user->default_payment_method, 0, 1)]);
 
         // User default payment mett
         if (substr($user->default_payment_method, 1, 1) == 'p') {

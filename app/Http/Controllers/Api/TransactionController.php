@@ -108,6 +108,8 @@ class TransactionController extends Controller
         // Calculate the number of litres for the transaction.
         $fuelExVat = round((double) request('fuel_amount') - (((double) request('fuel_amount') / 100) * (double) 20), 2);
 
+        return $fuelExVat;
+
         $numberOfLitres = $fuelExVat / $fuelPrice[0]->price_per_litre;
 
         // Retrieve details of the user's default payment method.

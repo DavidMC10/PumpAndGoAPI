@@ -303,7 +303,7 @@ class TransactionController extends Controller
             'fuel_station_address_1' => $fuelStation->address1,
             'fuel_station_address_2' => $fuelStation->address2,
             'fuel_station_address_city_town' => $fuelStation->city_town,
-            'transaction_date' => Carbon::parse($transaction->transaction_date_time)->format('d/m/y h:m'),
+            'transaction_date' => Carbon::parse($transaction->transaction_date_time)->format('d/m/Y H:i:s'),
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'payment_method' => $transaction->payment_method,

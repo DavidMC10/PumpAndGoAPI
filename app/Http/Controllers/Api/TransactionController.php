@@ -289,21 +289,23 @@ class TransactionController extends Controller
         if ($transaction->fuel_discount_entitlement == true) {
             // Set discount percentage to the db value.
             $discountRate = $rewards->fuel_discount_percentage;
-            // Calculate fuel price without vat and including discount.
-            $priceExcVat = round($pricePerLitre * $numberOfLitres - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage), 2);
+            $priceExVat = 0;
+            // Calculate fuel price total including discount.
+            $totalPrice = round($pricePerLitre * $numberOfLitres - ((($pricePerLitre * $numberOfLitres) / 100) * $fuelDiscountPercentage), 2);
         } else {
             // Set discount percentage to 0.
             $discountRate = 0;
-            // Calculate fuel price without vat.
-            $priceExcVat = round($pricePerLitre * $numberOfLitres, 2);
+
+            // Calculate fuel price total.
+            $totalPrice = round($pricePerLitre * $numberOfLitres, 2);
+
+            $priceExVat = round($totalPrice - (($totalPrice / 100) * $vatRate), 2);
             // return $priceExcVat;
         }
 
         // Calculate vat.
-        $vatTotal = round(($priceExcVat / 100) * $vat->vat_rate, 2);
+        $vatTotal = round(($priceExVat / 100) * $vat->vat_rate, 2);
 
-        // Calculate fuel price with vat.
-        $totalPrice = round($priceExcVat + (($priceExcVat / 100) * $vatRate), 2);
         return $totalPrice;
 
         // Add data to the receipt object.
@@ -322,7 +324,7 @@ class TransactionController extends Controller
             'price_per_litre' => $fuelPrice[0]->price_per_litre,
             'discount' => strval($discountRate),
             'vat_rate' => round($vat->vat_rate),
-            'price_excluding_vat' => strval($priceExcVat),
+            'price_excluding_vat' => strval($priceExVat),
             'vat' => strval($vatTotal),
             'total_price' => strval($totalPrice)
         ];

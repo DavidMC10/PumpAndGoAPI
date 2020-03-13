@@ -152,7 +152,9 @@ class TransactionController extends Controller
         $id = Auth::id();
 
         // Get user transactions.
-        $transactions = User::find($id)->transaction->sortBy('transaction_id');
+        $transactions = User::find($id)->transaction->sortByDesc('transaction_id');
+
+        return $transactions;
 
         // Get user rewards.
         $rewards = User::find($id)->reward;

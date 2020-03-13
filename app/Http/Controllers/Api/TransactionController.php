@@ -31,9 +31,6 @@ class TransactionController extends Controller
             'fuel_amount' => 'required',
         ]);
 
-           // Get the Vat Rate on fuel.
-           $vat = Vat::select('vat_rate')->first();
-
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
@@ -111,9 +108,9 @@ class TransactionController extends Controller
         $pricePerLitre = round($fuelPrice[0]->price_per_litre, 2);
         $vatRate = round($vat->vat_rate, 2);
         $fuelAmountIncVat = round($fuelAmount - (($fuelAmount / 100) * $vatRate), 2);
-        $numberOfLitres = round($fuelAmountIncVat / $pricePerLitre, 2);
+        $numberOfLitres = round($fuelAmount / $pricePerLitre, 2);
 
-        return $fuelAmountIncVat;
+        // return $fuelAmountIncVat;
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {

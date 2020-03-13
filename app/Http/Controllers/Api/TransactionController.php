@@ -83,7 +83,7 @@ class TransactionController extends Controller
             $user->default_payment_method
         );
             // Return success.
-            return response()->json($paymentMethod->card->brand);
+            return response()->json($paymentMethod->card->brand . "ending in " . $paymentMethod->card->last4);
         }
 
         Transaction::create([

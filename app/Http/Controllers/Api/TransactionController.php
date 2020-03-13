@@ -156,7 +156,7 @@ class TransactionController extends Controller
 
         $transactions = Transaction::where('user_id', $id)->orderBy('transaction_id', 'DESC')->get();
 
-        return $transactions;
+        return $transactions[0];
 
         // Get user rewards.
         $rewards = User::find($id)->reward;

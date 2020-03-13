@@ -195,14 +195,14 @@ class TransactionController extends Controller
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
                     // Calculate fuel price without vat and including discount.
-                    $priceExcVat = round($fuelPrice[0]->price_per_litre * $transactions[$i]->number_of_litres - ((($fuelPrice[0]->price_per_litre * $transactions[$i]->number_of_litres) / 100) * $rewards->fuel_discount_percentage), 2);
+                    $priceExcVat = round( (double) $fuelPrice[0]->price_per_litre * (double) $transactions[$i]->number_of_litres - ((( (double) $fuelPrice[0]->price_per_litre * (double) $transactions[$i]->number_of_litres) / (double) 100) * $rewards->fuel_discount_percentage), 2);
                 } else {
                     // Calculate fuel price without vat.
-                    $priceExcVat = round($fuelPrice[0]->price_per_litre * $transactions[$i]->number_of_litres, 2);
+                    $priceExcVat = round((double) $fuelPrice[0]->price_per_litre * (double) $transactions[$i]->number_of_litres, 2);
                 }
 
                 // Calculate fuel price with vat.
-                $totalPrice = strval(round($priceExcVat + (($priceExcVat / 100) * $vat->vat_rate), 2));
+                $totalPrice = strval(round( (double) $priceExcVat + (( (double) $priceExcVat / (double) 100) * (double) $vat->vat_rate), 2));
 
                 // Get the date of the transaction.
                 $transactionDate = Carbon::parse($transactions[$i]->transaction_date_time)->format('d/m/Y');

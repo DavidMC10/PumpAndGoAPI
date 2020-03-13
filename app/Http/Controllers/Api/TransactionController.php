@@ -275,7 +275,7 @@ class TransactionController extends Controller
             ->whereDate('end_date', '>=', $transaction->transaction_date_time)
             ->get();
 
-            return $fuelPrice[0]->price_per_litre * $transaction->number_of_litres;
+            return round($fuelPrice[0]->price_per_litre * $transaction->number_of_litres, 2);
 
         // If the user is entitled to a discount apply it.
         if ($transaction->fuel_discount_entitlement == true) {

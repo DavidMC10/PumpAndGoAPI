@@ -110,7 +110,7 @@ class TransactionController extends Controller
 
         $numberOfLitres = (double) $fuelExVat / (double) $fuelPrice[0]->price_per_litre;
 
-        $numberOfLitres2 = $numberOfLitres * $fuelPrice[0]->price_per_litre;
+        $numberOfLitres2 = round($numberOfLitres, 2) * round($fuelPrice[0]->price_per_litre, 2);
 
         return $numberOfLitres2;
 

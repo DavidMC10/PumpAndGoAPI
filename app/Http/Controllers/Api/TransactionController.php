@@ -12,7 +12,6 @@ use App\Transaction;
 use App\User;
 use App\Vat;
 use Carbon\Carbon;
-use RtLopez\Decimal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -103,7 +102,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = Decimal::create($fuelAmount / $pricePerLitre, 2);
+        $numberOfLitres = bcmul($fuelAmount / $pricePerLitre, 2);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -190,10 +189,15 @@ class TransactionController extends Controller
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
                     // Calculate fuel price total.
-                    $totalPrice = Decimal::create(($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100)), 2);
+                    $fuelAmount = bcmul($pricePerLitre, $numberOfLitres, 2);
+                    $discountPercentage = bcdiv($fuelDiscountPercentage / 100, 2);
+                    $totalDiscount = bcmul($fuelAmount, $discountPercentage);
+                    $totalPrice = bcsub($fuelAmount, $totalDiscount, 2);
+                    // $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = Decimal::create($pricePerLitre * $numberOfLitres, 2);
+                    $totalPrice = bcmul($pricePerLitre, $numberOfLitres, 2);
+                    // $totalPrice = $pricePerLitre * $numberOfLitres;
                 }
 
                 // Get the date of the transaction.
@@ -208,7 +212,7 @@ class TransactionController extends Controller
                     'fuel_station_name' => $fuelStationName,
                     'total_price' => $totalPrice,
                     'transaction_date' => $transactionDate,
-                    'number_of_litres' => $numOfLitres
+                    'number_of_litres' =>$numOfLitres
                 );
             }
         } else {

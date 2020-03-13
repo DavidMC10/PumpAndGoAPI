@@ -35,6 +35,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('visitcount', 'Api\RewardController@countNumberOfVisitsUntilFuelDiscount');
     Route::post('getrewards', 'Api\RewardController@getUserRewards');
     Route::post('createcharge', 'Api\TransactionController@createCharge');
+    Route::post('createtransaction', 'Api\TransactionController@createTransaction');
     Route::post('gettransactionhistory', 'Api\TransactionController@generateTransactionHistory');
     Route::post('getreceipt', 'Api\TransactionController@generateReceipt');
     Route::post('testing', 'Api\TransactionController@transactionTest');

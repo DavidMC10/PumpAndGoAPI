@@ -61,17 +61,42 @@ class TransactionController extends Controller
 
     public function createTransaction(Request $request)
     {
+        // Validation.
+        $this->validate($request, [
+            'fuel_station_id' => 'required',
+            'pump_number' => 'required',
+        ]);
+
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
         // Find the user.
         $user = User::find($id);
 
+        // User default payment mett
+        if (substr($user->default_payment_method, 1, 1) == 'p') {
+            // Return success.
+            return response()->json(['success' => $user]);
+        }
+
+
+        Transaction::create([
+            'user_id' => $id,
+            'fuel_type_id' => 1,
+            'fuel_station_id' => 1,
+            'transaction_date_time' => Carbon::now(),
+            'number_of_litres' => 23.56,
+            'pump_number' => 3,
+            'fuel_discount_entitlement' => false,
+            'payment_method' => 'Debit/Credit',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
         for ($i = 0; $i < 10; $i++) {
             event(new MyEvent('hello world' . $i));
             sleep(2);
         }
-
     }
 
     /**

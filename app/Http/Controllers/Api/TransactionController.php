@@ -100,9 +100,9 @@ class TransactionController extends Controller
         }
 
         // Assign values to variables.
-        $fuelAmount = request('fuel_amount');
-        $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = $fuelAmount / $pricePerLitre;
+        $fuelAmount = (double) request('fuel_amount');
+        $pricePerLitre = (double) $fuelPrice[0]->price_per_litre;
+        $numberOfLitres = (double) $fuelAmount / (double) $pricePerLitre;
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -180,9 +180,6 @@ class TransactionController extends Controller
                     ->whereDate('start_date', '<=', $transactions[$i]->transaction_date_time)
                     ->whereDate('end_date', '>=', $transactions[$i]->transaction_date_time)
                     ->get();
-
-                // Get the Vat Rate on fuel.
-                $vat = Vat::select('vat_rate')->first();
 
                 // Assign values to variables.
                 $pricePerLitre = (double) $fuelPrice[0]->price_per_litre;
@@ -268,10 +265,10 @@ class TransactionController extends Controller
             ->get();
 
         // Assign values to variables.
-        $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
-        $numberOfLitres = $transaction->number_of_litres;
-        $vatRate = $vat->vat_rate;
+        $pricePerLitre = (double) $fuelPrice[0]->price_per_litre;
+        $fuelDiscountPercentage =  (double) $rewards->fuel_discount_percentage;
+        $numberOfLitres = (double) $transaction->number_of_litres;
+        $vatRate = (double) $vat->vat_rate;
 
         // If the user is entitled to a discount apply it.
         if ($transaction->fuel_discount_entitlement == true) {

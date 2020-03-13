@@ -102,7 +102,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = bcmul($fuelAmount / $pricePerLitre, 2);
+        $numberOfLitres = bcmul($fuelAmount, $pricePerLitre, 2);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -182,22 +182,17 @@ class TransactionController extends Controller
                     ->get();
 
                 // Assign values to variables.
-                $pricePerLitre = $fuelPrice[0]->price_per_litre;
-                $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
-                $numberOfLitres = $transactions[$i]->number_of_litres;
+                $pricePerLitre = number_format($fuelPrice[0]->price_per_litre, 2, '.', '');
+                $fuelDiscountPercentage = number_format($rewards->fuel_discount_percentage, 2, '.', '');
+                $numberOfLitres = number_format($transactions[$i]->number_of_litres, 2, '.', '');
 
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
                     // Calculate fuel price total.
-                    $fuelAmount = bcmul($pricePerLitre, $numberOfLitres, 2);
-                    $discountPercentage = bcdiv($fuelDiscountPercentage / 100, 2);
-                    $totalDiscount = bcmul($fuelAmount, $discountPercentage);
-                    $totalPrice = bcsub($fuelAmount, $totalDiscount, 2);
-                    // $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
+                    $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = bcmul($pricePerLitre, $numberOfLitres, 2);
-                    // $totalPrice = $pricePerLitre * $numberOfLitres;
+                    $totalPrice = $pricePerLitre * $numberOfLitres;
                 }
 
                 // Get the date of the transaction.
@@ -210,9 +205,9 @@ class TransactionController extends Controller
                 $transactionHistory['data'][] = array(
                     'transaction_id' => $transactionId,
                     'fuel_station_name' => $fuelStationName,
-                    'total_price' => $totalPrice,
+                    'total_price' => number_format($totalPrice, 2, '.', ''),
                     'transaction_date' => $transactionDate,
-                    'number_of_litres' =>$numOfLitres
+                    'number_of_litres' =>  number_format($numOfLitres, 2, '.', '')
                 );
             }
         } else {

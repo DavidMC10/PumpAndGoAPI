@@ -73,15 +73,18 @@ class TransactionController extends Controller
         // Find the user.
         $user = User::find($id);
 
-         // Return success.
-         return response()->json(['success' => substr($user->default_payment_method, 0, 1)]);
-
         // User default payment mett
-        if (substr($user->default_payment_method, 1, 1) == 'p') {
-            // Return success.
-            return response()->json(['success' => $user]);
-        }
+        if (substr($user->default_payment_method, 0, 1) == 'p') {
 
+            // Set the Stripe secret key.
+        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+        $paymentMethod = \Stripe\PaymentMethod::retrieve(
+            $user->default_payment_method
+        );
+            // Return success.
+            return response()->json($paymentMethod);
+        }
 
         Transaction::create([
             'user_id' => $id,

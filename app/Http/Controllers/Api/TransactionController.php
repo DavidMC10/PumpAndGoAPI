@@ -115,14 +115,6 @@ class TransactionController extends Controller
 
         return $fuelAmountIncVat;
 
-
-        // Calculate the number of litres for the transaction.
-        // $fuelExVat = round($fuelAmount - (($fuelAmount / 100) * $vatRate), 2);
-
-        // $numberOfLitres = (double) $fuelExVat / (double) $fuelPrice[0]->price_per_litre;
-
-        // $numberOfLitres2 = round($numberOfLitres, 2) * round($fuelPrice[0]->price_per_litre, 2);
-
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
             // Set the Stripe secret key.
@@ -307,6 +299,7 @@ class TransactionController extends Controller
             $discountRate = 0;
             // Calculate fuel price without vat.
             $priceExcVat = round($pricePerLitre * $numberOfLitres, 2);
+            return $priceExcVat;
         }
 
         // Calculate vat.

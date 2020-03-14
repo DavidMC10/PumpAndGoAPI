@@ -11,8 +11,6 @@ use App\Http\Controllers\Controller;
 use App\Transaction;
 use App\User;
 use App\Vat;
-use Brick\Math\BigDecimal;
-use Brick\Math\RoundingMode;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -131,7 +129,7 @@ class TransactionController extends Controller
             'fuel_type_id' => $fuelTypeId,
             'fuel_station_id' => request('fuel_station_id'),
             'transaction_date_time' => Carbon::now(),
-            'number_of_litres' => round($numberOfLitres, 2),
+            'number_of_litres' => $numberOfLitres,
             'pump_number' => request('pump_number'),
             'fuel_discount_entitlement' => $discountEntitlement,
             'payment_method' => $paymentMethod,

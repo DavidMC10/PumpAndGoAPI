@@ -207,7 +207,7 @@ class TransactionController extends Controller
                     'fuel_station_name' => $fuelStationName,
                     'total_price' => $totalPrice,
                     'transaction_date' => $transactionDate,
-                    'number_of_litres' =>  number_format($numOfLitres, 2, '.', '')
+                    'number_of_litres' =>  $numOfLitres
                 );
             }
         } else {

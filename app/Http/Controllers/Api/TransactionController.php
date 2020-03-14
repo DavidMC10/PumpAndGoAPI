@@ -195,7 +195,7 @@ class TransactionController extends Controller
                     $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = $pricePerLitre * $numberOfLitres;
+                    $totalPrice = ($pricePerLitre * $numberOfLitres) * 100;
                 }
 
                 // Get the date of the transaction.

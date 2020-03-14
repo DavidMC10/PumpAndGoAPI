@@ -187,7 +187,7 @@ class TransactionController extends Controller
                 // Assign values to variables.
                 $pricePerLitre = $fuelPrice[0]->price_per_litre * 100;
                 $fuelDiscountPercentage = $rewards->fuel_discount_percentage * 100;
-                $numberOfLitres = $transactions[$i]->number_of_litres * 100;
+                $numberOfLitres = ($transactions[$i]->number_of_litres * 100) / 100;
 
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
@@ -208,7 +208,7 @@ class TransactionController extends Controller
                 $transactionHistory['data'][] = array(
                     'transaction_id' => $transactionId,
                     'fuel_station_name' => $fuelStationName,
-                    'total_price' => $totalPrice / 100,
+                    'total_price' => number_format((float) $totalPrice, 2, '.', ''),
                     'transaction_date' => $transactionDate,
                     'number_of_litres' =>  $numOfLitres
                 );

@@ -102,7 +102,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = bcdiv($fuelAmount, $pricePerLitre, 2);
+        $numberOfLitres = $fuelAmount / $pricePerLitre;
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -127,7 +127,7 @@ class TransactionController extends Controller
             'fuel_type_id' => $fuelTypeId,
             'fuel_station_id' => request('fuel_station_id'),
             'transaction_date_time' => Carbon::now(),
-            'number_of_litres' => $numberOfLitres,
+            'number_of_litres' => number_format($numberOfLitres, 2, '.', ''),
             'pump_number' => request('pump_number'),
             'fuel_discount_entitlement' => $discountEntitlement,
             'payment_method' => $paymentMethod,

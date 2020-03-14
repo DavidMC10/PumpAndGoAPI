@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Transaction;
 use App\User;
 use App\Vat;
+use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,7 +103,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = bcdiv($fuelAmount, $pricePerLitre, 8);
+        $numberOfLitres = BigDecimal::of($fuelAmount / $pricePerLitre);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -192,7 +193,7 @@ class TransactionController extends Controller
                     $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = bcmul($pricePerLitre,$numberOfLitres, 9);
+                    $totalPrice = BigDecimal::of($pricePerLitre * $numberOfLitres);
                 }
 
                 // Get the date of the transaction.

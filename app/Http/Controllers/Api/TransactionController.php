@@ -192,7 +192,7 @@ class TransactionController extends Controller
                     $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = bcmul($pricePerLitre,$numberOfLitres, 2);
+                    $totalPrice = 0;
                 }
 
                 // Get the date of the transaction.

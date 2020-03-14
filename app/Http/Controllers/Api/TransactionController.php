@@ -206,7 +206,7 @@ class TransactionController extends Controller
                 $transactionHistory['data'][] = array(
                     'transaction_id' => $transactionId,
                     'fuel_station_name' => $fuelStationName,
-                    'total_price' => round($totalPrice, 2),
+                    'total_price' => BigDecimal::of($totalPrice),
                     'transaction_date' => $transactionDate,
                     'number_of_litres' =>  $numOfLitres
                 );

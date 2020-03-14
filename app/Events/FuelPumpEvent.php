@@ -14,16 +14,16 @@ class FuelPumpEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $pumpNumber;
+    public $currentPumpAmount;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($pumpNumber)
+    public function __construct($currentPumpAmount)
     {
-        $this->pumpNumber = $pumpNumber;
+        $this->currentPumpAmount = $currentPumpAmount;
     }
 
     /**
@@ -33,11 +33,11 @@ class FuelPumpEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ["test"];
+        return ["fuel_pump"];
     }
 
     public function broadcastAs()
     {
-        return 'my-event';
+        return 'pumping';
     }
 }

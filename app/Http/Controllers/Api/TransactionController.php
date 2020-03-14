@@ -80,9 +80,6 @@ class TransactionController extends Controller
         // Find the user.
         $user = User::find($id);
 
-        // Find the fuel station.
-        $fuelStation = FuelStation::find(request('fuel_station_id'));
-
         // Get the price per litre for today.
         $fuelTypeId = rand(1, 4);
 
@@ -127,14 +124,6 @@ class TransactionController extends Controller
             $paymentMethod = "Fuelcard ending in " . substr($user->fuelCard->fuel_card_no, -4);
         }
 
-        // Add data to the receipt object.
-        // $receipt = (object) [
-        //     'fuel_station_name' => $fuelStation->name,
-        //     'pump_number' => $fuelStation->address1,
-        //     'fuel_amount' =>
-        // ];
-
-
         // Create the user transaction record.
         Transaction::create([
             'user_id' => $id,
@@ -149,10 +138,11 @@ class TransactionController extends Controller
             'updated_at' => Carbon::now(),
         ]);
 
-        for ($i = 0; $i < (int) $fuelAmount; $i++) {
-            event(new FuelPumpEvent(number_format($i+1, 2, '.', '')));
+        for ($currentPumpAmount = 0; $currentPumpAmount < (int) $fuelAmount; $currentPumpAmount++) {
+            event(new FuelPumpEvent(number_format($currentPumpAmount+1, 2, '.', '')));
             sleep(1);
         }
+        event(new FuelPumpEvent("finished"));
     }
 
     /**

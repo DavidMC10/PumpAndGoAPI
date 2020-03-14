@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\FuelPumpEvent;
 use App\Events\MyEvent;
 use App\FuelCard;
 use App\FuelPrice;
@@ -79,6 +80,9 @@ class TransactionController extends Controller
         // Find the user.
         $user = User::find($id);
 
+        // Find the fuel station.
+        $fuelStation = FuelStation::find(request('fuel_station_id'));
+
         // Get the price per litre for today.
         $fuelTypeId = rand(1, 4);
 
@@ -138,8 +142,8 @@ class TransactionController extends Controller
         ]);
 
         for ($i = 0; $i < 10; $i++) {
-            event(new MyEvent('hello world' . $i));
-            sleep(2);
+            event(new FuelPumpEvent($fuelStation->fuel_station_name, request('pump_number')));
+            sleep(1);
         }
     }
 
@@ -314,7 +318,7 @@ class TransactionController extends Controller
             'number_of_litres' => number_format($transaction->number_of_litres, 2, '.', ''),
             'price_per_litre' => number_format($fuelPrice[0]->price_per_litre, 2, '.', ''),
             'discount' => strval($discountRate),
-            'vat_rate' => strval($vat->vat_rate),
+            'vat_rate' => strval(round($vat->vat_rate)),
             'price_excluding_vat' => number_format($priceExVat, 2, '.', ''),
             'vat' => number_format($vatTotal, 2, '.', ''),
             'total_price' => number_format($totalPrice, 2, '.', '')

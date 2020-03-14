@@ -182,9 +182,9 @@ class TransactionController extends Controller
                     ->get();
 
                 // Assign values to variables.
-                $pricePerLitre = number_format($fuelPrice[0]->price_per_litre, 2, '.', '');
-                $fuelDiscountPercentage = number_format($rewards->fuel_discount_percentage, 2, '.', '');
-                $numberOfLitres = number_format($transactions[$i]->number_of_litres, 2, '.', '');
+                $pricePerLitre = $fuelPrice[0]->price_per_litre;
+                $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
+                $numberOfLitres = $transactions[$i]->number_of_litres;
 
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {

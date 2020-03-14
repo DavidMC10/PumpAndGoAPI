@@ -127,6 +127,14 @@ class TransactionController extends Controller
             $paymentMethod = "Fuelcard ending in " . substr($user->fuelCard->fuel_card_no, -4);
         }
 
+        // Add data to the receipt object.
+        // $receipt = (object) [
+        //     'fuel_station_name' => $fuelStation->name,
+        //     'pump_number' => $fuelStation->address1,
+        //     'fuel_amount' =>
+        // ];
+
+
         // Create the user transaction record.
         Transaction::create([
             'user_id' => $id,
@@ -141,8 +149,8 @@ class TransactionController extends Controller
             'updated_at' => Carbon::now(),
         ]);
 
-        for ($i = 0; $i < 10; $i++) {
-            event(new FuelPumpEvent($fuelStation->name, request('pump_number')));
+        for ($i = 0; $i < (int) $fuelAmount; $i++) {
+            event(new FuelPumpEvent($i));
             sleep(1);
         }
     }

@@ -14,7 +14,6 @@ class FuelPumpEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $fuelStationName;
     public $pumpNumber;
 
     /**
@@ -22,9 +21,8 @@ class FuelPumpEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($fuelStationName, $pumpNumber)
+    public function __construct($pumpNumber)
     {
-        $this->fuelStationName = $fuelStationName;
         $this->pumpNumber = $pumpNumber;
     }
 

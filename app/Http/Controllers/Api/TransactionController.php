@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
 {
-
     /**
      * Capture a charge for the user.
      *
@@ -83,6 +82,8 @@ class TransactionController extends Controller
 
         // Get the price per litre for today.
         $fuelTypeId = rand(1, 4);
+
+        return (['test' => $fuelTypeId, 'test2' => $fuelTypeId]);
         $fuelPrice = FuelPrice::select('price_per_litre')
             ->where('fuel_station_id', request('fuel_station_id'))
             ->where('fuel_type_id', $fuelTypeId)

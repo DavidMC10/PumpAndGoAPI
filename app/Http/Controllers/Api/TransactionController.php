@@ -83,7 +83,6 @@ class TransactionController extends Controller
         // Get the price per litre for today.
         $fuelTypeId = rand(1, 4);
 
-        return (['test' => $fuelTypeId, 'test2' => $fuelTypeId]);
         $fuelPrice = FuelPrice::select('price_per_litre')
             ->where('fuel_station_id', request('fuel_station_id'))
             ->where('fuel_type_id', $fuelTypeId)
@@ -103,8 +102,9 @@ class TransactionController extends Controller
 
         // Assign values to variables.
         $fuelAmount = request('fuel_amount');
-        $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = BigDecimal::of($fuelAmount / $pricePerLitre);
+        $pricePerLitre = BigDecimal::of($fuelPrice[0]->price_per_litre);
+        $numberOfLitres = BigDecimal::of($fuelAmount)->multipliedBy($pricePerLitre, 2);
+        // $numberOfLitres = BigDecimal::of($fuelAmount / $pricePerLitre);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {

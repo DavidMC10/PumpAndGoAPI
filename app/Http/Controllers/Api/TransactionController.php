@@ -104,7 +104,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = request('fuel_amount') * 100;
         $pricePerLitre = $fuelPrice[0]->price_per_litre * 100;
-        $numberOfLitres = $fuelAmount / $pricePerLitre;
+        $numberOfLitres = ($fuelAmount / $pricePerLitre) * 100;
         // $numberOfLitres = BigDecimal::of($fuelAmount / $pricePerLitre);
 
         // Retrieve details of the user's default payment method.

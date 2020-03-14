@@ -102,7 +102,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = bcdiv($fuelAmount, $pricePerLitre);
+        $numberOfLitres = bcdiv($fuelAmount, $pricePerLitre, 8);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -192,7 +192,7 @@ class TransactionController extends Controller
                     $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = bcmul($pricePerLitre,$numberOfLitres);
+                    $totalPrice = bcmul($pricePerLitre,$numberOfLitres, 9);
                 }
 
                 // Get the date of the transaction.

@@ -185,13 +185,13 @@ class TransactionController extends Controller
 
                 // Assign values to variables.
                 $pricePerLitre = $fuelPrice[0]->price_per_litre;
-                $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
+                $fuelDiscountPercentage = $rewards->fuel_discount_percentage / 100;
                 $numberOfLitres = $transactions[$i]->number_of_litres;
 
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
                     // Calculate fuel price total.
-                    $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
+                    $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage));
                 } else {
                     // Calculate fuel price total.
                     $totalPrice = $pricePerLitre * $numberOfLitres;
@@ -207,9 +207,9 @@ class TransactionController extends Controller
                 $transactionHistory['data'][] = array(
                     'transaction_id' => $transactionId,
                     'fuel_station_name' => $fuelStationName,
-                    'total_price' => round($totalPrice, 2),
+                    'total_price' => number_format($totalPrice, 2, '.', ''),
                     'transaction_date' => $transactionDate,
-                    'number_of_litres' =>  $numOfLitres
+                    'number_of_litres' => number_format($numOfLitres, 2, '.', ''),
                 );
             }
         } else {
@@ -268,7 +268,7 @@ class TransactionController extends Controller
 
         // Assign values to variables.
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
+        $fuelDiscountPercentage = $rewards->fuel_discount_percentage / 100;
         $numberOfLitres = $transaction->number_of_litres;
         $vatRate = $vat->vat_rate;
 
@@ -278,7 +278,7 @@ class TransactionController extends Controller
             $discountRate = $rewards->fuel_discount_percentage;
 
             // Calculate fuel price total.
-            $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
+            $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage));
 
             // Calculate fuel price total including discount without Vat.
             $priceExVat = $totalPrice - (($totalPrice / 100) * $vatRate);

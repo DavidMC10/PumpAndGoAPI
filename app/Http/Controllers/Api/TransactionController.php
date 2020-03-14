@@ -104,7 +104,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = BigDecimal::of($fuelPrice[0]->price_per_litre);
-        $numberOfLitres = BigDecimal::of($fuelAmount)->dividedBy($pricePerLitre, 2, RoundingMode::HALF_DOWN);
+        $numberOfLitres = BigDecimal::of($fuelAmount)->dividedBy($pricePerLitre, 2);
         // $numberOfLitres = BigDecimal::of($fuelAmount / $pricePerLitre);
 
         // Retrieve details of the user's default payment method.
@@ -195,7 +195,7 @@ class TransactionController extends Controller
                     $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = BigDecimal::of($pricePerLitre)->multipliedBy($numberOfLitres, 2);
+                    $totalPrice = BigDecimal::of($pricePerLitre)->multipliedBy($numberOfLitres);
                 }
 
                 // Get the date of the transaction.

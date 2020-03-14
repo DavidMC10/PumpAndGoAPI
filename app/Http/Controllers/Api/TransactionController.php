@@ -12,6 +12,7 @@ use App\Transaction;
 use App\User;
 use App\Vat;
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -103,7 +104,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = BigDecimal::of($fuelPrice[0]->price_per_litre);
-        $numberOfLitres = BigDecimal::of($fuelAmount)->dividedBy($pricePerLitre);
+        $numberOfLitres = BigDecimal::of($fuelAmount)->dividedBy($pricePerLitre, 2, RoundingMode::HALF_DOWN);
         // $numberOfLitres = BigDecimal::of($fuelAmount / $pricePerLitre);
 
         // Retrieve details of the user's default payment method.

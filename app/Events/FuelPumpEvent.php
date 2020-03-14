@@ -35,7 +35,7 @@ class FuelPumpEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['my-channel'];
+        return [$this->fuelStationName];
     }
 
     public function broadcastAs()

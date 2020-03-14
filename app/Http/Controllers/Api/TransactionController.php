@@ -195,7 +195,7 @@ class TransactionController extends Controller
                     $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = BigDecimal::of($pricePerLitre)->multipliedBy($numberOfLitres);
+                    $totalPrice = BigDecimal::of($pricePerLitre)->multipliedBy($numberOfLitres, 2);
                 }
 
                 // Get the date of the transaction.

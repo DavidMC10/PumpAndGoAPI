@@ -102,7 +102,7 @@ class TransactionController extends Controller
         // Assign values to variables.
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
-        $numberOfLitres = $fuelAmount / $pricePerLitre;
+        $numberOfLitres = bcdiv($fuelAmount, $pricePerLitre, 2);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -127,7 +127,7 @@ class TransactionController extends Controller
             'fuel_type_id' => $fuelTypeId,
             'fuel_station_id' => request('fuel_station_id'),
             'transaction_date_time' => Carbon::now(),
-            'number_of_litres' => number_format($numberOfLitres, 2, '.', ''),
+            'number_of_litres' => $numberOfLitres,
             'pump_number' => request('pump_number'),
             'fuel_discount_entitlement' => $discountEntitlement,
             'payment_method' => $paymentMethod,
@@ -192,7 +192,7 @@ class TransactionController extends Controller
                     $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = $pricePerLitre * $numberOfLitres;
+                    $totalPrice = bcmul($pricePerLitre,$numberOfLitres, 2);
                 }
 
                 // Get the date of the transaction.
@@ -205,7 +205,7 @@ class TransactionController extends Controller
                 $transactionHistory['data'][] = array(
                     'transaction_id' => $transactionId,
                     'fuel_station_name' => $fuelStationName,
-                    'total_price' => number_format($totalPrice, 2, '.', ''),
+                    'total_price' => $totalPrice,
                     'transaction_date' => $transactionDate,
                     'number_of_litres' =>  number_format($numOfLitres, 2, '.', '')
                 );

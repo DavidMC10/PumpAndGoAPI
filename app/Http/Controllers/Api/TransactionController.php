@@ -150,7 +150,7 @@ class TransactionController extends Controller
         ]);
 
         for ($i = 0; $i < (int) $fuelAmount; $i++) {
-            event(new FuelPumpEvent($i));
+            event(new FuelPumpEvent(number_format($i+1, 2, '.', '')));
             sleep(1);
         }
     }

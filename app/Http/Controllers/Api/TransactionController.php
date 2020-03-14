@@ -142,7 +142,7 @@ class TransactionController extends Controller
         ]);
 
         for ($i = 0; $i < 10; $i++) {
-            event(new FuelPumpEvent($fuelStation->fuel_station_name, request('pump_number')));
+            event(new FuelPumpEvent($fuelStation->name, request('pump_number')));
             sleep(1);
         }
     }

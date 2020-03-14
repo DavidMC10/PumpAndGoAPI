@@ -102,9 +102,9 @@ class TransactionController extends Controller
         }
 
         // Assign values to variables.
-        $fuelAmount = request('fuel_amount');
-        $pricePerLitre = BigDecimal::of($fuelPrice[0]->price_per_litre);
-        $numberOfLitres = BigDecimal::of($fuelAmount)->dividedBy($pricePerLitre, 2, RoundingMode::HALF_UP);
+        $fuelAmount = request('fuel_amount') * 100;
+        $pricePerLitre = $fuelPrice[0]->price_per_litre * 100;
+        $numberOfLitres = $fuelAmount / $pricePerLitre;
         // $numberOfLitres = BigDecimal::of($fuelAmount / $pricePerLitre);
 
         // Retrieve details of the user's default payment method.
@@ -130,7 +130,7 @@ class TransactionController extends Controller
             'fuel_type_id' => $fuelTypeId,
             'fuel_station_id' => request('fuel_station_id'),
             'transaction_date_time' => Carbon::now(),
-            'number_of_litres' => $numberOfLitres,
+            'number_of_litres' => $numberOfLitres / 100,
             'pump_number' => request('pump_number'),
             'fuel_discount_entitlement' => $discountEntitlement,
             'payment_method' => $paymentMethod,
@@ -185,9 +185,9 @@ class TransactionController extends Controller
                     ->get();
 
                 // Assign values to variables.
-                $pricePerLitre = BigDecimal::of($fuelPrice[0]->price_per_litre);
-                $fuelDiscountPercentage = $rewards->fuel_discount_percentage;
-                $numberOfLitres = $transactions[$i]->number_of_litres;
+                $pricePerLitre = $fuelPrice[0]->price_per_litre * 100;
+                $fuelDiscountPercentage = $rewards->fuel_discount_percentage * 100;
+                $numberOfLitres = $transactions[$i]->number_of_litres * 100;
 
                 // If the user is entitled to a discount apply it.
                 if ($transactions[$i]->fuel_discount_entitlement == true) {
@@ -195,7 +195,7 @@ class TransactionController extends Controller
                     $totalPrice = ($pricePerLitre * $numberOfLitres) - (($pricePerLitre * $numberOfLitres) * ($fuelDiscountPercentage / 100));
                 } else {
                     // Calculate fuel price total.
-                    $totalPrice = BigDecimal::of($pricePerLitre)->multipliedBy($numberOfLitres, 2, RoundingMode::HALF_DOWN);
+                    $totalPrice = $pricePerLitre * $numberOfLitres;
                 }
 
                 // Get the date of the transaction.
@@ -208,7 +208,7 @@ class TransactionController extends Controller
                 $transactionHistory['data'][] = array(
                     'transaction_id' => $transactionId,
                     'fuel_station_name' => $fuelStationName,
-                    'total_price' => $totalPrice,
+                    'total_price' => $totalPrice / 100,
                     'transaction_date' => $transactionDate,
                     'number_of_litres' =>  $numOfLitres
                 );

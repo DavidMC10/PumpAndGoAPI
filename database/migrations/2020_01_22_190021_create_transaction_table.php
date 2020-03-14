@@ -19,7 +19,7 @@ class CreateTransactionTable extends Migration
             $table->integer('fuel_type_id')->unsigned();
             $table->integer('fuel_station_id')->unsigned();
             $table->dateTime('transaction_date_time');
-            $table->decimal('number_of_litres', 6, 6);
+            $table->decimal('number_of_litres', 6, 2);
             $table->integer('pump_number');
             $table->boolean('fuel_discount_entitlement');
             $table->string('payment_method');

@@ -139,7 +139,7 @@ class TransactionController extends Controller
         ]);
 
         for ($currentPumpAmount = 0; $currentPumpAmount < (int) $fuelAmount; $currentPumpAmount++) {
-            event(new FuelPumpEvent(number_format($currentPumpAmount+1, 2, '.', '')));
+            event(new FuelPumpEvent(number_format($currentPumpAmount + 1, 2, '.', '')));
             sleep(1);
         }
         event(new FuelPumpEvent("finished"));
@@ -220,6 +220,24 @@ class TransactionController extends Controller
 
         // Return the transaction history.
         return response()->json($transactionHistory);
+    }
+
+
+    /**
+     * Get the user's most recent transaction_id.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRecentTransactionId(Request $request)
+    {
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Get the most recent transaction.
+        $transaction = Transaction::where('user_id', $id)->orderBy('transaction_id', 'DESC')->first();
+
+        // Return the transaction_id.
+        return response()->json(['transaction_id' => $transaction->transaction_id]);
     }
 
     /**

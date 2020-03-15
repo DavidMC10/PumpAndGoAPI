@@ -383,7 +383,7 @@ class TransactionController extends Controller
             'fuel_type' => $fuelType->fuel_type_name,
             'number_of_litres' => number_format($transaction->number_of_litres, 2, '.', ''),
             'price_per_litre' => number_format($fuelPrice[0]->price_per_litre, 2, '.', ''),
-            'discount' => strval($discountRate),
+            'discount' => strval(round($discountRate)),
             'vat_rate' => strval(round($vat->vat_rate)),
             'price_excluding_vat' => number_format($priceExVat, 2, '.', ''),
             'vat' => number_format($vatTotal, 2, '.', ''),

@@ -82,7 +82,6 @@ class TransactionController extends Controller
 
         // Get the price per litre for today.
         $fuelTypeId = rand(1, 4);
-
         $fuelPrice = FuelPrice::select('price_per_litre')
             ->where('fuel_station_id', request('fuel_station_id'))
             ->where('fuel_type_id', $fuelTypeId)
@@ -104,8 +103,6 @@ class TransactionController extends Controller
         $fuelAmount = request('fuel_amount');
         $pricePerLitre = $fuelPrice[0]->price_per_litre;
         $numberOfLitres = $fuelAmount / $pricePerLitre;
-
-        // $numberOfLitres = BigDecimal::of($fuelAmount / $pricePerLitre);
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
@@ -138,11 +135,29 @@ class TransactionController extends Controller
             'updated_at' => Carbon::now(),
         ]);
 
+        // Set Stripe Api key.
+        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+
+        // Capture the payment intent.
+        $paymentIntent = \Stripe\PaymentIntent::retrieve(
+            $user->payment_intent
+        );
+        $paymentIntent->capture();
+
+        // Set the payment intent to null.
+        $user->payment_intent = null;
+
+        // Save changes.
+        $user->save();
+
         for ($currentPumpAmount = 0; $currentPumpAmount < (int) $fuelAmount; $currentPumpAmount++) {
             event(new FuelPumpEvent(number_format($currentPumpAmount + 1, 2, '.', '')));
             sleep(1);
         }
         event(new FuelPumpEvent("finished"));
+
+        // Return success.
+        return response()->json([]);
     }
 
     /**

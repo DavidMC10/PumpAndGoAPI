@@ -154,9 +154,22 @@ class TransactionController extends Controller
                 'payment_method' => $user->default_payment_method,
             ]);
 
+            // If the user is entitled to discount then apply it.
+            if ($discountEntitlement) {
+
+                // Get user rewards.
+                $rewards = User::find($id)->reward;
+
+                // Fuel discount percentage.
+                $fuelDiscountPercentage = $rewards->fuel_discount_percentage / 100;
+
+                // Apply the discount.
+                $fuelAmount = $fuelAmount + ($fuelAmount * $fuelDiscountPercentage);
+            }
+
             // Capture the payment intent.
             $paymentIntent->capture([
-                'amount_to_capture' => 5 * 100,
+                'amount_to_capture' => $fuelAmount * 100,
             ]);
 
             // Set the payment intent to null.

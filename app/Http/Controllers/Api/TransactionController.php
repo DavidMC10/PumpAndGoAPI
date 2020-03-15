@@ -154,6 +154,9 @@ class TransactionController extends Controller
                 'payment_method' => $user->default_payment_method,
             ]);
 
+            // Capturable fuel amount.
+            $capturableFuelAmount = $fuelAmount;
+
             // If the user is entitled to discount then apply it.
             if ($discountEntitlement) {
 
@@ -164,12 +167,12 @@ class TransactionController extends Controller
                 $fuelDiscountPercentage = $rewards->fuel_discount_percentage / 100;
 
                 // Apply the discount.
-                $fuelAmount = $fuelAmount + ($fuelAmount * $fuelDiscountPercentage);
+                $capturableFuelAmount = $fuelAmount + ($fuelAmount * $fuelDiscountPercentage);
             }
 
             // Capture the payment intent.
             $paymentIntent->capture([
-                'amount_to_capture' => $fuelAmount * 100,
+                'amount_to_capture' => $capturableFuelAmount * 100,
             ]);
 
             // Set the payment intent to null.

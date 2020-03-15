@@ -167,7 +167,7 @@ class TransactionController extends Controller
                 $fuelDiscountPercentage = $rewards->fuel_discount_percentage / 100;
 
                 // Apply the discount.
-                $capturableFuelAmount = $fuelAmount + ($fuelAmount * $fuelDiscountPercentage);
+                $capturableFuelAmount = $fuelAmount - ($fuelAmount * $fuelDiscountPercentage);
             }
 
             // Capture the payment intent.

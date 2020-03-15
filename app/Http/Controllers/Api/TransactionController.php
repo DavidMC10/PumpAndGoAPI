@@ -156,7 +156,7 @@ class TransactionController extends Controller
 
             // Capture the payment intent.
             $paymentIntent->capture([
-                'amount_capturable' => 5 * 100,
+                'amount_to_capture' => 5 * 100,
             ]);
 
             // Set the payment intent to null.

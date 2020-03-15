@@ -141,10 +141,17 @@ class TransactionController extends Controller
             // Set Stripe Api key.
             \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
-            // Capture the payment intent.
+            // Retrieve the payment intent.
             $paymentIntent = \Stripe\PaymentIntent::retrieve(
                 $user->payment_intent
             );
+
+            // Confirm the payment intent.
+            $paymentIntent->confirm([
+                'payment_method' => $user->default_payment_method,
+            ]);
+
+            // Capture the payment intent.
             $paymentIntent->capture();
 
             // Set the payment intent to null.
@@ -154,10 +161,13 @@ class TransactionController extends Controller
             $user->save();
         }
 
+        // Broadcast pump data.
         for ($currentPumpAmount = 0; $currentPumpAmount < (int) $fuelAmount; $currentPumpAmount++) {
             event(new FuelPumpEvent(number_format($currentPumpAmount + 1, 2, '.', '')));
             sleep(1);
         }
+
+        // Signal when finished pumping.
         event(new FuelPumpEvent("finished"));
 
         // Return success.

@@ -135,20 +135,24 @@ class TransactionController extends Controller
             'updated_at' => Carbon::now(),
         ]);
 
-        // Set Stripe Api key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+        // Ensure the payment intent is not null.
+        if ($user->payment_intent != null) {
 
-        // Capture the payment intent.
-        $paymentIntent = \Stripe\PaymentIntent::retrieve(
-            $user->payment_intent
-        );
-        $paymentIntent->capture();
+            // Set Stripe Api key.
+            \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
-        // Set the payment intent to null.
-        $user->payment_intent = null;
+            // Capture the payment intent.
+            $paymentIntent = \Stripe\PaymentIntent::retrieve(
+                $user->payment_intent
+            );
+            $paymentIntent->capture();
 
-        // Save changes.
-        $user->save();
+            // Set the payment intent to null.
+            $user->payment_intent = null;
+
+            // Save changes.
+            $user->save();
+        }
 
         for ($currentPumpAmount = 0; $currentPumpAmount < (int) $fuelAmount; $currentPumpAmount++) {
             event(new FuelPumpEvent(number_format($currentPumpAmount + 1, 2, '.', '')));

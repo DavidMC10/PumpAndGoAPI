@@ -34,27 +34,30 @@ class TransactionController extends Controller
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
-        // Find the user.
-        $user = User::find($id);
+         // Find the user.
+         $user = User::find($id);
 
-        // Set Stripe Api key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
+        if (substr($user->default_payment_method, 0, 1) == 'p') {
 
-        // Create a charge.
-        $charge = \Stripe\PaymentIntent::create([
-            'amount' => request('fuel_amount') * 100,
-            'currency' => 'eur',
-            'customer' => $user->stripe_customer_id,
-            'description' => 'Fuel Charge',
-            'payment_method' => $user->default_payment_method,
-            'capture_method' => 'manual',
-        ]);
+            // Set Stripe Api key.
+            \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
 
-        // Save the payment intent id.
-        $user->payment_intent = $charge->id;
+            // Create a charge.
+            $charge = \Stripe\PaymentIntent::create([
+                'amount' => request('fuel_amount') * 100,
+                'currency' => 'eur',
+                'customer' => $user->stripe_customer_id,
+                'description' => 'Fuel Charge',
+                'payment_method' => $user->default_payment_method,
+                'capture_method' => 'manual',
+            ]);
 
-        // Save changes.
-        $user->save();
+            // Save the payment intent id.
+            $user->payment_intent = $charge->id;
+
+            // Save changes.
+            $user->save();
+        }
 
         // Return success.
         return response()->json([]);

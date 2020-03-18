@@ -23,7 +23,7 @@ Route::post('refresh', 'Api\AuthController@refresh');
 
 Route::get('/sendmail', function () {
 
-    Mail::to('mcelhinney-d1@ulster.ac.uk')->send(new MailTrapExample());
+    Mail::to('davidmcelhinney10@hotmail.com')->send(new MailTrapExample());
 
     return 'A message has been sent to Mailtrap!';
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\MyEvent;
+use App\Mail\MailTrapExample;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
 Route::post('refresh', 'Api\AuthController@refresh');
+
+Route::get('/sendmail', function () {
+
+    Mail::to('davidmcdevact@gmail.com')->send(new MailTrapExample());
+
+    return 'A message has been sent to Mailtrap!';
+
+});
 
 Route::middleware('auth:api')->group(function () {
 

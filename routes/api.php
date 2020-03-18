@@ -21,14 +21,6 @@ Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
 Route::post('refresh', 'Api\AuthController@refresh');
 
-Route::get('/sendmail', function () {
-
-    Mail::to('david.mcelhinney100@gmail.com')->send(new MailTrapExample());
-
-    return 'A message has been sent to Mailtrap!';
-
-});
-
 Route::middleware('auth:api')->group(function () {
 
     Route::post('getrecenttransactionid', 'Api\TransactionController@getRecentTransactionId');

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\FuelCard;
 use App\Http\Controllers\Api\IssueTokenTrait;
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeMail;
 use App\Reward;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Passport\Client;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,7 +92,7 @@ class AuthController extends Controller
           ]);
 
         // Create a user record.
-        User::create([
+        $user = User::create([
             'stripe_customer_id' => $customer->id,
             'first_name' => ucfirst(request('first_name')),
             'last_name' => ucfirst(request('last_name')),
@@ -101,6 +103,9 @@ class AuthController extends Controller
             'reward_card_id' => $reward['reward_card_id'],
             'fuel_card_id' => $fuelCard['fuel_card_id']
         ]);
+
+        // Send the user welcome email.
+        Mail::to(request('email'))->send(new WelcomeMail($user));
 
         // Create the access and refresh token.
         return $this->issueToken($request, 'password');

@@ -7,18 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailTrapExample extends Mailable
+class WelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $user;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -28,12 +30,6 @@ class MailTrapExample extends Mailable
      */
     public function build()
     {
-        return $this->from('mailgun@reply.pumpandgo.net')
-        ->subject('Mailtrap Confirmation')
-        ->markdown('mails.exmpl')
-        ->with([
-            'name' => 'New Mailtrap User',
-            'link' => 'https://mailtrap.io/inboxes'
-        ]);
+        return $this->view('emails.welcome');
     }
 }

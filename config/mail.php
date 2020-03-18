@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('david@pumpandgo.net', 'hello@example.com'),
-        'name' => env('David McElhinney', 'Example'),
+        'address' => env('david@pumpandgo.net', 'davidmcdevact@pumpandgo.net'),
+        'name' => env('David McElhinney', 'Pump And Go'),
     ],
 
     /*

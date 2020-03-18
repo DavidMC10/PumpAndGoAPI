@@ -28,7 +28,7 @@ class MailTrapExample extends Mailable
      */
     public function build()
     {
-        return $this->from('David mailgun@reply.pumpandgo.net')
+        return $this->from('mailgun@reply.pumpandgo.net')
         ->subject('Mailtrap Confirmation')
         ->markdown('mails.exmpl')
         ->with([

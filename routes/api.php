@@ -21,6 +21,12 @@ Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
 Route::post('refresh', 'Api\AuthController@refresh');
 
+// Send reset password mail.
+Route::post('sendresetlink', 'AuthController@sendPasswordResetLink');
+
+// handle reset password form process.
+Route::post('resetpassword', 'AuthController@callResetPassword');
+
 Route::middleware('auth:api')->group(function () {
 
     Route::post('getrecenttransactionid', 'Api\TransactionController@getRecentTransactionId');

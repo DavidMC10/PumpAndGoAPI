@@ -3,16 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\SendMailable;
 
 class HomeController extends Controller
 {
-    public function mail()
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        $name = 'David';
-        Mail::to('davidmcelhinne10@hotmail.com')->send(new SendMailable($name));
+        $this->middleware('auth');
+    }
 
-        return 'Email was sent';
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
+        return view('home');
     }
 }

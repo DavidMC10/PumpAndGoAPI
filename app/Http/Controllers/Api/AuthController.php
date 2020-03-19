@@ -214,10 +214,12 @@ class AuthController extends Controller
                 'token' => str_random(60)
             ]
         );
-        if ($user && $passwordReset)
+        if ($user && $passwordReset) {
+            $link = url(config('base_url') . 'password/reset/' . $passwordReset->token. '?email=' . $user->email);
             $user->notify(
-                new PasswordResetRequest($passwordReset->token)
+                new PasswordResetRequest($link)
             );
+        }
         return response()->json([
             'message' => 'We have e-mailed your password reset link!'
         ]);
@@ -243,8 +245,8 @@ class AuthController extends Controller
                 'message' => 'This password reset token is invalid.'
             ], 404);
         }
-        return view('auth.passwords.confirm');
-        // return response()->json($passwordReset);
+        // return view('auth.passwords.confirm');
+        return response()->json($passwordReset);
     }
 
     /**

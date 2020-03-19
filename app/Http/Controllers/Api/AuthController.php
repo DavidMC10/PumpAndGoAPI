@@ -243,7 +243,8 @@ class AuthController extends Controller
                 'message' => 'This password reset token is invalid.'
             ], 404);
         }
-        return response()->json($passwordReset);
+        return view('auth.passwords.confirm');
+        // return response()->json($passwordReset);
     }
 
     /**

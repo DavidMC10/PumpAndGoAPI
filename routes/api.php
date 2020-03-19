@@ -21,11 +21,9 @@ Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
 Route::post('refresh', 'Api\AuthController@refresh');
 
-// Send reset password mail.
-Route::post('sendresetlink', 'Api\AuthController@sendPasswordResetLink');
-
-// handle reset password form process.
-Route::post('resetpassword', 'Api\AuthController@callResetPassword');
+Route::post('create', 'PasswordResetController@create');
+Route::get('find/{token}', 'PasswordResetController@find');
+Route::post('reset', 'PasswordResetController@reset');
 
 Route::middleware('auth:api')->group(function () {
 

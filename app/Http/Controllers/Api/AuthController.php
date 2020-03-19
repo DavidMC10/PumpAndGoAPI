@@ -6,9 +6,12 @@ use App\FuelCard;
 use App\Http\Controllers\Api\IssueTokenTrait;
 use App\Http\Controllers\Controller;
 use App\Mail\WelcomeMail;
+use App\Notifications\PasswordResetRequest;
+use App\Notifications\PasswordResetSuccess;
+use App\PasswordReset;
 use App\Reward;
 use App\User;
-use Illuminate\Auth\Events\PasswordReset;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -189,83 +192,94 @@ class AuthController extends Controller
     }
 
     /**
-     * Send password reset link.
-     */
-    public function sendPasswordResetLink(Request $request)
-    {
-        return $this->sendResetLinkEmail($request);
-    }
-
-    /**
-     * Get the response for a successful password reset link.
+     * Create token password reset
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @param  [string] email
+     * @return [string] message
      */
-    protected function sendResetLinkResponse(Request $request, $response)
+    public function create(Request $request)
     {
+        $request->validate([
+            'email' => 'required|string|email',
+        ]);
+        $user = User::where('email', $request->email)->first();
+        if (!$user)
+            return response()->json([
+                'message' => "We can't find a user with that e-mail address."
+            ], Response::HTTP_NOT_FOUND);
+        $passwordReset = PasswordReset::updateOrCreate(
+            ['email' => $user->email],
+            [
+                'email' => $user->email,
+                'token' => str_random(60)
+            ]
+        );
+        if ($user && $passwordReset)
+            $user->notify(
+                new PasswordResetRequest($passwordReset->token)
+            );
         return response()->json([
-            'message' => 'Password reset email sent.',
-            'data' => $response
+            'message' => 'We have e-mailed your password reset link!'
         ]);
     }
 
     /**
-     * Get the response for a failed password reset link.
+     * Find token password reset
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @param  [string] $token
+     * @return [string] message
+     * @return [json] passwordReset object
      */
-    protected function sendResetLinkFailedResponse(Request $request, $response)
+    public function find($token)
     {
-        return response()->json(['message' => 'Email could not be sent to this email address.']);
+        $passwordReset = PasswordReset::where('token', $token)->first();
+        if (!$passwordReset)
+            return response()->json([
+                'message' => 'This password reset token is invalid.'
+            ], 404);
+        if (Carbon::parse($passwordReset->updated_at)->addMinutes(720)->isPast()) {
+            $passwordReset->delete();
+            return response()->json([
+                'message' => 'This password reset token is invalid.'
+            ], 404);
+        }
+        return response()->json($passwordReset);
     }
 
     /**
-     * Handle reset password
-     */
-    public function callResetPassword(Request $request)
-    {
-        return $this->reset($request);
-    }
-
-    /**
-     * Reset the given user's password.
+     * Reset password
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
-     * @param  string  $password
-     * @return void
+     * @param  [string] email
+     * @param  [string] password
+     * @param  [string] password_confirmation
+     * @param  [string] token
+     * @return [string] message
+     * @return [json] user object
      */
-    protected function resetPassword($user, $password)
+    public function reset(Request $request)
     {
-        $user->password = bcrypt($password);
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string|confirmed',
+            'token' => 'required|string'
+        ]);
+        $passwordReset = PasswordReset::where([
+            ['token', $request->token],
+            ['email', $request->email]
+        ])->first();
+        if (!$passwordReset)
+            return response()->json([
+                'message' => 'This password reset token is invalid.'
+            ], 404);
+        $user = User::where('email', $passwordReset->email)->first();
+        if (!$user)
+            return response()->json([
+                'message' => "We can't find a user with that e-mail address."
+            ], 404);
+        $user->password = bcrypt($request->password);
         $user->save();
-        event(new PasswordReset($user));
-    }
-
-    /**
-     * Get the response for a successful password reset.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    protected function sendResetResponse(Request $request, $response)
-    {
-        return response()->json(['message' => 'Password reset successfully.']);
-    }
-
-    /**
-     * Get the response for a failed password reset.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    protected function sendResetFailedResponse(Request $request, $response)
-    {
-        return response()->json(['message' => 'Failed, Invalid Token.']);
+        $passwordReset->delete();
+        $user->notify(new PasswordResetSuccess($passwordReset));
+        return response()->json($user);
     }
 }

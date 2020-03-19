@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use App\Notifications\PasswordResetSuccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,6 +95,8 @@ class ProfileController extends Controller
         // Save the changes.
         $user->save();
 
+        // Notify the user with a success email.
+        $user->notify(new PasswordResetSuccess());
         // Return true upon success.
         return response()->json([], Response::HTTP_OK);
     }

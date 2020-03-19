@@ -42,9 +42,9 @@ class PasswordResetSuccess extends Notification
     {
         return (new MailMessage)
             ->subject('Password Update Notification')
-            ->line('You have changed your password successful.')
-            ->line('If you did change password, no further action is required.')
-            ->line('If you did not change password, protect your account.');
+            ->line('You have changed your password successfully.')
+            ->line('If you did change your password, no further action is required.')
+            ->line('If you did not change your password, protect your account.');
     }
 
     /**

@@ -202,7 +202,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|string|email',
         ]);
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', request('email'))->first();
         if (!$user)
             return response()->json([
                 'message' => "We can't find a user with that e-mail address."
@@ -243,7 +243,8 @@ class AuthController extends Controller
                 'message' => 'This password reset token is invalid.'
             ], 404);
         }
-        return response()->json($passwordReset);
+        return view('auth.passwords.confirm');
+        // return response()->json($passwordReset);
     }
 
     /**

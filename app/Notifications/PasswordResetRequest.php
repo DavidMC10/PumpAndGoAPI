@@ -44,7 +44,7 @@ class PasswordResetRequest extends Notification implements ShouldQueue
     {
         $url = url('/api/find/' . $this->token);
         return (new MailMessage)
-            ->subject('Pump and Go Reset Password Notification')
+            ->subject('Reset Password Notification')
             ->line('You are receiving this email because we received a password reset request for your account.')
             ->action('Reset Password', url($url))
             ->line('If you did not request a password reset, no further action is required.');

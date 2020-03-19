@@ -25,10 +25,10 @@
             $color = $level;
             break;
         default:
-            $color = 'primary';
+            $color = 'success';
     }
 ?>
-@component('mail::button', ['url' => $actionUrl, 'color' => 'Success'])
+@component('mail::button', ['url' => $actionUrl, 'color' => $color])
 {{ $actionText }}
 @endcomponent
 @endisset

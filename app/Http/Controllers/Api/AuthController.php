@@ -290,7 +290,7 @@ class AuthController extends Controller
         }
 
         // Save the user's new password.
-        $user->password = bcrypt(request('passsword'));
+        $user->password = bcrypt(request('password'));
         $user->save();
 
         // Delete the old token.

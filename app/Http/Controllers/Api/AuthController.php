@@ -202,7 +202,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|string|email',
         ]);
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', request('email'))->first();
         if (!$user)
             return response()->json([
                 'message' => "We can't find a user with that e-mail address."

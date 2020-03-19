@@ -21,15 +21,9 @@ Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
 Route::post('refresh', 'Api\AuthController@refresh');
 
-Route::group([
-    'namespace' => 'Auth',
-    'middleware' => 'api',
-    'prefix' => 'password'
-], function () {
-    Route::post('create', 'Api\AuthController@create');
-    Route::get('find/{token}', 'Api\AuthController@find');
-    Route::post('reset', 'Api\AuthController@reset');
-});
+Route::post('create', 'Api\AuthController@create');
+Route::get('find/{token}', 'Api\AuthController@find');
+Route::post('reset', 'Api\AuthController@reset');
 
 Route::middleware('auth:api')->group(function () {
 

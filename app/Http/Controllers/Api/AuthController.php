@@ -261,6 +261,7 @@ class AuthController extends Controller
      */
     public function reset(Request $request)
     {
+        dd($request);
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string|confirmed',

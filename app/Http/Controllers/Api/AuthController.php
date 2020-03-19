@@ -20,6 +20,8 @@ use Symfony\Component\Console\Input\Input;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -195,18 +197,26 @@ class AuthController extends Controller
      * Create token password reset
      *
      * @param  [string] email
-     * @return [string] message
+     *
+     * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function createPasswordResetToken(Request $request)
     {
+        // Validation
         $request->validate([
             'email' => 'required|string|email',
         ]);
+
+        // Check if the user email exists.
+        // If it doesn't exist return not found.
         $user = User::where('email', request('email'))->first();
-        if (!$user)
+        if (empty($user)) {
             return response()->json([
-                'message' => "We can't find a user with that e-mail address."
+                'message' => "We can't find a user with that email address."
             ], Response::HTTP_NOT_FOUND);
+        }
+
+        // If it exists create a token.
         $passwordReset = PasswordReset::updateOrCreate(
             ['email' => $user->email],
             [
@@ -214,39 +224,19 @@ class AuthController extends Controller
                 'token' => str_random(60)
             ]
         );
+
+        // Create Url with token.
         if ($user && $passwordReset) {
-            $link = url(config('base_url') . 'password/reset/' . $passwordReset->token. '?email=' . $user->email);
+            $link = url(config('base_url') . 'password/reset/' . $passwordReset->token . '?email=' . $user->email);
             $user->notify(
                 new PasswordResetRequest($link)
             );
         }
-        return response()->json([
-            'message' => 'We have e-mailed your password reset link!'
-        ]);
-    }
 
-    /**
-     * Find token password reset
-     *
-     * @param  [string] $token
-     * @return [string] message
-     * @return [json] passwordReset object
-     */
-    public function find($token)
-    {
-        $passwordReset = PasswordReset::where('token', $token)->first();
-        if (!$passwordReset)
-            return response()->json([
-                'message' => 'This password reset token is invalid.'
-            ], 404);
-        if (Carbon::parse($passwordReset->updated_at)->addMinutes(720)->isPast()) {
-            $passwordReset->delete();
-            return response()->json([
-                'message' => 'This password reset token is invalid.'
-            ], 404);
-        }
-        // return view('auth.passwords.confirm');
-        return response()->json($passwordReset);
+        // Return response success.
+        return response()->json([
+            'message' => 'We have emailed your password reset link!'
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -256,34 +246,61 @@ class AuthController extends Controller
      * @param  [string] password
      * @param  [string] password_confirmation
      * @param  [string] token
-     * @return [string] message
-     * @return [json] user object
+     *
+     * @return \Illuminate\Http\Response
      */
-    public function reset(Request $request)
+    public function resetPassword(Request $request)
     {
-        var_dump($request);
-        $request->validate([
+        // // Validation
+        $this->validate($request, [
             'email' => 'required|string|email',
-            'password' => 'required|string|confirmed',
+            'password' => 'required|string|confirmed|min:6',
             'token' => 'required|string'
         ]);
+
+        // Find password reset token.
         $passwordReset = PasswordReset::where([
             ['token', $request->token],
             ['email', $request->email]
         ])->first();
-        if (!$passwordReset)
+
+        // Check if the password reset token exists.
+        // If it doesn't exist return not found.
+        if (empty($passwordReset)) {
             return response()->json([
                 'message' => 'This password reset token is invalid.'
-            ], 404);
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        // Check if the password reset token has expired
+        // If it has return expired.
+        if (Carbon::parse($passwordReset->updated_at)->addMinutes(60)->isPast()) {
+            return response()->json([
+                'message' => 'This password reset token has expired.'
+            ], Response::HTTP_NOT_FOUND);
+        };
+
+        // Check if the user email exists.
+        // If it doesn't exist return not found.
         $user = User::where('email', $passwordReset->email)->first();
-        if (!$user)
+        if (empty($user)) {
             return response()->json([
                 'message' => "We can't find a user with that e-mail address."
             ], 404);
-        $user->password = bcrypt($request->password);
+        }
+
+        // Save the user's new password.
+        $user->password = bcrypt(request('passsword'));
         $user->save();
+
+        // Delete the old token.
         $passwordReset->delete();
+        $passwordReset->save();
+
+        // Notify the user with a success email.
         $user->notify(new PasswordResetSuccess($passwordReset));
-        return response()->json($user);
+        return response()->json([
+            'message' => 'Your password has been successfully reset.'
+        ], Response::HTTP_OK);
     }
 }

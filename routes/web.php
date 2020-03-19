@@ -11,10 +11,16 @@
 |
 */
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middlewareGroups' => 'web'], function () {
+    Route::post('resetpassword', 'Api\AuthController@resetPassword')->name('password.change');
+});

@@ -21,9 +21,7 @@ Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
 Route::post('refresh', 'Api\AuthController@refresh');
 
-Route::post('create', 'Api\AuthController@create');
-Route::get('find/{token}', 'Api\AuthController@find');
-Route::post('reset', 'Api\AuthController@reset')->name('password.update');
+Route::post('createpasswordresettoken', 'Api\AuthController@createPasswordResetToken');
 
 Route::middleware('auth:api')->group(function () {
 

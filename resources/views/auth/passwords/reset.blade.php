@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Reset Pump and Go Password') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('api.reset') }}">
+                    <form method="POST" action="{{ route('password.update') }}">
                         @csrf
 
                         <input type="hidden" name="token" value="{{ $token }}">

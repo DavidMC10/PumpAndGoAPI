@@ -19,12 +19,15 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
 
+    public $mockConsoleOutput = false;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        // you can call
+        $this->artisan('passport:client', ['--password' => null, '--no-interaction' => true]);
+        $this->artisan('passport:keys', ['--no-interaction' => true]);
+
         $this->artisan('db:seed');
     }
 
@@ -48,26 +51,26 @@ class AuthTest extends TestCase
      *
      * @return void
      */
-    public function testUserLoginSuccess() {
+    // public function testUserLoginSuccess() {
 
-        // Passport::actingAsClient(
-        //     factory(Client::class)->create(),
-        //     ['check-status']
-        // );
+    //     // Passport::actingAsClient(
+    //     //     factory(Client::class)->create(),
+    //     //     ['check-status']
+    //     // );
 
-        // $response = $this->get('/api/orders');
+    //     // $response = $this->get('/api/orders');
 
-        // $response->assertStatus(200);
+    //     // $response->assertStatus(200);
 
-        // $body = [
-        //     'email' => 'david.john@noreply.com',
-        //     'password' => 'password'
-        // ];
+    //     // $body = [
+    //     //     'email' => 'david.john@noreply.com',
+    //     //     'password' => 'password'
+    //     // ];
 
-        // $this->json('POST', '/api/login', $body, ['Accept' => 'application/json'])
-        //     ->assertStatus(201)
-        //     ->assertJsonStructure(['success','message','access_token','refresh_token']);
-    }
+    //     // $this->json('POST', '/api/login', $body, ['Accept' => 'application/json'])
+    //     //     ->assertStatus(201)
+    //     //     ->assertJsonStructure(['success','message','access_token','refresh_token']);
+    // }
 
     /**
      * Test to ensure that the user can't login with incorrect credentials.
@@ -77,17 +80,21 @@ class AuthTest extends TestCase
     public function testUserLoginFailure() {
 
         $body = [
-            'email' => 'testindb@noreply.com',
+            'email' => 'alyd.mclaughlin@noreply.com',
             'password' => 'password'
         ];
 
         $user = factory(User::class)->create();
 
-        Passport::actingAs($user,
-        $user
-        );
+        // Passport::actingAs($user);
 
-        $response = $this->post('/api/login');
+        // $response = $this->post('/api/login', $body);
+        // $response = $this->json('POST', '/api/login', [
+        //     'email' => 'testingthis@noreply.com',
+        //     'password' => 'password'
+        // ]);
+
+        $response = $this->post('/api/login', $body);
 
         $response->assertStatus(200);
 

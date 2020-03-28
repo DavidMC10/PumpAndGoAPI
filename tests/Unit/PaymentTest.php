@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Passport;
 use Mockery\Generator\StringManipulation\Pass\Pass;
+use Stripe\PaymentMethod;
 use Tests\TestCase;
 
 class PaymentTest extends TestCase
@@ -244,8 +245,6 @@ class PaymentTest extends TestCase
     public function testDeleteStripeCardSuccess()
     {
         // Arrange
-        // Set the Stripe secret key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
         $user = factory(User::class)->create();
         $card = [
             'card_number' => 4242424242424242,
@@ -258,7 +257,7 @@ class PaymentTest extends TestCase
         Passport::actingAs($user);
 
         // Create a payment method.
-        $card = \Stripe\PaymentMethod::create([
+        $card = PaymentMethod::create([
             'type' => 'card',
             'card' => [
                 'number' => $card['card_number'],
@@ -272,7 +271,7 @@ class PaymentTest extends TestCase
         $cardId = $card->id;
 
         // Retrieve the payment method from the card id.
-        $paymentMethod = \Stripe\PaymentMethod::retrieve(
+        $paymentMethod = PaymentMethod::retrieve(
             $cardId
         );
 

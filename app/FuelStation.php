@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Created by David McElhinney on 14/03/2020.
+ */
 class FuelStation extends Model
 {
 

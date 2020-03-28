@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Created by David McElhinney on 14/03/2020.
+ */
 class Vat extends Model
 {
 

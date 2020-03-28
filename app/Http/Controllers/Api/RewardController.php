@@ -9,11 +9,14 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+/**
+ * Created by David McElhinney on 14/03/2020.
+ */
 class RewardController extends Controller
 {
 
     /**
-     * Count number of visits required until fuel discount.
+     * Get the user's reward information
      *
      * @return \Illuminate\Http\Response
      */
@@ -21,9 +24,6 @@ class RewardController extends Controller
     {
         // Obtain the authenticated user's id.
         $id = Auth::id();
-
-        // Get user transactions.
-        $transactions = User::find($id)->transaction;
 
         // Get user rewards.
         $rewards = User::find($id)->reward;

@@ -7,7 +7,11 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Stripe\PaymentMethod;
 
+/**
+ * Created by David McElhinney on 14/03/2020.
+ */
 class PaymentController extends Controller
 {
     /**
@@ -36,11 +40,8 @@ class PaymentController extends Controller
             'cvc' => 'required'
         ]);
 
-        // Set the Stripe secret key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
         // Create the payment method from the request.
-        $card = \Stripe\PaymentMethod::create([
+        $card = PaymentMethod::create([
             'type' => 'card',
             'card' => [
                 'number' => request('card_number'),
@@ -54,7 +55,7 @@ class PaymentController extends Controller
         $cardId = $card->id;
 
         // Retrieve the payment method from the card id.
-        $paymentMethod = \Stripe\PaymentMethod::retrieve(
+        $paymentMethod = PaymentMethod::retrieve(
             $cardId
         );
 
@@ -91,11 +92,8 @@ class PaymentController extends Controller
             'exp_year' => 'required',
         ]);
 
-        // Set the Stripe secret key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
         // Update the payment method.
-        \Stripe\PaymentMethod::update(
+        PaymentMethod::update(
             request('card_id'),
             ['card' => [
                 'exp_month' => request('exp_month'),
@@ -134,11 +132,8 @@ class PaymentController extends Controller
             $user->save();
         }
 
-        // Set the Stripe secret key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
         // Delete the card from the user.
-        $paymentMethod = \Stripe\PaymentMethod::retrieve(
+        $paymentMethod = PaymentMethod::retrieve(
             request('card_id')
         );
         $paymentMethod->detach();
@@ -289,15 +284,11 @@ class PaymentController extends Controller
         // Find the user.
         $user = User::find($id);
 
-        // Set the Stripe secret key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
-
         // If the default payment is null then set one.
         if ($user->default_payment_method == null) {
 
             // Get all Stripe payment methods for the user.
-            $stripePaymentMethods = \Stripe\PaymentMethod::all([
+            $stripePaymentMethods = PaymentMethod::all([
                 'customer' => $user->stripe_customer_id,
                 'type' => 'card',
             ]);
@@ -350,11 +341,8 @@ class PaymentController extends Controller
         // Find the user.
         $user = User::find($id);
 
-        // Set the Stripe secret key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
         // Create the payment method from the request.
-        $stripePaymentMethods = \Stripe\PaymentMethod::all([
+        $stripePaymentMethods = PaymentMethod::all([
             'customer' => $user->stripe_customer_id,
             'type' => 'card',
         ]);

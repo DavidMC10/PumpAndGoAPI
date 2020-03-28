@@ -17,34 +17,43 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Auth Controller methods.
 Route::post('login', 'Api\AuthController@login');
 Route::post('register', 'Api\AuthController@register');
 Route::post('refresh', 'Api\AuthController@refresh');
-
 Route::post('createpasswordresettoken', 'Api\AuthController@createPasswordResetToken');
 
+// User must identify with access_token to access these methods.
 Route::middleware('auth:api')->group(function () {
 
-    Route::post('getrecenttransactionid', 'Api\TransactionController@getRecentTransactionId');
+    // Auth Controller methods.
     Route::post('logout', 'Api\AuthController@logout');
+    Route::post('details', 'Api\AuthController@details');
+
+    // Fuel Station Controller methods.
+    Route::post('getnearbystations', 'Api\FuelStationController@generateListOfNearbyFuelStations');
+    Route::post('getcurrentstation', 'Api\FuelStationController@getCurrentFuelStation');
+
+    // Reward Controller methods.
+    Route::post('visitcount', 'Api\RewardController@countNumberOfVisitsUntilFuelDiscount');
+    Route::post('getrewards', 'Api\RewardController@getUserRewards');
+
+    // Profile Controller methods.
     Route::post('updatename', 'Api\ProfileController@updateFullName');
     Route::post('updateemail', 'Api\ProfileController@updateEmail');
     Route::post('updatepassword', 'Api\ProfileController@updatePassword');
     Route::post('updatefuellimit', 'Api\ProfileController@updateMaxFuelLimit');
     Route::post('updatedistancelimit', 'Api\ProfileController@updateMaxDistanceLimit');
-    Route::post('details', 'Api\AuthController@details');
-    Route::post('getnearbystations', 'Api\FuelStationController@generateListOfNearbyFuelStations');
-    Route::post('getcurrentstation', 'Api\FuelStationController@getCurrentFuelStation');
-    Route::post('visitcount', 'Api\RewardController@countNumberOfVisitsUntilFuelDiscount');
-    Route::post('getrewards', 'Api\RewardController@getUserRewards');
-    Route::post('createcharge', 'Api\TransactionController@createCharge');
-    Route::post('createtransaction', 'Api\TransactionController@createTransaction');
-    Route::post('gettransactionhistory', 'Api\TransactionController@generateTransactionHistory');
-    Route::post('getreceipt', 'Api\TransactionController@generateReceipt');
-    Route::post('testing', 'Api\TransactionController@transactionTest');
     Route::post('getuserprofiledetails', 'Api\ProfileController@getUserProfileDetails');
 
-    // Payment Controller Methods.
+    // Transaction Controller methods.
+    Route::post('createcharge', 'Api\TransactionController@createCharge');
+    Route::post('createtransaction', 'Api\TransactionController@createTransaction');
+    Route::post('getrecenttransactionid', 'Api\TransactionController@getRecentTransactionId');
+    Route::post('gettransactionhistory', 'Api\TransactionController@generateTransactionHistory');
+    Route::post('getreceipt', 'Api\TransactionController@generateReceipt');
+
+    // Payment Controller methods.
     Route::post('addstripecard', 'Api\PaymentController@addStripeCard');
     Route::post('updatestripecard', 'Api\PaymentController@updateStripeCard');
     Route::post('deletestripecard', 'Api\PaymentController@deleteStripeCard');

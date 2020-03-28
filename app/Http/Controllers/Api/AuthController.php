@@ -16,13 +16,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Passport\Client;
-use Symfony\Component\Console\Input\Input;
+use Stripe\Customer;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
 
+/**
+ * Created by David McElhinney on 14/03/2020.
+ */
 class AuthController extends Controller
 {
 
@@ -90,11 +89,8 @@ class AuthController extends Controller
             'expiry_year' => null
         ]);
 
-        // Set Stripe Api key.
-        \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
         // Create a Stripe customer.
-        $customer = \Stripe\Customer::create([
+        $customer = Customer::create([
             'description' => 'Pump And Go Customer',
             'email' => request('email')
         ]);

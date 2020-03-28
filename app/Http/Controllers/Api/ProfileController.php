@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Created by David McElhinney on 14/03/2020.
+ */
 class ProfileController extends Controller
 {
 
@@ -97,6 +100,7 @@ class ProfileController extends Controller
 
         // Notify the user with a success email.
         $user->notify(new PasswordResetSuccess());
+
         // Return true upon success.
         return response()->json([], Response::HTTP_OK);
     }

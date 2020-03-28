@@ -15,8 +15,13 @@ use App\Vat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Stripe\PaymentIntent;
+use Stripe\PaymentMethod;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Created by David McElhinney on 14/03/2020.
+ */
 class TransactionController extends Controller
 {
     /**
@@ -38,12 +43,8 @@ class TransactionController extends Controller
          $user = User::find($id);
 
         if (substr($user->default_payment_method, 0, 1) == 'p') {
-
-            // Set Stripe Api key.
-            \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
             // Create a charge.
-            $charge = \Stripe\PaymentIntent::create([
+            $charge = PaymentIntent::create([
                 'amount' => request('fuel_amount') * 100,
                 'currency' => 'eur',
                 'customer' => $user->stripe_customer_id,
@@ -109,11 +110,8 @@ class TransactionController extends Controller
 
         // Retrieve details of the user's default payment method.
         if (substr($user->default_payment_method, 0, 1) == 'p') {
-            // Set the Stripe secret key.
-            \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
             // Retrieve the default payment method.
-            $defaultPaymentMethod = \Stripe\PaymentMethod::retrieve(
+            $defaultPaymentMethod = PaymentMethod::retrieve(
                 $user->default_payment_method
             );
 
@@ -141,11 +139,8 @@ class TransactionController extends Controller
         // Ensure the payment intent is not null.
         if ($user->payment_intent != null) {
 
-            // Set Stripe Api key.
-            \Stripe\Stripe::setApiKey('sk_test_CU3eeCs7YXG2P7APSGq88AyI00PWnBl9zM');
-
             // Retrieve the payment intent.
-            $paymentIntent = \Stripe\PaymentIntent::retrieve(
+            $paymentIntent = PaymentIntent::retrieve(
                 $user->payment_intent
             );
 
@@ -278,13 +273,18 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRecentTransactionId(Request $request)
+    public function getRecentTransactionId()
     {
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
         // Get the most recent transaction.
         $transaction = Transaction::where('user_id', $id)->orderBy('transaction_id', 'DESC')->first();
+
+        // If empty return not found.
+        if (empty($transaction)) {
+            return response()->json([], Response::HTTP_NOT_FOUND);
+        }
 
         // Return the transaction_id.
         return response()->json(['transaction_id' => $transaction->transaction_id]);

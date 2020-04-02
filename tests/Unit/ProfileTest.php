@@ -19,6 +19,9 @@ class ProfileTest extends TestCase
     {
         parent::setUp();
         Artisan::call('db:seed');
+
+        $this->artisan('passport:client', ['--password' => null, '--no-interaction' => true]);
+        $this->artisan('passport:keys', ['--no-interaction' => true]);
     }
 
     /**
@@ -166,13 +169,19 @@ class ProfileTest extends TestCase
     {
         // Arrange
         $user = factory(User::class)->create();
-        $body = [
+        $newPassword = [
             'password' => "password24",
+        ];
+        $credentials = [
+            'email' => 'davestests@noreply.com',
+            'password' => 'password24',
         ];
 
         // Act
         Passport::actingAs($user);
-        $response = $this->json('POST', 'api/updatepassword', $body);
+        $this->json('POST', '/api/updatepassword', $newPassword);
+        $this->json('POST', '/api/logout');
+        $response = $this->json('POST', 'api/login', $credentials);
 
         // Assert
         $response->assertStatus(200);

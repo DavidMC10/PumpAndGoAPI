@@ -17,6 +17,7 @@ class FuelCardTableSeeder extends Seeder
             'fuel_card_no' => '1234891023986751',
             'expiry_month' => '11',
             'expiry_year' => '23',
+            'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
 

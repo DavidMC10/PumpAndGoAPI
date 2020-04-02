@@ -329,6 +329,11 @@ class PaymentTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
+        $this->assertDatabaseHas('fuel_card', [
+            'fuel_card_no' => '4276289823412983',
+            'expiry_month' => '12',
+            'expiry_year' => '28',
+        ]);
     }
 
     /**
@@ -420,6 +425,11 @@ class PaymentTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
+        $this->assertDatabaseHas('fuel_card', [
+            'fuel_card_no' => null,
+            'expiry_month' => '11',
+            'expiry_year' => '29',
+        ]);
     }
 
     /**
@@ -482,6 +492,11 @@ class PaymentTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
+        $this->assertDatabaseHas('fuel_card', [
+            'fuel_card_no' => null,
+            'expiry_month' => null,
+            'expiry_year' => null,
+        ]);
     }
 
     /**
@@ -503,6 +518,9 @@ class PaymentTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
+        $this->assertDatabaseHas('user', [
+            'default_payment_method' => 11,
+        ]);
     }
 
     /**

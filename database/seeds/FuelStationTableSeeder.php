@@ -42,7 +42,7 @@ class FuelStationTableSeeder extends Seeder
         ]);
 
         DB::table('fuel_station')->insert([
-            'name' => "Circle Dundrum",
+            'name' => "Circle K Dundrum",
             'address1' => "14 Dundrum Rd",
             'address2' => "Churchtown Lower",
             'city_town' => 'Dublin',

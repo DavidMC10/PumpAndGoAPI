@@ -169,7 +169,7 @@ class PaymentController extends Controller
         // Add a fuel card for the user.
         $user->fuelCard->fuel_card_no = request('fuel_card_no');
         $user->fuelCard->expiry_month = request('exp_month');
-        $user->fuelCard->expiry_year = request('exp_month');
+        $user->fuelCard->expiry_year = request('exp_year');
 
         // Save changes.
         $user->push();
@@ -202,7 +202,7 @@ class PaymentController extends Controller
 
         // Update a fuel card for the user.
         $user->fuelCard->expiry_month = request('exp_month');
-        $user->fuelCard->expiry_year = request('exp_month');
+        $user->fuelCard->expiry_year = request('exp_year');
 
         // Save changes.
         $user->push();

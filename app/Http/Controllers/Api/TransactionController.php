@@ -97,6 +97,8 @@ class TransactionController extends Controller
         $userTransactionCount = Transaction::where('user_id', $id)->count();
         if ($userTransactionCount == 0) {
             $discountEntitlement = false;
+        } elseif($userTransactionCount < 10 && $userTransactionCount !=0) {
+            $discountEntitlement = false;
         } elseif (($userTransactionCount % 10) == 0) {
             $discountEntitlement = true;
         } else {

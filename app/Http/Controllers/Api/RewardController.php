@@ -63,10 +63,12 @@ class RewardController extends Controller
         $visits = 0;
         if ($userTransactionCount == 0) {
             $visits = 10;
+        } elseif($userTransactionCount < 10 && $userTransactionCount !=0) {
+            $visits = 10 - ($userTransactionCount % 10);
         } elseif (($userTransactionCount % 10) == 0) {
             $visits = 0;
         } else {
-            $visits = 10 - ($userTransactionCount % 10);
+            $visits = 11 - ($userTransactionCount % 10);
         }
 
         // Return the user's first name and visit count.

@@ -33,7 +33,8 @@ class FuelPumpEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ["fuel_pump"];
+        return new PrivateChannel('testill');
+        // return ["fuel_pump"];
     }
 
     public function broadcastAs()

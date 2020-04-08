@@ -181,12 +181,12 @@ class TransactionController extends Controller
 
         // Broadcast pump data.
         for ($currentPumpAmount = 0; $currentPumpAmount < (int) $fuelAmount; $currentPumpAmount++) {
-            event(new FuelPumpEvent(number_format($currentPumpAmount + 1, 2, '.', '')));
+            event(new FuelPumpEvent($user->channel_id, number_format($currentPumpAmount + 1, 2, '.', '')));
             sleep(1);
         }
 
         // Signal when finished pumping.
-        event(new FuelPumpEvent("finished"));
+        event(new FuelPumpEvent($user->channel_id, "finished"));
 
         // Return success.
         return response()->json([]);

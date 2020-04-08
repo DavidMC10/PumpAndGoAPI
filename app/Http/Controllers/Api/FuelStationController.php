@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\FuelStation;
 use App\Http\Controllers\Controller;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -89,6 +91,13 @@ class FuelStationController extends Controller
             'longitude' => 'required',
         ]);
 
+        // Obtain the authenticated user's id.
+        $id = Auth::id();
+
+        // Obtain the user's channel_id
+        $user = User::find($id);
+        $channelId = $user->channel_id;
+
         // Request variables.
         $lat = request('latitude');
         $lng = request('longitude');
@@ -107,6 +116,9 @@ class FuelStationController extends Controller
         if (empty($fuelStation)) {
             return response()->json([], Response::HTTP_NOT_FOUND);
         }
+
+        // Add channel_id to the object.
+        $fuelStation->channel_id = $channelId;
 
         // Removes the distance column.
         $fuelStation->makeHidden(['distance']);

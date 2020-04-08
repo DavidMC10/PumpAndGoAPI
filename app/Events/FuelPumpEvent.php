@@ -16,14 +16,17 @@ class FuelPumpEvent implements ShouldBroadcast
 
     public $currentPumpAmount;
 
+    public $channelId;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($currentPumpAmount)
+    public function __construct($channelId, $currentPumpAmount)
     {
         $this->currentPumpAmount = $currentPumpAmount;
+        $this->channelId = $channelId;
     }
 
     /**
@@ -33,8 +36,7 @@ class FuelPumpEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('testill');
-        // return ["fuel_pump"];
+        return ['channelId.'.$this->channelId];
     }
 
     public function broadcastAs()

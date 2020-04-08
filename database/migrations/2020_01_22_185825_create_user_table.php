@@ -15,6 +15,7 @@ class CreateUserTable extends Migration
     {
         Schema::create('user', function (Blueprint $table) {
             $table->increments('user_id');
+            $table->string('channel_id');
             $table->string('stripe_customer_id')->nullable();
             $table->string('payment_intent')->nullable();
             $table->string('first_name');

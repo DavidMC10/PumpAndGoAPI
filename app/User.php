@@ -35,7 +35,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'stripe_customer_id', 'first_name', 'last_name', 'email', 'password', 'max_fuel_limit', 'max_distance_limit', 'default_payment_method', 'reward_card_id', 'fuel_card_id'
+        'channel_id', 'stripe_customer_id', 'first_name', 'last_name', 'email', 'password', 'max_fuel_limit', 'max_distance_limit', 'default_payment_method', 'reward_card_id', 'fuel_card_id'
     ];
 
     /**

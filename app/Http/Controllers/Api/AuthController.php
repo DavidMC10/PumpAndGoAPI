@@ -97,6 +97,7 @@ class AuthController extends Controller
 
         // Create a user record.
         $user = User::create([
+            'channel_id' => $this->generateChannelId(),
             'stripe_customer_id' => $customer->id,
             'first_name' => ucfirst(request('first_name')),
             'last_name' => ucfirst(request('last_name')),
@@ -113,6 +114,36 @@ class AuthController extends Controller
 
         // Create the access and refresh token.
         return $this->issueToken($request, 'password');
+    }
+
+    /**
+     * Generate Channel Id.
+     *
+     * @return integer
+     */
+    public function generateChannelId()
+    {
+        // Generate random number.
+        $number = mt_rand(100000, 999999);
+
+        // Calls the same function if the barcode exists already.
+        if ($this->channelIdExists($number)) {
+            return $this->generateChannelId();
+        }
+
+        // Valid number return.
+        return $number;
+    }
+
+    /**
+     * Check if Channel Id exists.
+     *
+     * @return boolean
+     */
+    public function channelIdExists($number)
+    {
+        // Query the database and return a boolean
+        return User::where('channel_id', $number)->exists();
     }
 
     /**

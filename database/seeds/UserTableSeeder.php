@@ -14,6 +14,7 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         DB::table('user')->insert([
+            'channel_id' => 288979,
             'first_name' => 'David',
             'last_name' => 'John',
             'email' => 'david.john@noreply.com',
@@ -27,6 +28,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
+            'channel_id' => 288978,
             'first_name' => 'Michael',
             'last_name' => 'Patrick',
             'email' => 'michael.patrick@noreply.com',
@@ -40,6 +42,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
+            'channel_id' => 288348,
             'first_name' => 'Steven',
             'last_name' => 'Hawkins',
             'email' => 'steven.@noreply.com',
@@ -53,6 +56,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
+            'channel_id' => 288878,
             'first_name' => 'Kevin',
             'last_name' => 'Turner',
             'email' => 'kevin.turner@noreply.com',
@@ -66,6 +70,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
+            'channel_id' => 234878,
             'first_name' => 'rachael',
             'last_name' => 'porter',
             'email' => 'rachael.porter@noreply.com',
@@ -79,6 +84,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
+            'channel_id' => 134878,
             'first_name' => 'Alyd',
             'last_name' => 'McLaughlin',
             'email' => 'alyd.mclaughlin@noreply.com',
@@ -92,6 +98,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
+            'channel_id' => 298578,
             'first_name' => 'Athan',
             'last_name' => 'Biamis',
             'email' => 'athan.biamis@noreply.com',
@@ -105,6 +112,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
+            'channel_id' => 498678,
             'first_name' => 'Nicole',
             'last_name' => 'Kerr',
             'email' => 'nicole.kerr@noreply.com',
@@ -118,6 +126,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
+            'channel_id' => 498109,
             'first_name' => 'Bill',
             'last_name' => 'Gates',
             'email' => 'bill.gates@noreply.com',
@@ -131,6 +140,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
+            'channel_id' => 654233,
             'first_name' => 'Paddy',
             'last_name' => 'Wack',
             'email' => 'paddy.wack@noreply.com',

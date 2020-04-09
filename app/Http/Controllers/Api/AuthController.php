@@ -126,7 +126,7 @@ class AuthController extends Controller
         // Generate random number.
         $number = mt_rand(100000, 999999);
 
-        // Calls the same function if the barcode exists already.
+        // Calls the same function if the Channel Id exists already.
         if ($this->channelIdExists($number)) {
             return $this->generateChannelId();
         }

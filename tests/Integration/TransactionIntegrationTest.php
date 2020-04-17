@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
-class TransactionTest extends TestCase
+class TransactionIntegrationTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
 
@@ -24,142 +24,155 @@ class TransactionTest extends TestCase
     }
 
     /**
-     * Test to ensure that the user can create a charge.
+     * Test to ensure that the user can create a charge with their fuel card.
      *
      * @return void
      */
-    public function testCreateChargeSuccess()
+    public function testCreateChargeOnFuelCardSuccess()
     {
         // Arrange
         $user = factory(User::class)->create();
-        $body = [
+        $fuelAmount = [
             'fuel_amount' => 20,
+        ];
+        $cardDetails = [
+            'fuel_card_no' => '4276289823412983',
+            'exp_month' => '12',
+            'exp_year' => '28',
         ];
 
         // Act
         Passport::actingAs($user);
-        $response = $this->json('POST', 'api/createcharge', $body);
+        $this->json('POST', 'api/addfuelcard', $cardDetails);
+        $this->json('POST', 'api/getdefaultpaymentmethod');
+        $response = $this->json('POST', 'api/createcharge', $fuelAmount);
 
         // Assert
         $response->assertStatus(200);
+        $this->assertDatabaseHas('fuel_card', [
+            'fuel_card_no' => 4276289823412983,
+            'expiry_month' => 12,
+            'expiry_year' => 28,
+        ]);
+        $this->assertDatabaseHas('user', [
+            'default_payment_method' => $user->default_payment_method,
+        ]);
     }
 
     /**
-     * Test to ensure that the fuel_amount can't be blank.
+     * Test to ensure that the user can create a charge with their debit/credit card.
      *
      * @return void
      */
-    public function testCreateChargeFail()
+    public function testCreateChargeOnStripeCardSuccess()
     {
         // Arrange
         $user = factory(User::class)->create();
-        $body = [
-            'fuel_amount' => null,
-        ];
-
-        // Act
-        Passport::actingAs($user);
-        $response = $this->json('POST', 'api/createcharge', $body);
-
-        // Assert
-        $response->assertStatus(422);
-    }
-
-    /**
-     * Test to ensure that the user can create a transaction.
-     *
-     * @return void
-     */
-    public function testCreateTransactionSuccess()
-    {
-        // Arrange
-        $user = factory(User::class)->create();
-        $body = [
-            'fuel_station_id' => 2,
+        $fuelAmount = [
             'fuel_amount' => 20,
-            'pump_number' => 3,
+        ];
+        $cardDetails = [
+            'card_number' => 4242424242424242,
+            'exp_month' => 07,
+            'exp_year' => 23,
+            'cvc' => null
         ];
 
         // Act
         Passport::actingAs($user);
-        $response = $this->json('POST', 'api/createtransaction', $body);
+        $this->json('POST', 'api/addstripecard', $cardDetails);
+        $this->json('POST', 'api/getdefaultpaymentmethod');
+        $response = $this->json('POST', 'api/createcharge', $fuelAmount);
 
         // Assert
         $response->assertStatus(200);
+        $this->assertDatabaseHas('user', [
+            'default_payment_method' => $user->default_payment_method,
+        ]);
     }
 
     /**
-     * Test to ensure that the fuel_station_id can't be blank.
+     * Test to ensure that the user can create a transaction with a fuel card.
      *
      * @return void
      */
-    public function testCreateTransactionFail1()
+    public function testCreateTransactionWithFuelCardSuccess()
     {
         // Arrange
         $user = factory(User::class)->create();
-        $body = [
-            'fuel_station_id' => null,
+        $fuelAmount = [
+            'fuel_amount' => 20,
+        ];
+        $cardDetails = [
+            'fuel_card_no' => '4276289823412983',
+            'exp_month' => '12',
+            'exp_year' => '28',
+        ];
+        $transactionDetails = [
+            'fuel_station_id' => 2,
             'fuel_amount' => 20,
             'pump_number' => 3,
         ];
 
         // Act
         Passport::actingAs($user);
-        $response = $this->json('POST', 'api/createtransaction', $body);
+        $this->json('POST', 'api/addfuelcard', $cardDetails);
+        $this->json('POST', 'api/getdefaultpaymentmethod');
+        $this->json('POST', 'api/createcharge', $fuelAmount);
+        $response = $this->json('POST', 'api/createtransaction', $transactionDetails);
 
         // Assert
-        $response->assertStatus(422);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('fuel_card', [
+            'fuel_card_no' => 4276289823412983,
+            'expiry_month' => 12,
+            'expiry_year' => 28,
+        ]);
+        $this->assertDatabaseHas('user', [
+            'default_payment_method' => $user->default_payment_method,
+        ]);
     }
 
     /**
-     * Test to ensure that the fuel_amount can't be blank.
+     * Test to ensure that the user can create a transaction with a debit/credit card.
      *
      * @return void
      */
-    public function testCreateTransactionFail2()
+    public function testCreateTransactionWithStripeCardSuccess()
     {
         // Arrange
         $user = factory(User::class)->create();
-        $body = [
+        $fuelAmount = [
+            'fuel_amount' => 20,
+        ];
+        $cardDetails = [
+            'card_number' => 4242424242424242,
+            'exp_month' => 07,
+            'exp_year' => 23,
+            'cvc' => null
+        ];
+        $transactionDetails = [
             'fuel_station_id' => 2,
-            'fuel_amount' => null,
+            'fuel_amount' => 20,
             'pump_number' => 3,
         ];
 
         // Act
         Passport::actingAs($user);
-        $response = $this->json('POST', 'api/createtransaction', $body);
+        $this->json('POST', 'api/addstripecard', $cardDetails);
+        $this->json('POST', 'api/getdefaultpaymentmethod');
+        $this->json('POST', 'api/createcharge', $fuelAmount);
+        $response = $this->json('POST', 'api/createtransaction', $transactionDetails);
 
         // Assert
-        $response->assertStatus(422);
-    }
-
-
-    /**
-     * Test to ensure that the pump_number can't be blank
-     *
-     * @return void
-     */
-    public function testCreateTransactionFail3()
-    {
-        // Arrange
-        $user = factory(User::class)->create();
-        $body = [
-            'fuel_station_id' => 2,
-            'fuel_amount' => 20,
-            'pump_number' => null,
-        ];
-
-        // Act
-        Passport::actingAs($user);
-        $response = $this->json('POST', 'api/createtransaction', $body);
-
-        // Assert
-        $response->assertStatus(422);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('user', [
+            'default_payment_method' => $user->default_payment_method,
+        ]);
     }
 
     /**
-     * Test to ensure that the user can create a transaction.
+     * Test to ensure that the user can get their transaction history.
      *
      * @return void
      */
@@ -167,6 +180,11 @@ class TransactionTest extends TestCase
     {
         // Arrange
         $user = factory(User::class)->create();
+        $cardDetails = [
+            'fuel_card_no' => '4276289823412983',
+            'exp_month' => '12',
+            'exp_year' => '28',
+        ];
         $chargeData = [
             'fuel_amount' => 20,
         ];
@@ -178,6 +196,8 @@ class TransactionTest extends TestCase
 
         // Act
         Passport::actingAs($user);
+        $this->json('POST', 'api/addfuelcard', $cardDetails);
+        $this->json('POST', 'api/getdefaultpaymentmethod');
         $this->json('POST', 'api/createcharge', $chargeData);
         $this->json('POST', 'api/createtransaction', $transactionData);
         $response = $this->json('POST', 'api/gettransactionhistory');
@@ -185,24 +205,6 @@ class TransactionTest extends TestCase
         // Assert
         $response->assertStatus(200)
             ->assertJsonStructure(['data']);
-    }
-
-    /**
-     * Test to ensure that the user 404 is returned upon no transactions.
-     *
-     * @return void
-     */
-    public function testCreateTransactionHistoryFail()
-    {
-        // Arrange
-        $user = factory(User::class)->create();
-
-        // Act
-        Passport::actingAs($user);
-        $response = $this->json('POST', 'api/gettransactionhistory');
-
-        // Assert
-        $response->assertStatus(404);
     }
 
     /**
@@ -214,6 +216,11 @@ class TransactionTest extends TestCase
     {
         // Arrange
         $user = factory(User::class)->create();
+        $cardDetails = [
+            'fuel_card_no' => '4276289823412983',
+            'exp_month' => '12',
+            'exp_year' => '28',
+        ];
         $chargeData = [
             'fuel_amount' => 20,
         ];
@@ -225,6 +232,8 @@ class TransactionTest extends TestCase
 
         // Act
         Passport::actingAs($user);
+        $this->json('POST', 'api/addfuelcard', $cardDetails);
+        $this->json('POST', 'api/getdefaultpaymentmethod');
         $this->json('POST', 'api/createcharge', $chargeData);
         $this->json('POST', 'api/createtransaction', $transactionData);
         $response = $this->json('POST', 'api/getrecenttransactionid');
@@ -232,24 +241,6 @@ class TransactionTest extends TestCase
         // Assert
         $response->assertStatus(200)
             ->assertJsonStructure(['transaction_id']);
-    }
-
-    /**
-     * Test to ensure that the user 404 is returned upon no recent transaction id.
-     *
-     * @return void
-     */
-    public function testGetRecentTransactionIdFail()
-    {
-        // Arrange
-        $user = factory(User::class)->create();
-
-        // Act
-        Passport::actingAs($user);
-        $response = $this->json('POST', 'api/getrecenttransactionid');
-
-        // Assert
-        $response->assertStatus(404);
     }
 
     /**
@@ -261,6 +252,11 @@ class TransactionTest extends TestCase
     {
         // Arrange
         $user = factory(User::class)->create();
+        $cardDetails = [
+            'fuel_card_no' => '4276289823412983',
+            'exp_month' => '12',
+            'exp_year' => '28',
+        ];
         $chargeData = [
             'fuel_amount' => 20,
         ];
@@ -272,6 +268,8 @@ class TransactionTest extends TestCase
 
         // Act
         Passport::actingAs($user);
+        $this->json('POST', 'api/addfuelcard', $cardDetails);
+        $this->json('POST', 'api/getdefaultpaymentmethod');
         $this->json('POST', 'api/createcharge', $chargeData);
         $this->json('POST', 'api/createtransaction', $transactionData);
         $transaction = Transaction::where('user_id', $user->user_id)->orderBy('transaction_id', 'DESC')->first();
@@ -284,26 +282,5 @@ class TransactionTest extends TestCase
                 'fuel_station_name', 'fuel_station_address_1', 'fuel_station_address_2', 'fuel_station_address_city_town', 'transaction_date', 'first_name', 'last_name',
                 'payment_method', 'pump_number', 'fuel_type', 'number_of_litres', 'price_per_litre', 'discount', 'vat_rate', 'price_excluding_vat', 'vat', 'total_price'
             ]);
-    }
-
-    /**
-     * Test to ensure that the user can't leave the transaction_id blank.
-     *
-     * @return void
-     */
-    public function testGetReceiptFail()
-    {
-        // Arrange
-        $user = factory(User::class)->create();
-        $transactionData = [
-            'transaction_id' => null,
-        ];
-
-        // Act
-        Passport::actingAs($user);
-        $response = $this->json('POST', 'api/getreceipt', $transactionData);
-
-        // Assert
-        $response->assertStatus(422);
     }
 }

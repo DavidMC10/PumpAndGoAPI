@@ -30,6 +30,7 @@ $fuelCard = $factory->define(FuelCard::class, function (Faker $faker) {
 $factory->define(User::class, function ($faker) use ($factory) {
     return [
         'stripe_customer_id' => 'cus_GzKMh6L0S9o1WZ',
+        'channel_id' => 732932,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => "davestests@noreply.com",

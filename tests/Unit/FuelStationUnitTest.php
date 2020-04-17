@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
-class FuelStationTest extends TestCase
+class FuelStatioUnitTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
 

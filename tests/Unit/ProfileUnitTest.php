@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
-class ProfileTest extends TestCase
+class ProfileUnitTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
 

@@ -17,7 +17,7 @@ use Laravel\Passport\Passport;
 use Tests\CreatesApplication;
 use Tests\TestCase;
 
-class AuthTest extends TestCase
+class AuthUnitTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
 

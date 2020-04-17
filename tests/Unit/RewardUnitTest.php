@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
-class RewardTest extends TestCase
+class RewardUnitTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
 

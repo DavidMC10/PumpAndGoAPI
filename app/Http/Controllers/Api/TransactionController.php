@@ -39,8 +39,8 @@ class TransactionController extends Controller
         // Obtain the authenticated user's id.
         $id = Auth::id();
 
-         // Find the user.
-         $user = User::find($id);
+        // Find the user.
+        $user = User::find($id);
 
         if (substr($user->default_payment_method, 0, 1) == 'p') {
             // Create a charge.
@@ -97,7 +97,7 @@ class TransactionController extends Controller
         $userTransactionCount = Transaction::where('user_id', $id)->count();
         if ($userTransactionCount == 0) {
             $discountEntitlement = false;
-        } elseif($userTransactionCount < 10 && $userTransactionCount !=0) {
+        } elseif ($userTransactionCount < 10 && $userTransactionCount != 0) {
             $discountEntitlement = false;
         } elseif (($userTransactionCount % 10) == 0) {
             $discountEntitlement = true;

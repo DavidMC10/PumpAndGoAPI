@@ -5,6 +5,13 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Title: IssueTokenTrait
+ * Author: ProgrammationAndroid
+ * Date: 06/07/2017
+ * Availability: https://github.com/ProgrammationAndroid/Laravel-Passport-Android/blob/master/laravel/app/Http/Controllers/Api/Auth/IssueTokenTrait.php
+ */
+
 trait IssueTokenTrait
 {
 
